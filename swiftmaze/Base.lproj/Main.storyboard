@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="swiftmaze" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bU9-TM-DcE" customClass="Maze" customModule="swiftmaze" customModuleProvider="target">
+                                <rect key="frame" x="39" y="42" width="522" height="516"/>
+                                <animations/>
+                                <color key="backgroundColor" red="0.28235294119999998" green="0.35294117650000001" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="bU9-TM-DcE" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="22" id="0Zd-CN-LaQ"/>
+                            <constraint firstItem="bU9-TM-DcE" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="39" id="2oT-LW-qDD"/>
+                            <constraint firstAttribute="trailing" secondItem="bU9-TM-DcE" secondAttribute="trailing" constant="39" id="aho-8g-pMS"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="bU9-TM-DcE" secondAttribute="bottom" constant="42" id="n2M-V1-Q1d"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="maze" destination="bU9-TM-DcE" id="Dcs-Xp-mO2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="376" y="337"/>
+        </scene>
+    </scenes>
+</document>
