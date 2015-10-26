@@ -8,9 +8,9 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ConfigViewController: UIViewController {
     
-    @IBOutlet weak var maze : Maze?
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,11 +20,7 @@ class ViewController: UIViewController {
     }
     
     
-    override func viewDidAppear(animated: Bool) {
-        maze?.createGrid()
-        
-        super.viewDidAppear(animated)
-    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
