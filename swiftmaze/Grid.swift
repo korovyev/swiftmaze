@@ -21,25 +21,10 @@ class Grid {
     let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.001 * Double(NSEC_PER_SEC)))
     var cellsToCheck : [Cell] = []
     var directionsToTest = [Direction.Left, Direction.Up, Direction.Right, Direction.Down].shuffle()
+    var rectangles : [Rectangle] = []
     
     init(size: Size) {
         self.size = size
-        
-        for var x = 0 ; x < size.width ; ++x {
-            
-            var verticalCellArray : [Cell] = [];
-            
-            for var y = 0 ; y < size.height ; ++y {
-                let cell = Cell(x: x, y: y)
-                
-                verticalCellArray.append(cell)
-            }
-            
-            if verticalCellArray.count > 0 {
-                self.verticalCellArrays.append(verticalCellArray)
-            }
-            
-        }
     }
     
     func buildFrame() {
@@ -81,9 +66,43 @@ class Grid {
         }
     }
     
-    func startMaze(drawHandler:() -> Void) {
+    func createCells() {
+        for var x = 0 ; x < size.width ; ++x {
+            
+            var verticalCellArray : [Cell] = [];
+            
+            for var y = 0 ; y < size.height ; ++y {
+                let cell = Cell(x: x, y: y)
+                
+                verticalCellArray.append(cell)
+            }
+            
+            if verticalCellArray.count > 0 {
+                self.verticalCellArrays.append(verticalCellArray)
+            }
+            
+        }
+    }
+    
+    func startMaze(mazeType: MazeType, drawHandler:() -> Void) {
         
         self.drawHandler = drawHandler
+        
+        switch mazeType {
+        case .RecursiveBacktracker:
+            self.startRecursiveBacktracker()
+        case .RecursiveDivision:
+            self.startRecursiveDivision()
+        case .SpanningTree:
+            self.startSpanningTree()
+        }
+    }
+    
+    func startRecursiveBacktracker() {
+        self.buildFrame()
+        self.buildGrid()
+        self.createCells()
+        
         
         self.verticalCellArrays[0][0].visited = true
         
@@ -95,6 +114,109 @@ class Grid {
         self.drawHandler()
         
         self.getNextCell(firstCell)
+    }
+    
+    func startRecursiveDivision() {
+        self.buildFrame()
+        self.createCells()
+        
+        self.drawHandler()
+        
+        let wholeRectangle = Rectangle(origin: Point(x:0, y:0), size : self.size)
+        
+        self.makeRandomLineInRectangle(wholeRectangle)
+    }
+    
+    func startSpanningTree() {
+        
+    }
+    
+    func makeRandomLineInRectangle(rectangle : Rectangle) {
+        
+        var begin: Point
+        var end: Point
+        
+        if rectangle.size.width < rectangle.size.height {
+            // split rectangle into two horizontally
+            
+            let yVal = Int(arc4random_uniform(UInt32(rectangle.size.height - 1))) + 1
+            
+            begin = Point(x : rectangle.origin.x, y: rectangle.origin.y + yVal)
+            end = Point(x: rectangle.origin.x + rectangle.size.width, y: rectangle.origin.y + yVal)
+            
+            let topRect = Rectangle(origin: rectangle.origin, size: Size(width: rectangle.size.width, height: yVal))
+            let bottomRect = Rectangle(origin: Point(x: rectangle.origin.x, y: rectangle.origin.y + yVal), size: Size(width: rectangle.size.width, height: rectangle.size.height - yVal))
+            
+            if topRect.size.height > 1 {
+                self.rectangles.append(topRect)
+            }
+            
+            if bottomRect.size.height > 1 {
+                self.rectangles.append(bottomRect)
+            }
+        }
+        else {
+            // split rectangle into two vertically
+            
+            let xVal = Int(arc4random_uniform(UInt32(rectangle.size.width - 1))) + 1
+            
+            begin = Point(x: rectangle.origin.x + xVal, y: rectangle.origin.y)
+            end = Point(x: rectangle.origin.x + xVal, y: rectangle.origin.y + rectangle.size.height)
+            
+            let leftRect = Rectangle(origin: rectangle.origin, size: Size(width: xVal, height: rectangle.size.height))
+            let rightRect = Rectangle(origin: Point(x: rectangle.origin.x + xVal, y: rectangle.origin.y), size: Size(width: rectangle.size.width - xVal, height: rectangle.size.height))
+            
+            if leftRect.size.width > 1 {
+                self.rectangles.append(leftRect)
+            }
+            
+            if rightRect.size.width > 1 {
+                self.rectangles.append(rightRect)
+            }
+        }
+        
+        self.drawRandomLineWithDoor(Line(start: begin, end: end))
+        
+        if self.rectangles.count > 0 {
+            dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
+                let nextRectangle = self.rectangles.popLast()!
+                
+                self.makeRandomLineInRectangle(nextRectangle)
+            })
+        }
+        else {
+            self.startFill()
+        }
+    }
+    
+    func drawRandomLineWithDoor(line : Line) {
+        
+        let numSegments = line.vertical() ? line.end.x - line.start.x : line.end.y - line.start.y
+        
+        let indexOfSegmentNotToDraw = Int(arc4random_uniform(UInt32(numSegments)))
+        
+        if !line.vertical() {
+            
+            for index in line.start.y..<line.end.y {
+                if index != line.start.y + indexOfSegmentNotToDraw {
+                    let newLine = Line(start: Point(x: line.start.x, y: index), end: Point(x: line.start.x, y: index + 1))
+                    
+                    self.verticalLines.append(newLine)
+                }
+            }
+        }
+        else {
+            
+            for index in line.start.x..<line.end.x {
+                if index != line.start.x + indexOfSegmentNotToDraw {
+                    let newLine = Line(start: Point(x: index, y: line.start.y), end: Point(x: index + 1, y: line.start.y))
+                    
+                    self.horizontalLines.append(newLine)
+                }
+            }
+        }
+        
+        self.drawHandler()
     }
     
     func getNextCell(cell : Cell) {

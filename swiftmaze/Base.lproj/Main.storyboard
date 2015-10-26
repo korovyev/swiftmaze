@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="0J4-zV-vYX">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Navigation Controller-->
+        <scene sceneID="cHu-e6-Dov">
+            <objects>
+                <navigationController id="0J4-zV-vYX" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mGx-lp-0kw">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="n5v-7g-klp"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OaM-YR-0RY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-563" y="314"/>
+        </scene>
+        <!--Config View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="swiftmaze" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ConfigViewController" customModule="swiftmaze" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -16,28 +33,87 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bU9-TM-DcE" customClass="Maze" customModule="swiftmaze" customModuleProvider="target">
-                                <rect key="frame" x="39" y="42" width="522" height="516"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gYz-sa-pLD">
+                                <rect key="frame" x="218" y="323" width="165" height="30"/>
                                 <animations/>
-                                <color key="backgroundColor" red="0.28235294119999998" green="0.35294117650000001" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="5eW-Tx-o82"/>
+                                    <constraint firstAttribute="width" constant="165" id="E2i-12-N2H"/>
+                                </constraints>
+                                <state key="normal" title="Recursive Division"/>
+                                <connections>
+                                    <segue destination="ih5-R2-7Bp" kind="show" id="kpU-PL-L3y"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J37-yA-Ibs">
+                                <rect key="frame" x="207" y="285" width="187" height="30"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="KBG-FA-Ol3"/>
+                                    <constraint firstAttribute="width" constant="187" id="no4-73-SM1"/>
+                                </constraints>
+                                <state key="normal" title="Recursive Backtracker"/>
+                                <connections>
+                                    <segue destination="ih5-R2-7Bp" kind="show" id="y4f-Lz-ZCZ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <animations/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="bU9-TM-DcE" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="22" id="0Zd-CN-LaQ"/>
-                            <constraint firstItem="bU9-TM-DcE" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="39" id="2oT-LW-qDD"/>
-                            <constraint firstAttribute="trailing" secondItem="bU9-TM-DcE" secondAttribute="trailing" constant="39" id="aho-8g-pMS"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="bU9-TM-DcE" secondAttribute="bottom" constant="42" id="n2M-V1-Q1d"/>
+                            <constraint firstItem="J37-yA-Ibs" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="358-M2-z8S"/>
+                            <constraint firstItem="J37-yA-Ibs" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="EPM-o8-A6K"/>
+                            <constraint firstItem="gYz-sa-pLD" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="38" id="JWp-4b-N7p"/>
+                            <constraint firstItem="gYz-sa-pLD" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="dLl-By-va6"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="E54-kO-0qe"/>
                     <connections>
-                        <outlet property="maze" destination="bU9-TM-DcE" id="Dcs-Xp-mO2"/>
+                        <outlet property="recursiveBacktracker" destination="J37-yA-Ibs" id="RQl-a1-MJJ"/>
+                        <outlet property="recursiveDivision" destination="gYz-sa-pLD" id="iKd-x1-mJT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="376" y="337"/>
         </scene>
+        <!--Maze View Controller-->
+        <scene sceneID="SHQ-wK-VCd">
+            <objects>
+                <viewController id="ih5-R2-7Bp" customClass="MazeViewController" customModule="swiftmaze" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="S0l-tF-LWv"/>
+                        <viewControllerLayoutGuide type="bottom" id="zxv-DG-w6P"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="E38-3W-2Do">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nDK-EJ-bd8" customClass="Maze" customModule="swiftmaze" customModuleProvider="target">
+                                <rect key="frame" x="32" y="96" width="536" height="472"/>
+                                <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="zxv-DG-w6P" firstAttribute="top" secondItem="nDK-EJ-bd8" secondAttribute="bottom" constant="32" id="NZn-Y3-mMp"/>
+                            <constraint firstAttribute="trailing" secondItem="nDK-EJ-bd8" secondAttribute="trailing" constant="32" id="On4-bd-Yjc"/>
+                            <constraint firstItem="nDK-EJ-bd8" firstAttribute="leading" secondItem="E38-3W-2Do" secondAttribute="leading" constant="32" id="aph-hI-bIb"/>
+                            <constraint firstItem="nDK-EJ-bd8" firstAttribute="top" secondItem="S0l-tF-LWv" secondAttribute="bottom" constant="32" id="cYN-CS-lEg"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="maze" destination="nDK-EJ-bd8" id="8oy-Vh-Kmc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NYO-gC-2lf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1041" y="337"/>
+        </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="y4f-Lz-ZCZ"/>
+    </inferredMetricsTieBreakers>
 </document>

@@ -8,38 +8,35 @@
 
 import UIKit
 
+enum MazeType {
+    case RecursiveBacktracker
+    case SpanningTree
+    case RecursiveDivision
+}
+
 class Maze: UIView {
     var myGrid: Grid!
     let lineWidth:CGFloat = 1
-    let desiredCellSize = CGFloat(16)
+    let desiredCellSize = CGFloat(6)
     
     var mazeCreated:Bool = false
-    
-    required init?(coder aDecoder: NSCoder) {
-        
-        super.init(coder: aDecoder)
-        
-        self.backgroundColor = UIColor.whiteColor()
-    }
     
     func createGrid() {
         
         self.myGrid = Grid(size: Size(width: Int(self.frame.size.width / desiredCellSize), height: Int(self.frame.size.height / desiredCellSize)))
         
-        self.myGrid.buildFrame()
-        self.myGrid.buildGrid()
-        
         self.mazeCreated = true
         
         self.setNeedsDisplay()
-        
-        self.maze()
     }
     
-    func maze() {
-        self.myGrid.startMaze { () -> Void in
+    func startMazeWithType(mazeType: MazeType) {
+        
+        self.createGrid()
+        
+        self.myGrid.startMaze(mazeType, drawHandler: { () -> Void in
             self.setNeedsDisplay()
-        }
+        })
     }
     
     override func drawRect(rect: CGRect) {
@@ -61,7 +58,7 @@ class Maze: UIView {
 //            CGContextSetGrayFillColor(context, 0.5, 1)
 //            CGContextSetRGBFillColor(context, 1, 1, 0, 1);
             
-            CGContextSetFillColorWithColor(context, UIColor.orangeColor().CGColor)
+            CGContextSetFillColorWithColor(context, UIColor.whiteColor().CGColor)
             CGContextFillRect(context, CGRectMake(CGFloat(cell.xPos) * cellSize.width, CGFloat(cell.yPos) * cellSize.height, cellSize.width, cellSize.height));
         }
         

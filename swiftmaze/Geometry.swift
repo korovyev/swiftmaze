@@ -63,6 +63,15 @@ struct Line {
     func key() -> String {
         return "start\(start.x)_\(start.y)end\(end.x)_\(end.y)"
     }
+    
+    func vertical() -> Bool {
+        return self.start.y == self.end.y
+    }
+}
+
+struct Rectangle {
+    var origin : Point
+    var size : Size
 }
 
 func == (lhs: Point, rhs: Point) -> Bool {
