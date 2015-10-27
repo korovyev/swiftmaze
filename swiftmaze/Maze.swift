@@ -59,15 +59,15 @@ class Maze: UIView {
         let cellSize = CGSize(width: Double(self.frame.size.width / CGFloat(self.myGrid.size.width)), height: Double(self.frame.size.height / CGFloat(self.myGrid.size.height)))
         
         for cell in self.myGrid.filledCells {
-//            CGContextSetGrayFillColor(context, 0.5, 1)
+            CGContextSetGrayFillColor(context, 0.3, 1)
 //            CGContextSetRGBFillColor(context, 1, 1, 0, 1);
             
-            CGContextSetFillColorWithColor(context, UIColor.whiteColor().CGColor)
+//            CGContextSetFillColorWithColor(context, UIColor.yellowColor().CGColor)
             CGContextFillRect(context, CGRectMake(CGFloat(cell.xPos) * cellSize.width, CGFloat(cell.yPos) * cellSize.height, cellSize.width, cellSize.height));
         }
         
         for line in self.myGrid.verticalLines {
-            CGContextSetStrokeColorWithColor(context, UIColor.greenColor().CGColor);
+            CGContextSetStrokeColorWithColor(context, UIColor.redColor().CGColor);
             CGContextSetLineDash(context, 1, dashes, 0);
             
             CGContextSetLineWidth(context, lineWidth);
@@ -79,7 +79,7 @@ class Maze: UIView {
         }
         
         for line in self.myGrid.horizontalLines {
-            CGContextSetStrokeColorWithColor(context, UIColor.greenColor().CGColor);
+            CGContextSetStrokeColorWithColor(context, UIColor.redColor().CGColor);
             CGContextSetLineDash(context, 1, dashes, 0);
             
             CGContextSetLineWidth(context, lineWidth);
