@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		322EAFCD1BDEEAC600A4A883 /* DeepLinker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322EAFCC1BDEEAC600A4A883 /* DeepLinker.swift */; };
 		328BDBC11BDD7E6800151E01 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328BDBC01BDD7E6800151E01 /* Extensions.swift */; };
 		328BDBC31BDDA47600151E01 /* MazeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328BDBC21BDDA47600151E01 /* MazeViewController.swift */; };
 		32B7C4FF1BC995D700AD7DCE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B7C4FE1BC995D700AD7DCE /* AppDelegate.swift */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		322EAFCC1BDEEAC600A4A883 /* DeepLinker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeepLinker.swift; sourceTree = "<group>"; };
 		328BDBC01BDD7E6800151E01 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		328BDBC21BDDA47600151E01 /* MazeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MazeViewController.swift; sourceTree = "<group>"; };
 		32B7C4FB1BC995D700AD7DCE /* swiftmaze.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swiftmaze.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -118,6 +120,7 @@
 				32B7C52E1BC9966200AD7DCE /* Grid.swift */,
 				32B7C5301BC9A82A00AD7DCE /* Maze.swift */,
 				328BDBC01BDD7E6800151E01 /* Extensions.swift */,
+				322EAFCC1BDEEAC600A4A883 /* DeepLinker.swift */,
 			);
 			path = swiftmaze;
 			sourceTree = "<group>";
@@ -277,6 +280,7 @@
 				32B7C4FF1BC995D700AD7DCE /* AppDelegate.swift in Sources */,
 				32B7C52F1BC9966200AD7DCE /* Grid.swift in Sources */,
 				32B7C5311BC9A82A00AD7DCE /* Maze.swift in Sources */,
+				322EAFCD1BDEEAC600A4A883 /* DeepLinker.swift in Sources */,
 				328BDBC31BDDA47600151E01 /* MazeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

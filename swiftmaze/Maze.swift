@@ -32,6 +32,10 @@ class Maze: UIView {
     
     func startMazeWithType(mazeType: MazeType) {
         
+        if self.mazeCreated {
+            return
+        }
+        
         self.createGrid()
         
         self.myGrid.startMaze(mazeType, drawHandler: { () -> Void in
@@ -41,7 +45,7 @@ class Maze: UIView {
     
     override func drawRect(rect: CGRect) {
         
-        if !mazeCreated {
+        if !self.mazeCreated {
             return;
         }
         

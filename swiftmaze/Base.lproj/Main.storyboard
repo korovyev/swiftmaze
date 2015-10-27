@@ -80,7 +80,7 @@
         <!--Maze View Controller-->
         <scene sceneID="SHQ-wK-VCd">
             <objects>
-                <viewController id="ih5-R2-7Bp" customClass="MazeViewController" customModule="swiftmaze" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MazeViewController" id="ih5-R2-7Bp" customClass="MazeViewController" customModule="swiftmaze" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="S0l-tF-LWv"/>
                         <viewControllerLayoutGuide type="bottom" id="zxv-DG-w6P"/>
@@ -92,11 +92,11 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nDK-EJ-bd8" customClass="Maze" customModule="swiftmaze" customModuleProvider="target">
                                 <rect key="frame" x="32" y="96" width="536" height="472"/>
                                 <animations/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="zxv-DG-w6P" firstAttribute="top" secondItem="nDK-EJ-bd8" secondAttribute="bottom" constant="32" id="NZn-Y3-mMp"/>
                             <constraint firstAttribute="trailing" secondItem="nDK-EJ-bd8" secondAttribute="trailing" constant="32" id="On4-bd-Yjc"/>
