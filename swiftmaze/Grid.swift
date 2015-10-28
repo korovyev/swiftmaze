@@ -327,6 +327,9 @@ class Grid {
                 self.fillCellsNextTo(nextCells)
             })
         }
+        else {
+            self.startSolve()
+        }
     }
     
     func openCellsNextTo(cell: Cell) -> [Cell] {
@@ -541,5 +544,9 @@ class Grid {
         }
         
         return (isGood, downCell)
+    }
+    
+    func startSolve() {
+        
     }
 }
