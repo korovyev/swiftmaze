@@ -17,7 +17,7 @@ enum MazeType {
 class Maze: UIView {
     var myGrid: Grid!
     let lineWidth:CGFloat = 1
-    let desiredCellSize = CGFloat(6)
+    var desiredCellSize = CGFloat(6)
     
     var mazeCreated:Bool = false
     
@@ -30,7 +30,9 @@ class Maze: UIView {
         self.setNeedsDisplay()
     }
     
-    func startMazeWithType(mazeType: MazeType) {
+    func startMazeWithType(mazeType: MazeType, cellSize: Int) {
+        
+        self.desiredCellSize = CGFloat(cellSize)
         
         if self.mazeCreated {
             return

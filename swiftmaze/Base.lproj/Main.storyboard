@@ -57,20 +57,40 @@
                                     <segue destination="ih5-R2-7Bp" kind="show" id="y4f-Lz-ZCZ"/>
                                 </connections>
                             </button>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DFC-dS-KN3">
+                                <rect key="frame" x="0.0" y="384" width="600" height="216"/>
+                                <animations/>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="2aM-qO-45k"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="fwn-KL-zGu"/>
+                                </connections>
+                            </pickerView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="DFC-dS-KN3" secondAttribute="trailing" id="2Kn-Xk-J3s"/>
                             <constraint firstItem="J37-yA-Ibs" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="358-M2-z8S"/>
                             <constraint firstItem="J37-yA-Ibs" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="EPM-o8-A6K"/>
                             <constraint firstItem="gYz-sa-pLD" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="38" id="JWp-4b-N7p"/>
+                            <constraint firstItem="DFC-dS-KN3" firstAttribute="top" secondItem="gYz-sa-pLD" secondAttribute="bottom" constant="31" id="Kpb-Fs-o47"/>
+                            <constraint firstItem="DFC-dS-KN3" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="aoF-Xo-gBL"/>
                             <constraint firstItem="gYz-sa-pLD" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="dLl-By-va6"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="DFC-dS-KN3" secondAttribute="bottom" id="iEl-TR-OiN"/>
+                            <constraint firstItem="DFC-dS-KN3" firstAttribute="top" secondItem="J37-yA-Ibs" secondAttribute="bottom" constant="69" id="wUC-Hq-XAH"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="358-M2-z8S"/>
+                                <exclude reference="JWp-4b-N7p"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="E54-kO-0qe"/>
                     <connections>
                         <outlet property="recursiveBacktracker" destination="J37-yA-Ibs" id="RQl-a1-MJJ"/>
                         <outlet property="recursiveDivision" destination="gYz-sa-pLD" id="iKd-x1-mJT"/>
+                        <outlet property="sizePicker" destination="DFC-dS-KN3" id="Q0u-s0-wgR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
