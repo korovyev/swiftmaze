@@ -24,6 +24,7 @@ class Grid {
     var rectangles : [Rectangle] = []
     var aStarOpenList : [Cell] = []
     var aStarClosedList : [Cell] = []
+    var aStarGCost : Int = 1
     
     init(size: Size) {
         self.size = size
@@ -515,5 +516,29 @@ class Grid {
     func startSolve() {
         self.aStarClosedList = [self.verticalCellArrays[0][0]]
         
+        let nextCells = self.cellsNextTo(self.verticalCellArrays[0][0])
+        
+        for cell in nextCells {
+            
+            if !self.aStarClosedList.contains(cell) {
+                self.scoreCell(cell)
+            }
+        }
+    }
+    
+    func scoreCell(cell : Cell) {
+        
+        let maxX = self.verticalCellArrays.count - 1
+        let maxY = self.verticalCellArrays[0].count - 1
+        
+        
+        let xDistance = cell.xPos > maxX ? cell.xPos - maxX : maxX - cell.xPos
+        let yDistance = cell.yPos > maxY ? cell.yPos - maxY : maxY - cell.yPos
+        
+        
+        let gScore = self.aStarGCost
+        let hScore = xDistance + yDistance
+        
+        self.verticalCellArrays[cell.xPos][cell.yPos].fScore = gScore + hScore
     }
 }

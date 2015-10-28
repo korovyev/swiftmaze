@@ -8,23 +8,19 @@
 
 import Foundation
 
-struct Cell {
+struct Cell: Equatable {
     var xPos : Int
     var yPos : Int
     var visited : Bool
     var filled : Bool
     
     var fScore : Int
-    var gScore : Int
-    var hScore : Int
     
     init(x: Int, y: Int) {
         self.visited = false
         self.filled = false
         
         self.fScore = 0
-        self.gScore = 0
-        self.hScore = 0
         
         self.xPos = x
         self.yPos = y
@@ -84,6 +80,10 @@ struct Rectangle {
 
 func == (lhs: Point, rhs: Point) -> Bool {
     return lhs.x == rhs.x && lhs.y == rhs.y
+}
+
+func == (lhs: Cell, rhs: Cell) -> Bool {
+    return lhs.xPos == rhs.xPos && lhs.yPos == rhs.yPos
 }
 
 func ==(lhs: Line, rhs: Line) -> Bool {
