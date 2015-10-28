@@ -22,6 +22,8 @@ class Grid {
     var cellsToCheck : [Cell] = []
     var directionsToTest = [Direction.Left, Direction.Up, Direction.Right, Direction.Down].shuffle()
     var rectangles : [Rectangle] = []
+    var aStarOpenList : [Cell] = []
+    var aStarClosedList : [Cell] = []
     
     init(size: Size) {
         self.size = size
@@ -223,46 +225,17 @@ class Grid {
         
         self.cellsToCheck.append(cell)
         
-        var nextCell = Cell(x: cell.xPos, y: cell.yPos)
-        
-        var foundCell:Bool = false
+        var nextCell : Cell? = nil
         
         self.directionsToTest.shuffleInPlace()
         
         for direction in directionsToTest {
-            switch direction { //0 = left, 1 = up, 2 = rght, 3 = down
-            case .Left:
-                let validLeftCell = self.validLeftCell(cell, forFill:false)
-                
-                if validLeftCell.isGood {
-                    nextCell = validLeftCell.cell
-                    foundCell = true
-                }
-            case .Up:
-                let validUpCell = self.validUpCell(cell, forFill:false)
-                
-                if validUpCell.isGood {
-                    nextCell = validUpCell.cell
-                    foundCell = true
-                }
-            case .Right:
-                let validRightCell = self.validRightCell(cell, forFill:false)
-                
-                if validRightCell.isGood {
-                    nextCell = validRightCell.cell
-                    foundCell = true
-                }
-            case .Down:
-                let validDownCell = self.validDownCell(cell, forFill:false)
-                
-                if validDownCell.isGood {
-                    nextCell = validDownCell.cell
-                    foundCell = true
-                }
-            }
             
-            if foundCell {
-                self.removeLineBetweenCells(cell, secondCell: nextCell)
+            if let testCell = self.unvisitedCell(cell, inDirection: direction) {
+                
+                self.removeLineBetweenCells(cell, secondCell: testCell)
+                
+                nextCell = testCell
                 
                 break;
             }
@@ -270,8 +243,20 @@ class Grid {
         
         self.drawHandler()
         
-        if !foundCell {
+        if nextCell != nil {
+            self.verticalCellArrays[nextCell!.xPos][nextCell!.yPos].visited = true
             
+            nextCell!.visited = true
+            self.visitedCells.append(nextCell!)
+            self.visitedCellsIndex = self.visitedCells.count - 1
+            
+            
+            
+            dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
+                self.getNextCell(nextCell!)
+            })
+        }
+        else {
             self.visitedCells.popLast()
             
             self.visitedCellsIndex--
@@ -281,19 +266,6 @@ class Grid {
             else {
                 startFill()
             }
-        }
-        else {
-            self.verticalCellArrays[nextCell.xPos][nextCell.yPos].visited = true
-            
-            nextCell.visited = true
-            self.visitedCells.append(nextCell)
-            self.visitedCellsIndex = self.visitedCells.count - 1
-            
-            
-            
-            dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
-                self.getNextCell(nextCell)
-            })
         }
     }
     
@@ -313,7 +285,14 @@ class Grid {
         var nextCells:[Cell] = []
         
         for cell in cells {
-            nextCells.appendContentsOf(self.openCellsNextTo(cell))
+            
+            let unfilledNextCells = self.unfilledCellsNextTo(cell)
+            
+            for unfilledCell in unfilledNextCells {
+                self.verticalCellArrays[unfilledCell.xPos][unfilledCell.yPos].filled = true
+            }
+            
+            nextCells.appendContentsOf(unfilledNextCells)
         }
         
         self.filledCells.appendContentsOf(nextCells)
@@ -332,39 +311,44 @@ class Grid {
         }
     }
     
-    func openCellsNextTo(cell: Cell) -> [Cell] {
-        var nextCells:[Cell] = []
+    func cellsNextTo(cell : Cell) -> [Cell] {
+        var cells : [Cell] = []
         
-        let validLeftCell = self.validLeftCell(cell, forFill: true)
-        
-        if validLeftCell.isGood {
-            nextCells.append(validLeftCell.cell)
+        if let left = leftCell(cell) {
+            cells.append(left)
         }
         
-        let validRightCell = self.validRightCell(cell, forFill: true)
-        
-        if validRightCell.isGood {
-            nextCells.append(validRightCell.cell)
+        if let right = rightCell(cell) {
+            cells.append(right)
         }
         
-        let validUpCell = self.validUpCell(cell, forFill: true)
-        
-        if validUpCell.isGood {
-            nextCells.append(validUpCell.cell)
+        if let up = upCell(cell) {
+            cells.append(up)
         }
         
-        let validDownCell = self.validDownCell(cell, forFill: true)
-        
-        if validDownCell.isGood {
-            nextCells.append(validDownCell.cell)
+        if let down = downCell(cell) {
+            cells.append(down)
         }
         
-        for cell in nextCells {
-            self.verticalCellArrays[cell.xPos][cell.yPos].filled = true
-        }
-        
-        return nextCells
+        return cells
     }
+    
+    func unfilledCellsNextTo(cell : Cell) -> [Cell] {
+        var unfilledCells : [Cell] = []
+        
+        let nextCells = self.cellsNextTo(cell)
+        
+        for nextCell in nextCells {
+            if !nextCell.filled {
+                if !self.lineExistsBetweenCells(cell, secondCell: nextCell) {
+                    unfilledCells.append(nextCell)
+                }
+            }
+        }
+        
+        return unfilledCells
+    }
+    
     
     func lineExistsBetweenCells(firstCell: Cell, secondCell: Cell) -> Bool {
         let verticalLine:Bool = firstCell.yPos == secondCell.yPos
@@ -380,7 +364,7 @@ class Grid {
             
             if (self.verticalLines.indexOf({ $0 == lineToFind }) != nil) {
                 
-                return false
+                return true
             }
         }
         else {
@@ -394,11 +378,11 @@ class Grid {
             
             if (self.horizontalLines.indexOf({ $0 == lineToFind }) != nil) {
                 
-                return false
+                return true
             }
         }
         
-        return true
+        return false
     }
     
     func removeLineBetweenCells(firstCell : Cell, secondCell : Cell) {
@@ -433,120 +417,103 @@ class Grid {
             }
         }
     }
-
-    func validLeftCell(cell : Cell, forFill : Bool) -> (isGood: Bool, cell: Cell) {
+    
+    func unvisitedCell(cell : Cell, inDirection : Direction) -> Cell? {
+        
+        
+        switch inDirection {
+        case .Left:
+            if let leftCell = self.leftCell(cell) {
+                if !leftCell.visited {
+                    return leftCell
+                }
+                else {
+                    return nil
+                }
+            }
+        case .Right:
+            if let rightCell = self.rightCell(cell) {
+                if !rightCell.visited {
+                    return rightCell
+                }
+                else {
+                    return nil
+                }
+            }
+        case .Up:
+            if let upCell = self.upCell(cell) {
+                if !upCell.visited {
+                    return upCell
+                }
+                else {
+                    return nil
+                }
+            }
+        case .Down:
+            if let downCell = self.downCell(cell) {
+                if !downCell.visited {
+                    return downCell
+                }
+                else {
+                    return nil
+                }
+            }
+        }
+        
+        return nil
+    }
+    
+    func leftCell(cell : Cell) -> Cell? {
         if cell.xPos == 0 {
-            return (false, cell);
+            return (nil);
         }
         
         let row = cell.yPos;
         let col = cell.xPos;
         let cellColumn:Array = self.verticalCellArrays[col - 1]
         
-        let leftCell:Cell = cellColumn[row]
-        
-        var isGood:Bool = true
-        
-        if !forFill {
-            isGood = !leftCell.visited
-        }
-        else {
-            isGood = !leftCell.filled
-            
-            if isGood {
-                isGood = self.lineExistsBetweenCells(cell, secondCell: leftCell)
-            }
-        }
-        
-        return (isGood, leftCell)
+        return cellColumn[row]
     }
     
-    func validRightCell(cell : Cell, forFill : Bool) -> (isGood: Bool, cell: Cell) {
-        
+    func rightCell(cell : Cell) -> Cell? {
         let row = cell.yPos;
         let col = cell.xPos;
         
         
         if col == self.verticalCellArrays.count - 1 {
-            return (false, cell);
+            return (nil);
         }
         
         let cellColumn:Array = self.verticalCellArrays[col + 1]
         
-        let rightCell:Cell = cellColumn[row]
-        
-        var isGood:Bool = true
-        
-        if !forFill {
-            isGood = !rightCell.visited
-        }
-        else {
-            isGood = !rightCell.filled
-            
-            if isGood {
-                isGood = self.lineExistsBetweenCells(cell, secondCell: rightCell)
-            }
-        }
-        
-        return (isGood, rightCell)
+        return cellColumn[row]
     }
     
-    func validUpCell(cell : Cell, forFill : Bool) -> (isGood: Bool, cell: Cell) {
-        
+    func upCell(cell : Cell) -> Cell? {
         if cell.yPos == 0 {
-            return (false, cell);
+            return (nil);
         }
         
         let cellColumn:Array = self.verticalCellArrays[cell.xPos]
         
-        let upCell:Cell = cellColumn[cell.yPos - 1]
-        
-        var isGood:Bool = true
-        
-        if !forFill {
-            isGood = !upCell.visited
-        }
-        else {
-            isGood = !upCell.filled
-            
-            if isGood {
-                isGood = self.lineExistsBetweenCells(cell, secondCell: upCell)
-            }
-        }
-        
-        return (isGood, upCell)
+        return cellColumn[cell.yPos - 1]
     }
     
-    func validDownCell(cell : Cell, forFill : Bool) -> (isGood: Bool, cell: Cell) {
-        
+    func downCell(cell : Cell) -> Cell? {
         let row = cell.yPos;
         let col = cell.xPos;
         
         if row == self.verticalCellArrays[0].count - 1 {
-            return (false, cell);
+            return (nil);
         }
         
         let cellColumn:Array = self.verticalCellArrays[col]
         
-        let downCell:Cell = cellColumn[row + 1]
-        
-        var isGood:Bool = true
-        
-        if !forFill {
-            isGood = !downCell.visited
-        }
-        else {
-            isGood = !downCell.filled
-            
-            if isGood {
-                isGood = self.lineExistsBetweenCells(cell, secondCell: downCell)
-            }
-        }
-        
-        return (isGood, downCell)
+        return cellColumn[row + 1]
     }
     
     func startSolve() {
+        self.aStarClosedList = [self.verticalCellArrays[0][0]]
         
     }
 }

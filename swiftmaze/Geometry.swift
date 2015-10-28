@@ -14,9 +14,17 @@ struct Cell {
     var visited : Bool
     var filled : Bool
     
+    var fScore : Int
+    var gScore : Int
+    var hScore : Int
+    
     init(x: Int, y: Int) {
         self.visited = false
         self.filled = false
+        
+        self.fScore = 0
+        self.gScore = 0
+        self.hScore = 0
         
         self.xPos = x
         self.yPos = y
