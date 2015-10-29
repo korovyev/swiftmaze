@@ -25,6 +25,7 @@ class Grid {
     var aStarOpenList : [Cell] = []
     var aStarClosedList : [Cell] = []
     var aStarGCost : Int = 1
+    var shortestPath : [Cell] = []
     
     init(size: Size) {
         self.size = size
@@ -188,7 +189,7 @@ class Grid {
             })
         }
         else {
-            self.startFill()
+            self.startSolve()
         }
     }
     
@@ -332,6 +333,20 @@ class Grid {
         }
         
         return cells
+    }
+    
+    func openCellsNextTo(cell : Cell) -> [Cell] {
+        let nextCells = self.cellsNextTo(cell)
+        
+        var openCells: [Cell] = []
+        
+        for nextCell in nextCells {
+            if !self.lineExistsBetweenCells(cell, secondCell: nextCell) {
+                openCells.append(nextCell)
+            }
+        }
+        
+        return openCells
     }
     
     func unfilledCellsNextTo(cell : Cell) -> [Cell] {
@@ -516,14 +531,89 @@ class Grid {
     func startSolve() {
         self.aStarClosedList = [self.verticalCellArrays[0][0]]
         
-        let nextCells = self.cellsNextTo(self.verticalCellArrays[0][0])
+        self.solveAStar()
+    }
+    
+    func solveAStar() {
         
-        for cell in nextCells {
+        let cellToProceedFrom = self.aStarClosedList[self.aStarClosedList.count - 1]
+        
+        let nextCells = self.openCellsNextTo(cellToProceedFrom)
+        
+        if !nextCells.contains(self.verticalCellArrays[self.verticalCellArrays.count - 1][self.verticalCellArrays[0].count - 1]) {
             
-            if !self.aStarClosedList.contains(cell) {
-                self.scoreCell(cell)
+            
+            for index in 0..<nextCells.count {
+                
+                var cell = nextCells[index]
+                
+                if !self.aStarClosedList.contains(cell) {
+                    self.scoreCell(cell)
+                    
+                    cell.parentX = cellToProceedFrom.xPos
+                    cell.parentY = cellToProceedFrom.yPos
+                    
+                    self.aStarOpenList.append(cell)
+                }
+            }
+            
+            self.sortOpenList()
+            
+            self.aStarClosedList.append(self.aStarOpenList.popLast()!)
+            
+            self.drawHandler()
+            
+            dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
+                
+                self.solveAStar()
+            })
+        }
+        else {
+            
+            var finalCell = self.verticalCellArrays[self.verticalCellArrays.count - 1][self.verticalCellArrays[0].count - 1]
+            
+            finalCell.parentX = cellToProceedFrom.xPos
+            finalCell.parentY = cellToProceedFrom.yPos
+            
+            self.aStarClosedList.append(finalCell)
+            
+            self.drawHandler()
+            
+            self.findShortestPathBackwardsFrom(finalCell)
+        }
+    }
+    
+    func findShortestPathBackwardsFrom(cell : Cell) {
+        
+        
+        
+        self.shortestPath.append(cell)
+        
+        let tempCell = Cell(x: cell.parentX, y: cell.parentY)
+        
+        if let nextCellIndex = self.aStarClosedList.indexOf({ $0 == tempCell }) {
+            
+            let nextCell = self.aStarClosedList[nextCellIndex]
+            
+            if nextCell == self.verticalCellArrays[0][0] {
+                self.shortestPath.append(nextCell)
+                
+                self.aStarClosedList = []
+                self.aStarOpenList = []
+            }
+            else {
+                dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
+                    
+                    self.findShortestPathBackwardsFrom(nextCell)
+                })
             }
         }
+        
+        self.drawHandler()
+    }
+    
+    func sortOpenList() {
+        self.aStarOpenList.sortInPlace({ self.verticalCellArrays[$0.xPos][$0.yPos].fScore > self.verticalCellArrays[$1.xPos][$1.yPos].fScore})
     }
     
     func scoreCell(cell : Cell) {

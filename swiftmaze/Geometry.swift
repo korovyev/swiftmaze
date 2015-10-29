@@ -13,12 +13,16 @@ struct Cell: Equatable {
     var yPos : Int
     var visited : Bool
     var filled : Bool
+    var parentX : Int
+    var parentY : Int
     
     var fScore : Int
     
     init(x: Int, y: Int) {
         self.visited = false
         self.filled = false
+        self.parentX = 0
+        self.parentY = 0
         
         self.fScore = 0
         

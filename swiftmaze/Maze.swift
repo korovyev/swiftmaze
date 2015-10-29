@@ -68,6 +68,24 @@ class Maze: UIView {
             CGContextFillRect(context, CGRectMake(CGFloat(cell.xPos) * cellSize.width, CGFloat(cell.yPos) * cellSize.height, cellSize.width, cellSize.height));
         }
         
+        for cell in self.myGrid.aStarClosedList {
+            CGContextSetFillColorWithColor(context, UIColor.blueColor().CGColor)
+            
+            CGContextFillRect(context, CGRectMake(CGFloat(cell.xPos) * cellSize.width, CGFloat(cell.yPos) * cellSize.height, cellSize.width, cellSize.height));
+        }
+        
+        for cell in self.myGrid.aStarOpenList {
+            CGContextSetFillColorWithColor(context, UIColor.yellowColor().CGColor)
+            
+            CGContextFillRect(context, CGRectMake(CGFloat(cell.xPos) * cellSize.width, CGFloat(cell.yPos) * cellSize.height, cellSize.width, cellSize.height));
+        }
+        
+        for cell in self.myGrid.shortestPath {
+            CGContextSetFillColorWithColor(context, UIColor.greenColor().CGColor)
+            
+            CGContextFillRect(context, CGRectMake(CGFloat(cell.xPos) * cellSize.width, CGFloat(cell.yPos) * cellSize.height, cellSize.width, cellSize.height));
+        }
+        
         for line in self.myGrid.verticalLines {
             CGContextSetStrokeColorWithColor(context, UIColor.redColor().CGColor);
             CGContextSetLineDash(context, 1, dashes, 0);
