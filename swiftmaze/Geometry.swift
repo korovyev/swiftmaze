@@ -15,12 +15,14 @@ struct Cell: Equatable {
     var filled : Bool
     var parentX : Int
     var parentY : Int
+    var tremauxVisited : Bool
     
     var fScore : Int
     
     init(x: Int, y: Int) {
         self.visited = false
         self.filled = false
+        self.tremauxVisited = false;
         self.parentX = 0
         self.parentY = 0
         
