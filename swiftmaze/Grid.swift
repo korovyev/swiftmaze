@@ -26,6 +26,9 @@ class Grid {
     var aStarClosedList : [Cell] = []
     var aStarGCost : Int = 1
     var shortestPath : [Cell] = []
+    var solveType : SolveType = SolveType.None
+    var tremauxActiveCells : [Cell] = []
+    var tremauxActiveJunctions : [Cell] = []
     
     init(size: Size) {
         self.size = size
@@ -88,9 +91,11 @@ class Grid {
         }
     }
     
-    func startMaze(mazeType: MazeType, drawHandler:() -> Void) {
+    func startMaze(mazeType: MazeType, solveType: SolveType, drawHandler:() -> Void) {
         
         self.drawHandler = drawHandler
+        
+        self.solveType = solveType
         
         switch mazeType {
         case .RecursiveBacktracker:
@@ -529,9 +534,36 @@ class Grid {
     }
     
     func startSolve() {
-        self.aStarClosedList = [self.verticalCellArrays[0][0]]
         
-        self.solveAStar()
+        switch self.solveType {
+        case .AStar:
+            self.aStarClosedList = [self.verticalCellArrays[0][0]]
+            
+            self.solveAStar()
+        case .Tremaux:
+            self.tremauxActiveCells = [self.verticalCellArrays[0][0]]
+            self.solveTremaux()
+        case .None:
+            break
+        }
+        
+    }
+    
+    func solveTremaux() {
+        
+        let cellToProceedFrom = self.tremauxActiveCells[self.aStarClosedList.count - 1]
+        
+        let nextCells = self.unvisitedTremauxCellsNextTo(cellToProceedFrom)
+    }
+    
+    func unvisitedTremauxCellsNextTo(cell : Cell) -> [Cell] {
+        let nextCells = self.cellsNextTo(cell)
+        
+        var unvisited : [Cell] = []
+        
+        for cell in nextCells {
+            if
+        }
     }
     
     func solveAStar() {

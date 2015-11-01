@@ -13,6 +13,7 @@ class MazeViewController: UIViewController {
     
     @IBOutlet weak var maze : Maze?
     var mazeType : MazeType
+    var solveType : SolveType = SolveType.None
     var desiredCellSize : Int
     
     required init?(coder aDecoder: NSCoder) {
@@ -41,7 +42,7 @@ class MazeViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         
-        self.maze?.startMazeWithType(self.mazeType, cellSize: self.desiredCellSize)
+        self.maze?.startMazeWithType(self.mazeType, cellSize: self.desiredCellSize, solveType: self.solveType)
         
         super.viewDidAppear(animated)
     }

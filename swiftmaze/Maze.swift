@@ -14,6 +14,12 @@ enum MazeType {
     case RecursiveDivision
 }
 
+enum SolveType {
+    case AStar
+    case Tremaux
+    case None
+}
+
 class Maze: UIView {
     var myGrid: Grid!
     let lineWidth:CGFloat = 1
@@ -30,7 +36,7 @@ class Maze: UIView {
         self.setNeedsDisplay()
     }
     
-    func startMazeWithType(mazeType: MazeType, cellSize: Int) {
+    func startMazeWithType(mazeType: MazeType, cellSize: Int, solveType : SolveType) {
         
         self.desiredCellSize = CGFloat(cellSize)
         
@@ -40,7 +46,7 @@ class Maze: UIView {
         
         self.createGrid()
         
-        self.myGrid.startMaze(mazeType, drawHandler: { () -> Void in
+        self.myGrid.startMaze(mazeType, solveType: solveType, drawHandler: { () -> Void in
             self.setNeedsDisplay()
         })
     }
