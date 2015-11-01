@@ -551,19 +551,64 @@ class Grid {
     
     func solveTremaux() {
         
-        let cellToProceedFrom = self.tremauxActiveCells[self.aStarClosedList.count - 1]
+        let cellToProceedFrom = self.tremauxActiveCells[self.tremauxActiveCells.count - 1]
         
-        let nextCells = self.unvisitedTremauxCellsNextTo(cellToProceedFrom)
+        self.verticalCellArrays[cellToProceedFrom.xPos][cellToProceedFrom.yPos].tremauxVisited = true
+        
+        var nextCells = self.unvisitedTremauxCellsNextTo(cellToProceedFrom)
+        
+        if !nextCells.contains(self.verticalCellArrays[self.verticalCellArrays.count - 1][self.verticalCellArrays[0].count - 1]) {
+            
+            if nextCells.count > 1 {
+                self.tremauxActiveJunctions.append(cellToProceedFrom)
+            }
+            else if nextCells.count == 0 {
+                var lastJunctionCell = self.tremauxActiveJunctions[self.tremauxActiveJunctions.count - 1]
+                
+                if lastJunctionCell == cellToProceedFrom {
+                    lastJunctionCell = self.tremauxActiveJunctions[self.tremauxActiveJunctions.count - 2]
+                    
+                    self.tremauxActiveJunctions.popLast()
+                }
+                
+                if let cutOffIndex = self.tremauxActiveCells.indexOf({ $0 == lastJunctionCell }) {
+                    
+                    self.tremauxActiveCells = Array(self.tremauxActiveCells[0..<cutOffIndex+1])
+                }
+            }
+            
+            if nextCells.count > 0 {
+                nextCells.shuffleInPlace()
+                
+                self.tremauxActiveCells.append(nextCells.popLast()!)
+            }
+            
+            self.drawHandler()
+            
+            dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
+                
+                self.solveTremaux()
+            })
+        }
+        else {
+            self.tremauxActiveCells.append(self.verticalCellArrays[self.verticalCellArrays.count - 1][self.verticalCellArrays[0].count - 1])
+            
+            self.drawHandler()
+        }
     }
     
     func unvisitedTremauxCellsNextTo(cell : Cell) -> [Cell] {
-        let nextCells = self.cellsNextTo(cell)
+        let nextCells = self.openCellsNextTo(cell)
         
         var unvisited : [Cell] = []
         
-        for cell in nextCells {
-            if
+        for nextCell in nextCells {
+            if !nextCell.tremauxVisited {
+                unvisited.append(nextCell)
+            }
         }
+        
+        return unvisited
     }
     
     func solveAStar() {

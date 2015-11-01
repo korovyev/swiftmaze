@@ -86,6 +86,12 @@ class Maze: UIView {
             CGContextFillRect(context, CGRectMake(CGFloat(cell.xPos) * cellSize.width, CGFloat(cell.yPos) * cellSize.height, cellSize.width, cellSize.height));
         }
         
+        for cell in self.myGrid.tremauxActiveCells {
+            CGContextSetFillColorWithColor(context, UIColor.yellowColor().CGColor)
+            
+            CGContextFillRect(context, CGRectMake(CGFloat(cell.xPos) * cellSize.width, CGFloat(cell.yPos) * cellSize.height, cellSize.width, cellSize.height));
+        }
+        
         for cell in self.myGrid.shortestPath {
             CGContextSetFillColorWithColor(context, UIColor.greenColor().CGColor)
             
