@@ -17,6 +17,7 @@ enum MazeType {
 enum SolveType {
     case AStar
     case Tremaux
+    case DeadEndFilling
     case None
 }
 
@@ -99,7 +100,11 @@ class Maze: UIView {
         }
         
         for line in self.myGrid.verticalLines {
-            CGContextSetStrokeColorWithColor(context, UIColor.redColor().CGColor);
+            var colour = UIColor.redColor()
+            if line.ghost {
+                colour = UIColor.redColor().colorWithAlphaComponent(0.5)
+            }
+            CGContextSetStrokeColorWithColor(context, colour.CGColor);
             CGContextSetLineDash(context, 1, dashes, 0);
             
             CGContextSetLineWidth(context, lineWidth);
@@ -111,7 +116,11 @@ class Maze: UIView {
         }
         
         for line in self.myGrid.horizontalLines {
-            CGContextSetStrokeColorWithColor(context, UIColor.redColor().CGColor);
+            var colour = UIColor.redColor()
+            if line.ghost {
+                colour = UIColor.redColor().colorWithAlphaComponent(0.8)
+            }
+            CGContextSetStrokeColorWithColor(context, colour.CGColor);
             CGContextSetLineDash(context, 1, dashes, 0);
             
             CGContextSetLineWidth(context, lineWidth);

@@ -68,7 +68,9 @@ class Grid {
         
         for var y = 1 ; y < self.size.height ; ++y {
             for var x = 0 ; x < self.size.width ; ++x {
-                self.horizontalLines.append(Line(start: Point(x: x, y: y), end: Point(x: x + 1, y: y)))
+                if !(x == 0 && y == 1) {
+                    self.horizontalLines.append(Line(start: Point(x: x, y: y), end: Point(x: x + 1, y: y)))
+                }
             }
         }
     }
@@ -543,6 +545,8 @@ class Grid {
         case .Tremaux:
             self.tremauxActiveCells = [self.verticalCellArrays[0][0]]
             self.solveTremaux()
+        case .DeadEndFilling:
+            self.solveDeadEndFilling()
         case .None:
             break
         }
@@ -707,5 +711,61 @@ class Grid {
         let hScore = xDistance + yDistance
         
         self.verticalCellArrays[cell.xPos][cell.yPos].fScore = gScore + hScore
+    }
+    
+    func solveDeadEndFilling() {
+        
+        let beginCell = self.verticalCellArrays[0][0]
+        let endCell = self.verticalCellArrays[self.verticalCellArrays.count - 1][self.verticalCellArrays[0].count - 1]
+        
+        var count = 0
+        
+        for array in self.verticalCellArrays {
+            for cell in array where self.openCellsNextTo(cell).count == 1 {
+                if cell != beginCell && cell != endCell {
+                    let nextCell = self.openCellsNextTo(cell).first!
+                    
+                    self.addLineBetweenCells(cell, secondCell: nextCell)
+                    
+                    count++
+                }
+            }
+        }
+        
+        self.drawHandler()
+        
+        if count > 0 {
+            dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
+                
+                self.solveDeadEndFilling()
+            })
+        }
+    }
+    
+    func addLineBetweenCells(firstCell : Cell, secondCell : Cell) {
+        let verticalLine:Bool = firstCell.yPos == secondCell.yPos
+        
+        if verticalLine {
+            let yPos = firstCell.yPos;
+            
+            let xPos = firstCell.xPos > secondCell.xPos ? firstCell.xPos : secondCell.xPos
+            
+            let start = Point(x : xPos, y: yPos)
+            let end = Point(x: xPos, y: yPos + 1)
+            var ghostLine = Line(start :start, end: end)
+            ghostLine.ghost = true
+            self.verticalLines.append(ghostLine)
+        }
+        else {
+            let xPos = firstCell.xPos;
+            
+            let yPos = firstCell.yPos > secondCell.yPos ? firstCell.yPos : secondCell.yPos
+            
+            let start = Point(x : xPos, y: yPos)
+            let end = Point(x: xPos + 1, y: yPos)
+            var ghostLine = Line(start :start, end: end)
+            ghostLine.ghost = true
+            self.horizontalLines.append(ghostLine)
+        }
     }
 }

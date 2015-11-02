@@ -20,11 +20,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "swiftmaze/Grid.swift"
-            timestampString = "467774188.147901"
+            timestampString = "468192307.00554"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "139"
-            endingLineNumber = "139"
+            startingLineNumber = "141"
+            endingLineNumber = "141"
             landmarkName = "startSpanningTree()"
             landmarkType = "5">
          </BreakpointContent>
@@ -36,11 +36,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "swiftmaze/Grid.swift"
-            timestampString = "467774188.147901"
+            timestampString = "468192307.00554"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "181"
-            endingLineNumber = "181"
+            startingLineNumber = "183"
+            endingLineNumber = "183"
             landmarkName = "makeRandomLineInRectangle(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -52,11 +52,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "swiftmaze/Grid.swift"
-            timestampString = "467774188.147901"
+            timestampString = "468192307.00554"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "197"
-            endingLineNumber = "197"
+            startingLineNumber = "199"
+            endingLineNumber = "199"
             landmarkName = "makeRandomLineInRectangle(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -84,11 +84,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "swiftmaze/Grid.swift"
-            timestampString = "467774188.147901"
+            timestampString = "468192307.00554"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "352"
-            endingLineNumber = "352"
+            startingLineNumber = "354"
+            endingLineNumber = "354"
             landmarkName = "openCellsNextTo(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -100,11 +100,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "swiftmaze/Grid.swift"
-            timestampString = "468105593.98761"
+            timestampString = "468192307.00554"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "603"
-            endingLineNumber = "603"
+            startingLineNumber = "607"
+            endingLineNumber = "607"
             landmarkName = "unvisitedTremauxCellsNextTo(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -116,11 +116,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "swiftmaze/Grid.swift"
-            timestampString = "468105593.98761"
+            timestampString = "468192307.00554"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "635"
-            endingLineNumber = "635"
+            startingLineNumber = "639"
+            endingLineNumber = "639"
             landmarkName = "solveAStar()"
             landmarkType = "5">
          </BreakpointContent>
@@ -132,11 +132,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "swiftmaze/Grid.swift"
-            timestampString = "468105593.98761"
+            timestampString = "468192307.00554"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "601"
-            endingLineNumber = "601"
+            startingLineNumber = "605"
+            endingLineNumber = "605"
             landmarkName = "unvisitedTremauxCellsNextTo(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -148,12 +148,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "swiftmaze/Grid.swift"
-            timestampString = "468105593.98761"
+            timestampString = "468192307.00554"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "567"
-            endingLineNumber = "567"
+            startingLineNumber = "571"
+            endingLineNumber = "571"
             landmarkName = "solveTremaux()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "swiftmaze/Grid.swift"
+            timestampString = "468192307.00554"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "540"
+            endingLineNumber = "540"
+            landmarkName = "startSolve()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "swiftmaze/Grid.swift"
+            timestampString = "468192856.072869"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "718"
+            endingLineNumber = "718"
+            landmarkName = "solveDeadEndFilling()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

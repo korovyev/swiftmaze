@@ -69,6 +69,12 @@ struct Size {
 struct Line {
     var start : Point
     var end : Point
+    var ghost : Bool = false
+    
+    init(start: Point, end: Point) {
+        self.start = start
+        self.end = end
+    }
     
     func key() -> String {
         return "start\(start.x)_\(start.y)end\(end.x)_\(end.y)"
