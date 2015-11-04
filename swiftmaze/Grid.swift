@@ -29,6 +29,7 @@ class Grid {
     var solveType : SolveType = SolveType.None
     var tremauxActiveCells : [Cell] = []
     var tremauxActiveJunctions : [Cell] = []
+    var deadEndFillingCellsToCheck : [[Cell]] = []
     
     init(size: Size) {
         self.size = size
@@ -273,7 +274,7 @@ class Grid {
                 self.getNextCell(self.visitedCells[self.visitedCellsIndex])
             }
             else {
-                startFill()
+                startSolve()
             }
         }
     }
@@ -546,6 +547,7 @@ class Grid {
             self.tremauxActiveCells = [self.verticalCellArrays[0][0]]
             self.solveTremaux()
         case .DeadEndFilling:
+            self.deadEndFillingCellsToCheck = self.verticalCellArrays
             self.solveDeadEndFilling()
         case .None:
             break
@@ -582,7 +584,12 @@ class Grid {
             }
             
             if nextCells.count > 0 {
-                nextCells.shuffleInPlace()
+                
+                for cell in nextCells {
+                    self.scoreCell(cell)
+                }
+                
+                nextCells.sortInPlace({ self.verticalCellArrays[$0.xPos][$0.yPos].fScore > self.verticalCellArrays[$1.xPos][$1.yPos].fScore })
                 
                 self.tremauxActiveCells.append(nextCells.popLast()!)
             }
@@ -720,16 +727,30 @@ class Grid {
         
         var count = 0
         
-        for array in self.verticalCellArrays {
+        var closedCells : [Cell] = []
+        
+        for array in self.deadEndFillingCellsToCheck {
+            
             for cell in array where self.openCellsNextTo(cell).count == 1 {
                 if cell != beginCell && cell != endCell {
-                    let nextCell = self.openCellsNextTo(cell).first!
+                    if let nextCell = self.openCellsNextTo(cell).first {
                     
-                    self.addLineBetweenCells(cell, secondCell: nextCell)
-                    
-                    count++
+                        self.addLineBetweenCells(cell, secondCell: nextCell)
+                        count++
+                        
+                        closedCells.append(cell)
+                    }
                 }
             }
+        }
+        
+        for cell in closedCells {
+            self.deadEndFillingCellsToCheck[cell.xPos].removeObject(cell)
+        }
+        
+        var cellCount = 0
+        for array in self.deadEndFillingCellsToCheck {
+            cellCount += array.count
         }
         
         self.drawHandler()

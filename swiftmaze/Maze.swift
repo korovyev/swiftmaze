@@ -102,7 +102,7 @@ class Maze: UIView {
         for line in self.myGrid.verticalLines {
             var colour = UIColor.redColor()
             if line.ghost {
-                colour = UIColor.redColor().colorWithAlphaComponent(0.5)
+                colour = UIColor.redColor().colorWithAlphaComponent(0.8)
             }
             CGContextSetStrokeColorWithColor(context, colour.CGColor);
             CGContextSetLineDash(context, 1, dashes, 0);

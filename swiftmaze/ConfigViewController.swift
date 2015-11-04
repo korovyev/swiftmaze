@@ -34,7 +34,7 @@ class ConfigViewController: UIViewController , UIPickerViewDataSource, UIPickerV
                 else if button == recursiveDivision {
                     mazeController.mazeType = MazeType.RecursiveDivision
                 }
-                mazeController.solveType = SolveType.DeadEndFilling
+                mazeController.solveType = SolveType.Tremaux
             }
         }
     }
