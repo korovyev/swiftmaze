@@ -18,15 +18,15 @@ class Grid {
     var activeCells : [Cell] = [] // 'active' cells - i.e. cells surrounding current cell to check
     var size : Size
     var drawHandler:() -> Void = {}
-    let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.001 * Double(NSEC_PER_SEC)))
+    let delayTime = DispatchTime.now() + Double(Int64(0.001 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
     var cellsToCheck : [Cell] = []
-    var directionsToTest = [Direction.Left, Direction.Up, Direction.Right, Direction.Down].shuffle()
+    var directionsToTest = [Direction.left, Direction.up, Direction.right, Direction.down].shuffle()
     var rectangles : [Rectangle] = []
     var aStarOpenList : [Cell] = []
     var aStarClosedList : [Cell] = []
     var aStarGCost : Int = 1
     var shortestPath : [Cell] = []
-    var solveType : SolveType = SolveType.None
+    var solveType : SolveType = SolveType.none
     var tremauxActiveCells : [Cell] = []
     var tremauxActiveJunctions : [Cell] = []
     var deadEndFillingCellsToCheck : [[Cell]] = []
@@ -37,7 +37,7 @@ class Grid {
     
     func buildFrame() {
         
-        for var x = 0 ; x < self.size.width ; ++x {
+        for x in 0  ..< self.size.width {
             
             let topLine = Line(start: Point(x : x, y : 0), end: Point(x : x + 1, y : 0))
             
@@ -48,7 +48,7 @@ class Grid {
             self.horizontalLines.append(bottomLine)
         }
         
-        for var y = 0 ; y < self.size.height ; ++y {
+        for y in 0  ..< self.size.height {
             
             let leftLine = Line(start: Point(x: 0, y: y), end: Point(x: 0, y: y + 1))
             
@@ -61,14 +61,14 @@ class Grid {
     }
     
     func buildGrid() {
-        for var x = 1 ; x < self.size.width ; ++x {
-            for var y = 0 ; y < self.size.height ; ++y {
+        for x in 1  ..< self.size.width {
+            for y in 0  ..< self.size.height {
                 self.verticalLines.append(Line(start: Point(x: x, y: y), end: Point(x: x, y: y + 1)))
             }
         }
         
-        for var y = 1 ; y < self.size.height ; ++y {
-            for var x = 0 ; x < self.size.width ; ++x {
+        for y in 1  ..< self.size.height {
+            for x in 0  ..< self.size.width {
                 if !(x == 0 && y == 1) {
                     self.horizontalLines.append(Line(start: Point(x: x, y: y), end: Point(x: x + 1, y: y)))
                 }
@@ -77,11 +77,11 @@ class Grid {
     }
     
     func createCells() {
-        for var x = 0 ; x < size.width ; ++x {
+        for x in 0  ..< size.width {
             
             var verticalCellArray : [Cell] = [];
             
-            for var y = 0 ; y < size.height ; ++y {
+            for y in 0  ..< size.height {
                 let cell = Cell(x: x, y: y)
                 
                 verticalCellArray.append(cell)
@@ -94,20 +94,20 @@ class Grid {
         }
     }
     
-    func startMaze(mazeType: MazeType, solveType: SolveType, drawHandler:() -> Void) {
+    func startMaze(_ mazeType: MazeType, solveType: SolveType, drawHandler:@escaping () -> Void) {
         
         self.drawHandler = drawHandler
         
         self.solveType = solveType
         
-        switch mazeType {
-        case .RecursiveBacktracker:
-            self.startRecursiveBacktracker()
-        case .RecursiveDivision:
-            self.startRecursiveDivision()
-        case .SpanningTree:
-            self.startSpanningTree()
-        }
+//        switch mazeType {
+//        case .recursiveBacktracker:
+//            self.startRecursiveBacktracker()
+//        case .recursiveDivision:
+//            self.startRecursiveDivision()
+//        case .spanningTree:
+//            self.startSpanningTree()
+//        }
     }
     
     func startRecursiveBacktracker() {
@@ -143,7 +143,7 @@ class Grid {
         
     }
     
-    func makeRandomLineInRectangle(rectangle : Rectangle) {
+    func makeRandomLineInRectangle(_ rectangle : Rectangle) {
         
         var begin: Point
         var end: Point
@@ -190,7 +190,8 @@ class Grid {
         self.drawRandomLineWithDoor(Line(start: begin, end: end))
         
         if self.rectangles.count > 0 {
-            dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
+            
+            DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
                 let nextRectangle = self.rectangles.popLast()!
                 
                 self.makeRandomLineInRectangle(nextRectangle)
@@ -201,7 +202,7 @@ class Grid {
         }
     }
     
-    func drawRandomLineWithDoor(line : Line) {
+    func drawRandomLineWithDoor(_ line : Line) {
         
         let numSegments = line.vertical() ? line.end.x - line.start.x : line.end.y - line.start.y
         
@@ -231,7 +232,7 @@ class Grid {
         self.drawHandler()
     }
     
-    func getNextCell(cell : Cell) {
+    func getNextCell(_ cell : Cell) {
         
         self.cellsToCheck.append(cell)
         
@@ -261,15 +262,14 @@ class Grid {
             self.visitedCellsIndex = self.visitedCells.count - 1
             
             
-            
-            dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
+            DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
                 self.getNextCell(nextCell!)
             })
         }
         else {
-            self.visitedCells.popLast()
+            visitedCells.removeLast()
             
-            self.visitedCellsIndex--
+            self.visitedCellsIndex -= 1
             if self.visitedCellsIndex >= 0 {
                 self.getNextCell(self.visitedCells[self.visitedCellsIndex])
             }
@@ -291,7 +291,7 @@ class Grid {
         self.fillCellsNextTo([firstCell])
     }
     
-    func fillCellsNextTo(cells: [Cell]) {
+    func fillCellsNextTo(_ cells: [Cell]) {
         var nextCells:[Cell] = []
         
         for cell in cells {
@@ -302,17 +302,17 @@ class Grid {
                 self.verticalCellArrays[unfilledCell.xPos][unfilledCell.yPos].filled = true
             }
             
-            nextCells.appendContentsOf(unfilledNextCells)
+            nextCells.append(contentsOf: unfilledNextCells)
         }
         
-        self.filledCells.appendContentsOf(nextCells)
+        self.filledCells.append(contentsOf: nextCells)
         
         self.drawHandler()
         
         
         if nextCells.count > 0 {
             
-            dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
+            DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
                 self.fillCellsNextTo(nextCells)
             })
         }
@@ -321,7 +321,7 @@ class Grid {
         }
     }
     
-    func cellsNextTo(cell : Cell) -> [Cell] {
+    func cellsNextTo(_ cell : Cell) -> [Cell] {
         var cells : [Cell] = []
         
         if let left = leftCell(cell) {
@@ -343,7 +343,7 @@ class Grid {
         return cells
     }
     
-    func openCellsNextTo(cell : Cell) -> [Cell] {
+    func openCellsNextTo(_ cell : Cell) -> [Cell] {
         let nextCells = self.cellsNextTo(cell)
         
         var openCells: [Cell] = []
@@ -357,7 +357,7 @@ class Grid {
         return openCells
     }
     
-    func unfilledCellsNextTo(cell : Cell) -> [Cell] {
+    func unfilledCellsNextTo(_ cell : Cell) -> [Cell] {
         var unfilledCells : [Cell] = []
         
         let nextCells = self.cellsNextTo(cell)
@@ -374,7 +374,7 @@ class Grid {
     }
     
     
-    func lineExistsBetweenCells(firstCell: Cell, secondCell: Cell) -> Bool {
+    func lineExistsBetweenCells(_ firstCell: Cell, secondCell: Cell) -> Bool {
         let verticalLine:Bool = firstCell.yPos == secondCell.yPos
         
         if verticalLine {
@@ -386,7 +386,7 @@ class Grid {
             let end = Point(x: xPos, y: yPos + 1)
             let lineToFind = Line(start :start, end: end)
             
-            if (self.verticalLines.indexOf({ $0 == lineToFind }) != nil) {
+            if (self.verticalLines.index(where: { $0 == lineToFind }) != nil) {
                 
                 return true
             }
@@ -400,7 +400,7 @@ class Grid {
             let end = Point(x: xPos + 1, y: yPos)
             let lineToFind = Line(start :start, end: end)
             
-            if (self.horizontalLines.indexOf({ $0 == lineToFind }) != nil) {
+            if (self.horizontalLines.index(where: { $0 == lineToFind }) != nil) {
                 
                 return true
             }
@@ -409,7 +409,7 @@ class Grid {
         return false
     }
     
-    func removeLineBetweenCells(firstCell : Cell, secondCell : Cell) {
+    func removeLineBetweenCells(_ firstCell : Cell, secondCell : Cell) {
         let verticalLine:Bool = firstCell.yPos == secondCell.yPos
         
         if verticalLine {
@@ -421,9 +421,9 @@ class Grid {
             let end = Point(x: xPos, y: yPos + 1)
             let lineToFind = Line(start :start, end: end)
             
-            if let indexOfLineToFind:Int = self.verticalLines.indexOf({ $0 == lineToFind }) {
+            if let indexOfLineToFind:Int = self.verticalLines.index(where: { $0 == lineToFind }) {
             
-                self.verticalLines.removeAtIndex(indexOfLineToFind)
+                self.verticalLines.remove(at: indexOfLineToFind)
             }
         }
         else {
@@ -435,18 +435,18 @@ class Grid {
             let end = Point(x: xPos + 1, y: yPos)
             let lineToFind = Line(start :start, end: end)
             
-            if let indexOfLineToFind:Int = self.horizontalLines.indexOf({ $0 == lineToFind }) {
+            if let indexOfLineToFind:Int = self.horizontalLines.index(where: { $0 == lineToFind }) {
             
-                self.horizontalLines.removeAtIndex(indexOfLineToFind)
+                self.horizontalLines.remove(at: indexOfLineToFind)
             }
         }
     }
     
-    func unvisitedCell(cell : Cell, inDirection : Direction) -> Cell? {
+    func unvisitedCell(_ cell : Cell, inDirection : Direction) -> Cell? {
         
         
         switch inDirection {
-        case .Left:
+        case .left:
             if let leftCell = self.leftCell(cell) {
                 if !leftCell.visited {
                     return leftCell
@@ -455,7 +455,7 @@ class Grid {
                     return nil
                 }
             }
-        case .Right:
+        case .right:
             if let rightCell = self.rightCell(cell) {
                 if !rightCell.visited {
                     return rightCell
@@ -464,7 +464,7 @@ class Grid {
                     return nil
                 }
             }
-        case .Up:
+        case .up:
             if let upCell = self.upCell(cell) {
                 if !upCell.visited {
                     return upCell
@@ -473,7 +473,7 @@ class Grid {
                     return nil
                 }
             }
-        case .Down:
+        case .down:
             if let downCell = self.downCell(cell) {
                 if !downCell.visited {
                     return downCell
@@ -487,7 +487,7 @@ class Grid {
         return nil
     }
     
-    func leftCell(cell : Cell) -> Cell? {
+    func leftCell(_ cell : Cell) -> Cell? {
         if cell.xPos == 0 {
             return (nil);
         }
@@ -499,7 +499,7 @@ class Grid {
         return cellColumn[row]
     }
     
-    func rightCell(cell : Cell) -> Cell? {
+    func rightCell(_ cell : Cell) -> Cell? {
         let row = cell.yPos;
         let col = cell.xPos;
         
@@ -513,7 +513,7 @@ class Grid {
         return cellColumn[row]
     }
     
-    func upCell(cell : Cell) -> Cell? {
+    func upCell(_ cell : Cell) -> Cell? {
         if cell.yPos == 0 {
             return (nil);
         }
@@ -523,7 +523,7 @@ class Grid {
         return cellColumn[cell.yPos - 1]
     }
     
-    func downCell(cell : Cell) -> Cell? {
+    func downCell(_ cell : Cell) -> Cell? {
         let row = cell.yPos;
         let col = cell.xPos;
         
@@ -539,17 +539,17 @@ class Grid {
     func startSolve() {
         
         switch self.solveType {
-        case .AStar:
+        case .aStar:
             self.aStarClosedList = [self.verticalCellArrays[0][0]]
             
             self.solveAStar()
-        case .Tremaux:
+        case .tremaux:
             self.tremauxActiveCells = [self.verticalCellArrays[0][0]]
             self.solveTremaux()
-        case .DeadEndFilling:
+        case .deadEndFilling:
             self.deadEndFillingCellsToCheck = self.verticalCellArrays
             self.solveDeadEndFilling()
-        case .None:
+        case .none:
             break
         }
         
@@ -574,10 +574,10 @@ class Grid {
                 if lastJunctionCell == cellToProceedFrom {
                     lastJunctionCell = self.tremauxActiveJunctions[self.tremauxActiveJunctions.count - 2]
                     
-                    self.tremauxActiveJunctions.popLast()
+                    tremauxActiveJunctions.removeLast()
                 }
                 
-                if let cutOffIndex = self.tremauxActiveCells.indexOf({ $0 == lastJunctionCell }) {
+                if let cutOffIndex = self.tremauxActiveCells.index(where: { $0 == lastJunctionCell }) {
                     
                     self.tremauxActiveCells = Array(self.tremauxActiveCells[0..<cutOffIndex+1])
                 }
@@ -589,15 +589,14 @@ class Grid {
                     self.scoreCell(cell)
                 }
                 
-                nextCells.sortInPlace({ self.verticalCellArrays[$0.xPos][$0.yPos].fScore > self.verticalCellArrays[$1.xPos][$1.yPos].fScore })
+                nextCells.sort(by: { self.verticalCellArrays[$0.xPos][$0.yPos].fScore > self.verticalCellArrays[$1.xPos][$1.yPos].fScore })
                 
                 self.tremauxActiveCells.append(nextCells.popLast()!)
             }
             
             self.drawHandler()
             
-            dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
-                
+            DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
                 self.solveTremaux()
             })
         }
@@ -608,7 +607,7 @@ class Grid {
         }
     }
     
-    func unvisitedTremauxCellsNextTo(cell : Cell) -> [Cell] {
+    func unvisitedTremauxCellsNextTo(_ cell : Cell) -> [Cell] {
         let nextCells = self.openCellsNextTo(cell)
         
         var unvisited : [Cell] = []
@@ -651,8 +650,7 @@ class Grid {
             
             self.drawHandler()
             
-            dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
-                
+            DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
                 self.solveAStar()
             })
         }
@@ -671,7 +669,7 @@ class Grid {
         }
     }
     
-    func findShortestPathBackwardsFrom(cell : Cell) {
+    func findShortestPathBackwardsFrom(_ cell : Cell) {
         
         
         
@@ -679,7 +677,7 @@ class Grid {
         
         let tempCell = Cell(x: cell.parentX, y: cell.parentY)
         
-        if let nextCellIndex = self.aStarClosedList.indexOf({ $0 == tempCell }) {
+        if let nextCellIndex = self.aStarClosedList.index(where: { $0 == tempCell }) {
             
             let nextCell = self.aStarClosedList[nextCellIndex]
             
@@ -690,8 +688,7 @@ class Grid {
                 self.aStarOpenList = []
             }
             else {
-                dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
-                    
+                DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
                     self.findShortestPathBackwardsFrom(nextCell)
                 })
             }
@@ -701,10 +698,10 @@ class Grid {
     }
     
     func sortOpenList() {
-        self.aStarOpenList.sortInPlace({ self.verticalCellArrays[$0.xPos][$0.yPos].fScore > self.verticalCellArrays[$1.xPos][$1.yPos].fScore})
+        self.aStarOpenList.sort(by: { self.verticalCellArrays[$0.xPos][$0.yPos].fScore > self.verticalCellArrays[$1.xPos][$1.yPos].fScore})
     }
     
-    func scoreCell(cell : Cell) {
+    func scoreCell(_ cell : Cell) {
         
         let maxX = self.verticalCellArrays.count - 1
         let maxY = self.verticalCellArrays[0].count - 1
@@ -736,7 +733,7 @@ class Grid {
                     if let nextCell = self.openCellsNextTo(cell).first {
                     
                         self.addLineBetweenCells(cell, secondCell: nextCell)
-                        count++
+                        count += 1
                         
                         closedCells.append(cell)
                     }
@@ -756,14 +753,13 @@ class Grid {
         self.drawHandler()
         
         if count > 0 {
-            dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
-                
+            DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
                 self.solveDeadEndFilling()
             })
         }
     }
     
-    func addLineBetweenCells(firstCell : Cell, secondCell : Cell) {
+    func addLineBetweenCells(_ firstCell : Cell, secondCell : Cell) {
         let verticalLine:Bool = firstCell.yPos == secondCell.yPos
         
         if verticalLine {

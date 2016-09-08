@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "32B7C4FA1BC995D700AD7DCE"
-               BuildableName = "swiftmaze.app"
-               BlueprintName = "swiftmaze"
+               BlueprintIdentifier = "32851F651D81899700201612"
+               BuildableName = "MazeGenerator.app"
+               BlueprintName = "MazeGenerator"
                ReferencedContainer = "container:swiftmaze.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,33 +28,13 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "32B7C50E1BC995D700AD7DCE"
-               BuildableName = "swiftmazeTests.xctest"
-               BlueprintName = "swiftmazeTests"
-               ReferencedContainer = "container:swiftmaze.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "32B7C5191BC995D700AD7DCE"
-               BuildableName = "swiftmazeUITests.xctest"
-               BlueprintName = "swiftmazeUITests"
-               ReferencedContainer = "container:swiftmaze.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "32B7C4FA1BC995D700AD7DCE"
-            BuildableName = "swiftmaze.app"
-            BlueprintName = "swiftmaze"
+            BlueprintIdentifier = "32851F651D81899700201612"
+            BuildableName = "MazeGenerator.app"
+            BlueprintName = "MazeGenerator"
             ReferencedContainer = "container:swiftmaze.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -75,9 +55,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "32B7C4FA1BC995D700AD7DCE"
-            BuildableName = "swiftmaze.app"
-            BlueprintName = "swiftmaze"
+            BlueprintIdentifier = "32851F651D81899700201612"
+            BuildableName = "MazeGenerator.app"
+            BlueprintName = "MazeGenerator"
             ReferencedContainer = "container:swiftmaze.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -94,9 +74,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "32B7C4FA1BC995D700AD7DCE"
-            BuildableName = "swiftmaze.app"
-            BlueprintName = "swiftmaze"
+            BlueprintIdentifier = "32851F651D81899700201612"
+            BuildableName = "MazeGenerator.app"
+            BlueprintName = "MazeGenerator"
             ReferencedContainer = "container:swiftmaze.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="0J4-zV-vYX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11198.2" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="0J4-zV-vYX">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -11,7 +12,6 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="mGx-lp-0kw">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <animations/>
                     </navigationBar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="n5v-7g-klp"/>
@@ -30,12 +30,10 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gYz-sa-pLD">
-                                <rect key="frame" x="218" y="323" width="165" height="30"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="5eW-Tx-o82"/>
                                     <constraint firstAttribute="width" constant="165" id="E2i-12-N2H"/>
@@ -46,8 +44,6 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J37-yA-Ibs">
-                                <rect key="frame" x="207" y="285" width="187" height="30"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="KBG-FA-Ol3"/>
                                     <constraint firstAttribute="width" constant="187" id="no4-73-SM1"/>
@@ -58,16 +54,13 @@
                                 </connections>
                             </button>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DFC-dS-KN3">
-                                <rect key="frame" x="0.0" y="384" width="600" height="216"/>
-                                <animations/>
                                 <connections>
                                     <outlet property="dataSource" destination="BYZ-38-t0r" id="2aM-qO-45k"/>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="fwn-KL-zGu"/>
                                 </connections>
                             </pickerView>
                         </subviews>
-                        <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="DFC-dS-KN3" secondAttribute="trailing" id="2Kn-Xk-J3s"/>
                             <constraint firstItem="J37-yA-Ibs" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="358-M2-z8S"/>
@@ -106,17 +99,14 @@
                         <viewControllerLayoutGuide type="bottom" id="zxv-DG-w6P"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="E38-3W-2Do">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nDK-EJ-bd8" customClass="Maze" customModule="swiftmaze" customModuleProvider="target">
-                                <rect key="frame" x="32" y="96" width="536" height="472"/>
-                                <animations/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                         </subviews>
-                        <animations/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="zxv-DG-w6P" firstAttribute="top" secondItem="nDK-EJ-bd8" secondAttribute="bottom" constant="32" id="NZn-Y3-mMp"/>
                             <constraint firstAttribute="trailing" secondItem="nDK-EJ-bd8" secondAttribute="trailing" constant="32" id="On4-bd-Yjc"/>

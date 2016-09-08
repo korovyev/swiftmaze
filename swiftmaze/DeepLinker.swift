@@ -15,28 +15,28 @@ enum ApplicationShortcuts: String {
 
 class DeepLinker {
     
-    class func handleShortcutItem(shortcutItem: UIApplicationShortcutItem, appWindow: UIWindow) -> Bool {
+    class func handleShortcutItem(_ shortcutItem: UIApplicationShortcutItem, appWindow: UIWindow) -> Bool {
         
         if let shortcutType = ApplicationShortcuts(rawValue: shortcutItem.type) {
             switch shortcutType {
             case .RecursiveBacktrackerShortcut:
-                return self.beginMazeWithType(MazeType.RecursiveBacktracker, appWindow: appWindow)
+                return self.beginMazeWithType(MazeType.recursiveBacktracker, appWindow: appWindow)
             case .RecursiveDivisionShortcut:
-                return self.beginMazeWithType(MazeType.RecursiveDivision, appWindow: appWindow)
+                return self.beginMazeWithType(MazeType.recursiveDivision, appWindow: appWindow)
             }
         }
         
         return false
     }
     
-    class func beginMazeWithType(mazeType: MazeType, appWindow: UIWindow) -> Bool {
+    class func beginMazeWithType(_ mazeType: MazeType, appWindow: UIWindow) -> Bool {
         if let navController = appWindow.rootViewController as? UINavigationController {
             
             var controllers = navController.viewControllers;
             
             controllers = [controllers.first!]
             
-            if let mazeController: MazeViewController = navController.storyboard?.instantiateViewControllerWithIdentifier("MazeViewController") as? MazeViewController {
+            if let mazeController: MazeViewController = navController.storyboard?.instantiateViewController(withIdentifier: "MazeViewController") as? MazeViewController {
                 
                 mazeController.mazeType = mazeType
                 

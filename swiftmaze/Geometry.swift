@@ -20,38 +20,38 @@ struct Cell: Equatable {
     var fScore : Int
     
     init(x: Int, y: Int) {
-        self.visited = false
-        self.filled = false
-        self.tremauxVisited = false;
-        self.parentX = 0
-        self.parentY = 0
+        visited = false
+        filled = false
+        tremauxVisited = false
+        parentX = 0
+        parentY = 0
         
-        self.fScore = 0
+        fScore = 0
         
-        self.xPos = x
-        self.yPos = y
+        xPos = x
+        yPos = y
     }
 }
 
 enum Direction: Int {
-    case Left
-    case Up
-    case Right
-    case Down
+    case left
+    case up
+    case right
+    case down
     
     init(num: Int) {
         
         switch num {
         case 0:
-            self = .Left
+            self = .left
         case 1:
-            self = .Up
+            self = .up
         case 2:
-            self = .Right
+            self = .right
         case 3:
-            self = .Down
+            self = .down
         default:
-            self = .Down
+            self = .down
         }
     }
 }
@@ -59,6 +59,11 @@ enum Direction: Int {
 struct Point {
     var x : Int
     var y : Int
+    
+    init(_ x: Int, _ y: Int) {
+        self.x = x
+        self.y = y
+    }
 }
 
 struct Size {
@@ -81,7 +86,7 @@ struct Line {
     }
     
     func vertical() -> Bool {
-        return self.start.y == self.end.y
+        return start.y == end.y
     }
 }
 

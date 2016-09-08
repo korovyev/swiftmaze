@@ -8,23 +8,27 @@
 
 import Foundation
 
-extension CollectionType {
+extension Collection {
     /// Return a copy of `self` with its elements shuffled
-    func shuffle() -> [Generator.Element] {
+    func shuffle() -> [Iterator.Element] {
         var list = Array(self)
         list.shuffleInPlace()
         return list
     }
 }
 
-extension MutableCollectionType where Index == Int {
+extension MutableCollection where Index == Int {
     /// Shuffle the elements of `self` in-place.
     mutating func shuffleInPlace() {
         // empty and single-element collections don't shuffle
         if count < 2 { return }
         
-        for i in 0..<count - 1 {
-            let j = Int(arc4random_uniform(UInt32(count - i))) + i
+        
+        
+        let arrayCount = Int(self.endIndex)
+        
+        for i in 0..<arrayCount - 1 {
+            let j = Int(arc4random_uniform(UInt32(arrayCount - i))) + i
             guard i != j else { continue }
             swap(&self[i], &self[j])
         }
@@ -32,9 +36,9 @@ extension MutableCollectionType where Index == Int {
 }
 
 extension Array {
-    mutating func removeObject<U: Equatable>(object: U) {
+    mutating func removeObject<U: Equatable>(_ object: U) {
         var index: Int?
-        for (idx, objectToCompare) in self.enumerate() {
+        for (idx, objectToCompare) in self.enumerated() {
             if let to = objectToCompare as? U {
                 if object == to {
                     index = idx
@@ -43,7 +47,7 @@ extension Array {
         }
         
         if(index != nil) {
-            self.removeAtIndex(index!)
+            self.remove(at: index!)
         }
     }
 }

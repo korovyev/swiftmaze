@@ -9,16 +9,16 @@
 import UIKit
 
 enum MazeType {
-    case RecursiveBacktracker
-    case SpanningTree
-    case RecursiveDivision
+    case recursiveBacktracker
+    case spanningTree
+    case recursiveDivision
 }
 
 enum SolveType {
-    case AStar
-    case Tremaux
-    case DeadEndFilling
-    case None
+    case aStar
+    case tremaux
+    case deadEndFilling
+    case none
 }
 
 class Maze: UIView {
@@ -37,7 +37,7 @@ class Maze: UIView {
         self.setNeedsDisplay()
     }
     
-    func startMazeWithType(mazeType: MazeType, cellSize: Int, solveType : SolveType) {
+    func startMazeWithType(_ mazeType: MazeType, cellSize: Int, solveType : SolveType) {
         
         self.desiredCellSize = CGFloat(cellSize)
         
@@ -52,85 +52,83 @@ class Maze: UIView {
         })
     }
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         
         if !self.mazeCreated {
             return;
         }
         
-        let context:CGContextRef = UIGraphicsGetCurrentContext()!
+        let context:CGContext = UIGraphicsGetCurrentContext()!
         
-        CGContextClearRect(context, rect)
-        CGContextSetShouldAntialias(context, false)
+        context.clear(rect)
+        context.setShouldAntialias(false)
         
         let dashes:Array <CGFloat> = [1,1]
         
         let cellSize = CGSize(width: Double(self.frame.size.width / CGFloat(self.myGrid.size.width)), height: Double(self.frame.size.height / CGFloat(self.myGrid.size.height)))
         
         for cell in self.myGrid.filledCells {
-            CGContextSetGrayFillColor(context, 0.3, 1)
+            context.setFillColor(gray: 0.3, alpha: 1)
 //            CGContextSetRGBFillColor(context, 1, 1, 0, 1);
             
 //            CGContextSetFillColorWithColor(context, UIColor.yellowColor().CGColor)
-            CGContextFillRect(context, CGRectMake(CGFloat(cell.xPos) * cellSize.width, CGFloat(cell.yPos) * cellSize.height, cellSize.width, cellSize.height));
+            context.fill(CGRect(x: CGFloat(cell.xPos) * cellSize.width, y: CGFloat(cell.yPos) * cellSize.height, width: cellSize.width, height: cellSize.height));
         }
         
         for cell in self.myGrid.aStarClosedList {
-            CGContextSetFillColorWithColor(context, UIColor.blueColor().CGColor)
+            context.setFillColor(UIColor.blue.cgColor)
             
-            CGContextFillRect(context, CGRectMake(CGFloat(cell.xPos) * cellSize.width, CGFloat(cell.yPos) * cellSize.height, cellSize.width, cellSize.height));
+            context.fill(CGRect(x: CGFloat(cell.xPos) * cellSize.width, y: CGFloat(cell.yPos) * cellSize.height, width: cellSize.width, height: cellSize.height));
         }
         
         for cell in self.myGrid.aStarOpenList {
-            CGContextSetFillColorWithColor(context, UIColor.yellowColor().CGColor)
+            context.setFillColor(UIColor.yellow.cgColor)
             
-            CGContextFillRect(context, CGRectMake(CGFloat(cell.xPos) * cellSize.width, CGFloat(cell.yPos) * cellSize.height, cellSize.width, cellSize.height));
+            context.fill(CGRect(x: CGFloat(cell.xPos) * cellSize.width, y: CGFloat(cell.yPos) * cellSize.height, width: cellSize.width, height: cellSize.height));
         }
         
         for cell in self.myGrid.tremauxActiveCells {
-            CGContextSetFillColorWithColor(context, UIColor.yellowColor().CGColor)
+            context.setFillColor(UIColor.yellow.cgColor)
             
-            CGContextFillRect(context, CGRectMake(CGFloat(cell.xPos) * cellSize.width, CGFloat(cell.yPos) * cellSize.height, cellSize.width, cellSize.height));
+            context.fill(CGRect(x: CGFloat(cell.xPos) * cellSize.width, y: CGFloat(cell.yPos) * cellSize.height, width: cellSize.width, height: cellSize.height));
         }
         
         for cell in self.myGrid.shortestPath {
-            CGContextSetFillColorWithColor(context, UIColor.greenColor().CGColor)
+            context.setFillColor(UIColor.green.cgColor)
             
-            CGContextFillRect(context, CGRectMake(CGFloat(cell.xPos) * cellSize.width, CGFloat(cell.yPos) * cellSize.height, cellSize.width, cellSize.height));
+            context.fill(CGRect(x: CGFloat(cell.xPos) * cellSize.width, y: CGFloat(cell.yPos) * cellSize.height, width: cellSize.width, height: cellSize.height));
         }
         
         for line in self.myGrid.verticalLines {
-            var colour = UIColor.redColor()
+            var colour = UIColor.red
             if line.ghost {
-                colour = UIColor.redColor().colorWithAlphaComponent(0.8)
+                colour = UIColor.red.withAlphaComponent(0.8)
             }
-            CGContextSetStrokeColorWithColor(context, colour.CGColor);
-            CGContextSetLineDash(context, 1, dashes, 0);
+            context.setStrokeColor(colour.cgColor)
+            context.setLineDash(phase: 1, lengths: dashes)
             
-            CGContextSetLineWidth(context, lineWidth);
+            context.setLineWidth(lineWidth)
             
-            CGContextMoveToPoint(context, CGFloat(line.start.x) * cellSize.width, CGFloat(line.start.y) * cellSize.height);
-            CGContextAddLineToPoint(context, CGFloat(line.end.x) * cellSize.width, CGFloat(line.end.y) * cellSize.height);
+            context.move(to: CGPoint(x: CGFloat(line.start.x) * cellSize.width, y: CGFloat(line.start.y) * cellSize.height))
+            context.addLine(to: CGPoint(x: CGFloat(line.end.x) * cellSize.width, y: CGFloat(line.end.y) * cellSize.height))
             
-            CGContextStrokePath(context);
+            context.strokePath()
         }
         
         for line in self.myGrid.horizontalLines {
-            var colour = UIColor.redColor()
+            var colour = UIColor.red
             if line.ghost {
-                colour = UIColor.redColor().colorWithAlphaComponent(0.8)
+                colour = UIColor.red.withAlphaComponent(0.8)
             }
-            CGContextSetStrokeColorWithColor(context, colour.CGColor);
-            CGContextSetLineDash(context, 1, dashes, 0);
+            context.setStrokeColor(colour.cgColor)
+            context.setLineDash(phase: 1, lengths: dashes)
             
-            CGContextSetLineWidth(context, lineWidth);
+            context.setLineWidth(lineWidth)
             
-            CGContextMoveToPoint(context, CGFloat(line.start.x) * cellSize.width, CGFloat(line.start.y) * cellSize.height);
-            CGContextAddLineToPoint(context, CGFloat(line.end.x) * cellSize.width, CGFloat(line.end.y) * cellSize.height);
+            context.move(to: CGPoint(x: CGFloat(line.start.x) * cellSize.width, y: CGFloat(line.start.y) * cellSize.height))
+            context.addLine(to: CGPoint(x: CGFloat(line.end.x) * cellSize.width, y: CGFloat(line.end.y) * cellSize.height))
             
-            CGContextStrokePath(context);
+            context.strokePath()
         }
-        
-        
     }
 }

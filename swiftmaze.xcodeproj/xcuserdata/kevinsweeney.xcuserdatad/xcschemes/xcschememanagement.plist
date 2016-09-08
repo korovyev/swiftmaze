@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>MazeGenerator.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>swiftmaze.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -12,6 +17,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>32851F651D81899700201612</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>32B7C4FA1BC995D700AD7DCE</key>
 		<dict>
 			<key>primary</key>

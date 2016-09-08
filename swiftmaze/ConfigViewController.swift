@@ -21,34 +21,34 @@ class ConfigViewController: UIViewController , UIPickerViewDataSource, UIPickerV
     }
     
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let button = sender as? UIButton {
             
-            if let mazeController = segue.destinationViewController as? MazeViewController {
+            if let mazeController = segue.destination as? MazeViewController {
                 
-                mazeController.desiredCellSize = self.sizePicker!.selectedRowInComponent(0) + 3
+                mazeController.desiredCellSize = self.sizePicker!.selectedRow(inComponent: 0) + 3
                 
                 if button == recursiveBacktracker {
-                    mazeController.mazeType = MazeType.RecursiveBacktracker
+                    mazeController.mazeType = MazeType.recursiveBacktracker
                 }
                 else if button == recursiveDivision {
-                    mazeController.mazeType = MazeType.RecursiveDivision
+                    mazeController.mazeType = MazeType.recursiveDivision
                 }
-                mazeController.solveType = SolveType.Tremaux
+                mazeController.solveType = SolveType.aStar
             }
         }
     }
     
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return 28
     }
     
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return "\(row + 3)"
     }
 }

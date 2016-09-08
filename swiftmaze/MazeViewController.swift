@@ -13,11 +13,11 @@ class MazeViewController: UIViewController {
     
     @IBOutlet weak var maze : Maze?
     var mazeType : MazeType
-    var solveType : SolveType = SolveType.None
+    var solveType : SolveType = SolveType.none
     var desiredCellSize : Int
     
     required init?(coder aDecoder: NSCoder) {
-        self.mazeType = MazeType.RecursiveDivision
+        self.mazeType = MazeType.recursiveDivision
         self.desiredCellSize = 6
         
         super.init(coder: aDecoder)
@@ -27,11 +27,11 @@ class MazeViewController: UIViewController {
         super.viewDidLoad()
         
         switch self.mazeType {
-        case .RecursiveDivision:
+        case .recursiveDivision:
             self.title = "Recursive Division"
-        case .RecursiveBacktracker:
+        case .recursiveBacktracker:
             self.title = "Recursive Backtracker"
-        case .SpanningTree:
+        case .spanningTree:
             self.title = "Spanning Tree"
         }
         
@@ -40,7 +40,7 @@ class MazeViewController: UIViewController {
         self.navigationController?.navigationBar.topItem!.backBarButtonItem = backButton
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         
         self.maze?.startMazeWithType(self.mazeType, cellSize: self.desiredCellSize, solveType: self.solveType)
         
