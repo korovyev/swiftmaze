@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		322EAFCD1BDEEAC600A4A883 /* DeepLinker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322EAFCC1BDEEAC600A4A883 /* DeepLinker.swift */; };
+		3250D12E1D849A54003DFC2E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328BDBC01BDD7E6800151E01 /* Extensions.swift */; };
 		32851F691D81899700201612 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32851F681D81899700201612 /* AppDelegate.swift */; };
 		32851F6B1D81899700201612 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32851F6A1D81899700201612 /* ViewController.swift */; };
 		32851F6D1D81899700201612 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32851F6C1D81899700201612 /* Assets.xcassets */; };
@@ -17,6 +18,8 @@
 		32851F791D81994400201612 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32851F781D81994400201612 /* Grid.swift */; };
 		32851F7B1D81A0FC00201612 /* MazeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32851F7A1D81A0FC00201612 /* MazeCoordinator.swift */; };
 		32851F7D1D81AAE300201612 /* Generator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32851F7C1D81AAE300201612 /* Generator.swift */; };
+		32851F7F1D82138E00201612 /* RecursiveDivision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32851F7E1D82138E00201612 /* RecursiveDivision.swift */; };
+		32851F821D8301AE00201612 /* Backtracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32851F811D8301AE00201612 /* Backtracker.swift */; };
 		328BDBC11BDD7E6800151E01 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328BDBC01BDD7E6800151E01 /* Extensions.swift */; };
 		328BDBC31BDDA47600151E01 /* MazeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328BDBC21BDDA47600151E01 /* MazeViewController.swift */; };
 		32B7C4FF1BC995D700AD7DCE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B7C4FE1BC995D700AD7DCE /* AppDelegate.swift */; };
@@ -60,6 +63,8 @@
 		32851F781D81994400201612 /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		32851F7A1D81A0FC00201612 /* MazeCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MazeCoordinator.swift; sourceTree = "<group>"; };
 		32851F7C1D81AAE300201612 /* Generator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Generator.swift; sourceTree = "<group>"; };
+		32851F7E1D82138E00201612 /* RecursiveDivision.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecursiveDivision.swift; sourceTree = "<group>"; };
+		32851F811D8301AE00201612 /* Backtracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Backtracker.swift; sourceTree = "<group>"; };
 		328BDBC01BDD7E6800151E01 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		328BDBC21BDDA47600151E01 /* MazeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MazeViewController.swift; sourceTree = "<group>"; };
 		32B7C4FB1BC995D700AD7DCE /* swiftmaze.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swiftmaze.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -123,9 +128,19 @@
 				32851F751D818A6400201612 /* Maze.swift */,
 				32851F781D81994400201612 /* Grid.swift */,
 				32851F7A1D81A0FC00201612 /* MazeCoordinator.swift */,
-				32851F7C1D81AAE300201612 /* Generator.swift */,
+				32851F801D8213CE00201612 /* Generators */,
 			);
 			path = MazeGenerator;
+			sourceTree = "<group>";
+		};
+		32851F801D8213CE00201612 /* Generators */ = {
+			isa = PBXGroup;
+			children = (
+				32851F7C1D81AAE300201612 /* Generator.swift */,
+				32851F7E1D82138E00201612 /* RecursiveDivision.swift */,
+				32851F811D8301AE00201612 /* Backtracker.swift */,
+			);
+			name = Generators;
 			sourceTree = "<group>";
 		};
 		32B7C4F21BC995D700AD7DCE = {
@@ -359,8 +374,11 @@
 				32851F691D81899700201612 /* AppDelegate.swift in Sources */,
 				32851F7B1D81A0FC00201612 /* MazeCoordinator.swift in Sources */,
 				32851F7D1D81AAE300201612 /* Generator.swift in Sources */,
+				3250D12E1D849A54003DFC2E /* Extensions.swift in Sources */,
 				32851F791D81994400201612 /* Grid.swift in Sources */,
+				32851F821D8301AE00201612 /* Backtracker.swift in Sources */,
 				32851F761D818A6400201612 /* Maze.swift in Sources */,
+				32851F7F1D82138E00201612 /* RecursiveDivision.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -655,6 +673,7 @@
 				32851F731D81899700201612 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		32B7C4F61BC995D700AD7DCE /* Build configuration list for PBXProject "swiftmaze" */ = {
 			isa = XCConfigurationList;

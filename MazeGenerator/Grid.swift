@@ -11,7 +11,9 @@ import Foundation
 class Grid {
     var verticalLines = [Line]()
     var horizontalLines = [Line]()
+    var cells: [[Cell]]?
     var size: Size
+    let directions: [Direction] = [.left, .up, .right, .down]
     
     init(size: Size) {
         self.size = size
@@ -77,5 +79,124 @@ class Grid {
                 horizontalLines.append(newLine)
             }
         }
+    }
+    
+    func buildCells() {
+        
+        cells = [[Cell]]()
+        
+        for x in 0..<size.width {
+            
+            var verticalCellArray = [Cell]()
+            
+            for y in 0..<size.height {
+                let cell = Cell(x: x, y: y)
+                
+                verticalCellArray.append(cell)
+            }
+            
+            if verticalCellArray.count > 0 {
+                cells!.append(verticalCellArray)
+            }
+        }
+    }
+    
+    func removeLineBetween(_ cell: Cell, and otherCell: Cell) {
+        let vertical = cell.yPos == otherCell.yPos
+        
+        if vertical {
+            let yPos = cell.yPos
+            
+            let xPos = cell.xPos > otherCell.xPos ? cell.xPos : otherCell.xPos
+            
+            let start = Point(xPos, yPos)
+            let end = Point(xPos, yPos + 1)
+            let lineToFind = Line(start :start, end: end)
+            
+            if let indexOfLineToFind = verticalLines.index(where: { $0 == lineToFind }) {
+                
+                verticalLines.remove(at: indexOfLineToFind)
+            }
+        }
+        else {
+            let xPos = cell.xPos;
+            
+            let yPos = cell.yPos > otherCell.yPos ? cell.yPos : otherCell.yPos
+            
+            let start = Point(xPos, yPos)
+            let end = Point(xPos + 1, yPos)
+            let lineToFind = Line(start :start, end: end)
+            
+            if let indexOfLineToFind = horizontalLines.index(where: { $0 == lineToFind }) {
+                
+                horizontalLines.remove(at: indexOfLineToFind)
+            }
+        }
+
+    }
+    
+    func neighbourCell(of cell: Cell, in direction: Direction) -> Cell? {
+        guard let _ = cells else {
+            return nil
+        }
+        
+        switch direction {
+        case .left:     return cellToTheLeft(of: cell)
+        case .right:    return cellToTheRight(of: cell)
+        case .up:       return cellAbove(cell)
+        case .down:     return cellBelow(cell)
+        }
+    }
+    
+    func cellToTheLeft(of cell : Cell) -> Cell? {
+        if cell.xPos == 0 || (cells?.count)! < cell.xPos - 1 {
+            return nil
+        }
+        
+        let row = cell.yPos
+        let col = cell.xPos
+        if let cellColumn = cells?[col - 1] {
+            return cellColumn[row]
+        }
+        
+        return nil
+    }
+    
+    func cellToTheRight(of cell : Cell) -> Cell? {
+        if cell.xPos == size.width || cell.xPos + 1 >= (cells?.count)! {
+            return nil
+        }
+        let row = cell.yPos
+        let col = cell.xPos
+        
+        if let cellColumn = cells?[col + 1] {
+            return cellColumn[row]
+        }
+        
+        return nil
+    }
+    
+    func cellAbove(_ cell : Cell) -> Cell? {
+        if cell.yPos == size.height {
+            return nil
+        }
+        
+        if let cellColumn = cells?[cell.xPos], cellColumn.count > cell.yPos + 1 {
+            return cellColumn[cell.yPos + 1]
+        }
+        
+        return nil
+    }
+    
+    func cellBelow(_ cell : Cell) -> Cell? {
+        if cell.yPos == 0 {
+            return nil
+        }
+        
+        if let cellColumn = cells?[cell.xPos], cell.yPos > 0 {
+            return cellColumn[cell.yPos - 1]
+        }
+        
+        return nil
     }
 }

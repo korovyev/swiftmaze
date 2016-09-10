@@ -39,22 +39,22 @@ class Grid {
         
         for x in 0  ..< self.size.width {
             
-            let topLine = Line(start: Point(x : x, y : 0), end: Point(x : x + 1, y : 0))
+            let topLine = Line(start: Point(x, 0), end: Point(x + 1, 0))
             
             self.horizontalLines.append(topLine)
             
-            let bottomLine = Line(start: Point(x: x, y: self.size.height), end: Point(x : x + 1, y : self.size.height))
+            let bottomLine = Line(start: Point(x, self.size.height), end: Point(x + 1, self.size.height))
             
             self.horizontalLines.append(bottomLine)
         }
         
         for y in 0  ..< self.size.height {
             
-            let leftLine = Line(start: Point(x: 0, y: y), end: Point(x: 0, y: y + 1))
+            let leftLine = Line(start: Point(0, y), end: Point(0, y + 1))
             
             self.verticalLines.append(leftLine)
             
-            let rightLine = Line(start: Point(x: self.size.width, y: y), end: Point(x: self.size.width, y: y + 1))
+            let rightLine = Line(start: Point(self.size.width, y), end: Point(self.size.width, y + 1))
             
             self.verticalLines.append(rightLine)
         }
@@ -63,14 +63,14 @@ class Grid {
     func buildGrid() {
         for x in 1  ..< self.size.width {
             for y in 0  ..< self.size.height {
-                self.verticalLines.append(Line(start: Point(x: x, y: y), end: Point(x: x, y: y + 1)))
+                self.verticalLines.append(Line(start: Point(x, y), end: Point(x, y + 1)))
             }
         }
         
         for y in 1  ..< self.size.height {
             for x in 0  ..< self.size.width {
                 if !(x == 0 && y == 1) {
-                    self.horizontalLines.append(Line(start: Point(x: x, y: y), end: Point(x: x + 1, y: y)))
+                    self.horizontalLines.append(Line(start: Point(x, y), end: Point(x + 1, y)))
                 }
             }
         }
@@ -134,7 +134,7 @@ class Grid {
         
         self.drawHandler()
         
-        let wholeRectangle = Rectangle(origin: Point(x:0, y:0), size : self.size)
+        let wholeRectangle = Rectangle(origin: Point(0, 0), size : self.size)
         
         self.makeRandomLineInRectangle(wholeRectangle)
     }
@@ -153,11 +153,11 @@ class Grid {
             
             let yVal = Int(arc4random_uniform(UInt32(rectangle.size.height - 1))) + 1
             
-            begin = Point(x : rectangle.origin.x, y: rectangle.origin.y + yVal)
-            end = Point(x: rectangle.origin.x + rectangle.size.width, y: rectangle.origin.y + yVal)
+            begin = Point(rectangle.origin.x, rectangle.origin.y + yVal)
+            end = Point(rectangle.origin.x + rectangle.size.width, rectangle.origin.y + yVal)
             
             let topRect = Rectangle(origin: rectangle.origin, size: Size(width: rectangle.size.width, height: yVal))
-            let bottomRect = Rectangle(origin: Point(x: rectangle.origin.x, y: rectangle.origin.y + yVal), size: Size(width: rectangle.size.width, height: rectangle.size.height - yVal))
+            let bottomRect = Rectangle(origin: Point(rectangle.origin.x, rectangle.origin.y + yVal), size: Size(width: rectangle.size.width, height: rectangle.size.height - yVal))
             
             if topRect.size.height > 1 {
                 self.rectangles.append(topRect)
@@ -172,11 +172,11 @@ class Grid {
             
             let xVal = Int(arc4random_uniform(UInt32(rectangle.size.width - 1))) + 1
             
-            begin = Point(x: rectangle.origin.x + xVal, y: rectangle.origin.y)
-            end = Point(x: rectangle.origin.x + xVal, y: rectangle.origin.y + rectangle.size.height)
+            begin = Point(rectangle.origin.x + xVal, rectangle.origin.y)
+            end = Point(rectangle.origin.x + xVal, rectangle.origin.y + rectangle.size.height)
             
             let leftRect = Rectangle(origin: rectangle.origin, size: Size(width: xVal, height: rectangle.size.height))
-            let rightRect = Rectangle(origin: Point(x: rectangle.origin.x + xVal, y: rectangle.origin.y), size: Size(width: rectangle.size.width - xVal, height: rectangle.size.height))
+            let rightRect = Rectangle(origin: Point(rectangle.origin.x + xVal, rectangle.origin.y), size: Size(width: rectangle.size.width - xVal, height: rectangle.size.height))
             
             if leftRect.size.width > 1 {
                 self.rectangles.append(leftRect)
@@ -212,7 +212,7 @@ class Grid {
             
             for index in line.start.y..<line.end.y {
                 if index != line.start.y + indexOfSegmentNotToDraw {
-                    let newLine = Line(start: Point(x: line.start.x, y: index), end: Point(x: line.start.x, y: index + 1))
+                    let newLine = Line(start: Point(line.start.x, index), end: Point(line.start.x, index + 1))
                     
                     self.verticalLines.append(newLine)
                 }
@@ -222,7 +222,7 @@ class Grid {
             
             for index in line.start.x..<line.end.x {
                 if index != line.start.x + indexOfSegmentNotToDraw {
-                    let newLine = Line(start: Point(x: index, y: line.start.y), end: Point(x: index + 1, y: line.start.y))
+                    let newLine = Line(start: Point(index, line.start.y), end: Point(index + 1, line.start.y))
                     
                     self.horizontalLines.append(newLine)
                 }
@@ -382,8 +382,8 @@ class Grid {
             
             let xPos = firstCell.xPos > secondCell.xPos ? firstCell.xPos : secondCell.xPos
             
-            let start = Point(x : xPos, y: yPos)
-            let end = Point(x: xPos, y: yPos + 1)
+            let start = Point(xPos, yPos)
+            let end = Point(xPos, yPos + 1)
             let lineToFind = Line(start :start, end: end)
             
             if (self.verticalLines.index(where: { $0 == lineToFind }) != nil) {
@@ -396,8 +396,8 @@ class Grid {
             
             let yPos = firstCell.yPos > secondCell.yPos ? firstCell.yPos : secondCell.yPos
             
-            let start = Point(x : xPos, y: yPos)
-            let end = Point(x: xPos + 1, y: yPos)
+            let start = Point(xPos, yPos)
+            let end = Point(xPos + 1, yPos)
             let lineToFind = Line(start :start, end: end)
             
             if (self.horizontalLines.index(where: { $0 == lineToFind }) != nil) {
@@ -417,8 +417,8 @@ class Grid {
             
             let xPos = firstCell.xPos > secondCell.xPos ? firstCell.xPos : secondCell.xPos
             
-            let start = Point(x : xPos, y: yPos)
-            let end = Point(x: xPos, y: yPos + 1)
+            let start = Point(xPos, yPos)
+            let end = Point(xPos, yPos + 1)
             let lineToFind = Line(start :start, end: end)
             
             if let indexOfLineToFind:Int = self.verticalLines.index(where: { $0 == lineToFind }) {
@@ -431,8 +431,8 @@ class Grid {
             
             let yPos = firstCell.yPos > secondCell.yPos ? firstCell.yPos : secondCell.yPos
             
-            let start = Point(x : xPos, y: yPos)
-            let end = Point(x: xPos + 1, y: yPos)
+            let start = Point(xPos, yPos)
+            let end = Point(xPos + 1, yPos)
             let lineToFind = Line(start :start, end: end)
             
             if let indexOfLineToFind:Int = self.horizontalLines.index(where: { $0 == lineToFind }) {
@@ -513,7 +513,7 @@ class Grid {
         return cellColumn[row]
     }
     
-    func upCell(_ cell : Cell) -> Cell? {
+    func topCell(_ cell : Cell) -> Cell? {
         if cell.yPos == 0 {
             return (nil);
         }
@@ -523,7 +523,7 @@ class Grid {
         return cellColumn[cell.yPos - 1]
     }
     
-    func downCell(_ cell : Cell) -> Cell? {
+    func bottomCell(_ cell : Cell) -> Cell? {
         let row = cell.yPos;
         let col = cell.xPos;
         
@@ -767,8 +767,8 @@ class Grid {
             
             let xPos = firstCell.xPos > secondCell.xPos ? firstCell.xPos : secondCell.xPos
             
-            let start = Point(x : xPos, y: yPos)
-            let end = Point(x: xPos, y: yPos + 1)
+            let start = Point(xPos, yPos)
+            let end = Point(xPos, yPos + 1)
             var ghostLine = Line(start :start, end: end)
             ghostLine.ghost = true
             self.verticalLines.append(ghostLine)
@@ -778,8 +778,8 @@ class Grid {
             
             let yPos = firstCell.yPos > secondCell.yPos ? firstCell.yPos : secondCell.yPos
             
-            let start = Point(x : xPos, y: yPos)
-            let end = Point(x: xPos + 1, y: yPos)
+            let start = Point(xPos, yPos)
+            let end = Point(xPos + 1, yPos)
             var ghostLine = Line(start :start, end: end)
             ghostLine.ghost = true
             self.horizontalLines.append(ghostLine)

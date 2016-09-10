@@ -31,29 +31,25 @@ struct Cell: Equatable {
         xPos = x
         yPos = y
     }
+    
+    func directionsToTest(inside gridSize: Size) -> [Direction] {
+        
+        var directions = [Direction]()
+        
+        if xPos > 0                 { directions.append(.left) }
+        if xPos < gridSize.width    { directions.append(.right) }
+        if yPos > 0                 { directions.append(.down) }
+        if yPos < gridSize.height   { directions.append(.up) }
+        
+        return directions
+    }
 }
 
-enum Direction: Int {
+enum Direction {
     case left
     case up
     case right
     case down
-    
-    init(num: Int) {
-        
-        switch num {
-        case 0:
-            self = .left
-        case 1:
-            self = .up
-        case 2:
-            self = .right
-        case 3:
-            self = .down
-        default:
-            self = .down
-        }
-    }
 }
 
 struct Point {
