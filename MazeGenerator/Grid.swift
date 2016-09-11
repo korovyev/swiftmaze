@@ -59,11 +59,11 @@ class Grid {
     
     func drawGridLineWithDoor(line : Line) {
         
-        let numSegments = line.vertical() ? line.end.x - line.start.x : line.end.y - line.start.y
+        let numSegments = line.vertical() ? line.end.y - line.start.y : line.end.x - line.start.x
         
         let indexOfSegmentNotToDraw = Int(arc4random_uniform(UInt32(numSegments)))
         
-        if !line.vertical() {
+        if line.vertical() {
             
             for index in line.start.y..<line.end.y where index != line.start.y + indexOfSegmentNotToDraw {
                 let newLine = Line(start: Point(line.start.x, index), end: Point(line.start.x, index + 1))
@@ -198,5 +198,43 @@ class Grid {
         }
         
         return nil
+    }
+    
+    func cellsEitherSide(of line: Line) -> (Cell?, Cell?) {
+        
+        guard let cells = cells else {
+            return (nil, nil)
+        }
+        
+        if line.vertical() {
+            
+            var leftCell: Cell?
+            var rightCell: Cell?
+            let yVal = line.end.y > line.start.y ? line.start.y : line.end.y
+            
+            if line.start.x > 0 {
+                leftCell = cells[line.start.x - 1][yVal]
+            }
+            if line.start.x < cells.count {
+                rightCell = cells[line.start.x][yVal]
+            }
+            
+            return (leftCell, rightCell)
+        }
+        else {
+            
+            var topCell: Cell?
+            var bottomCell: Cell?
+            let xVal = line.end.x > line.start.x ? line.start.x : line.end.x
+            
+            if line.start.y > 0 {
+                bottomCell = cells[xVal][line.start.y - 1]
+            }
+            if line.start.y < cells[xVal].count  {
+                topCell = cells[xVal][line.start.y]
+            }
+            
+            return (bottomCell, topCell)
+        }
     }
 }

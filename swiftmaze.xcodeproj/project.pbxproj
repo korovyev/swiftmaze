@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		322EAFCD1BDEEAC600A4A883 /* DeepLinker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322EAFCC1BDEEAC600A4A883 /* DeepLinker.swift */; };
 		3250D12E1D849A54003DFC2E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 328BDBC01BDD7E6800151E01 /* Extensions.swift */; };
+		3250D1301D859611003DFC2E /* Kruskal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3250D12F1D859611003DFC2E /* Kruskal.swift */; };
 		32851F691D81899700201612 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32851F681D81899700201612 /* AppDelegate.swift */; };
 		32851F6B1D81899700201612 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32851F6A1D81899700201612 /* ViewController.swift */; };
 		32851F6D1D81899700201612 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 32851F6C1D81899700201612 /* Assets.xcassets */; };
@@ -53,6 +54,7 @@
 
 /* Begin PBXFileReference section */
 		322EAFCC1BDEEAC600A4A883 /* DeepLinker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeepLinker.swift; sourceTree = "<group>"; };
+		3250D12F1D859611003DFC2E /* Kruskal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Kruskal.swift; sourceTree = "<group>"; };
 		32851F661D81899700201612 /* MazeGenerator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MazeGenerator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		32851F681D81899700201612 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		32851F6A1D81899700201612 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				32851F7C1D81AAE300201612 /* Generator.swift */,
 				32851F7E1D82138E00201612 /* RecursiveDivision.swift */,
 				32851F811D8301AE00201612 /* Backtracker.swift */,
+				3250D12F1D859611003DFC2E /* Kruskal.swift */,
 			);
 			name = Generators;
 			sourceTree = "<group>";
@@ -373,6 +376,7 @@
 				32851F771D818B2400201612 /* Geometry.swift in Sources */,
 				32851F691D81899700201612 /* AppDelegate.swift in Sources */,
 				32851F7B1D81A0FC00201612 /* MazeCoordinator.swift in Sources */,
+				3250D1301D859611003DFC2E /* Kruskal.swift in Sources */,
 				32851F7D1D81AAE300201612 /* Generator.swift in Sources */,
 				3250D12E1D849A54003DFC2E /* Extensions.swift in Sources */,
 				32851F791D81994400201612 /* Grid.swift in Sources */,

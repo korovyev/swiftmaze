@@ -32,7 +32,7 @@ class RecursiveDivision: Generator {
         var begin: Point?
         var end: Point?
         
-        if rectangle.size.width < rectangle.size.height && rectangle.size.height > 1 {
+        if rectangle.size.width < rectangle.size.height {
             // split rectangle into two horizontally
             
             let yVal = Int(arc4random_uniform(UInt32(rectangle.size.height - 1))) + 1
@@ -76,6 +76,8 @@ class RecursiveDivision: Generator {
         }
         
         step()
+        
+        rectangles.shuffled()
         
         if let nextRectangle = rectangles.popLast() {
             delay(step: {

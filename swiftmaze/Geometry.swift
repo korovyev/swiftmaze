@@ -82,7 +82,7 @@ struct Line {
     }
     
     func vertical() -> Bool {
-        return start.y == end.y
+        return start.x == end.x
     }
 }
 

@@ -20,8 +20,9 @@ class MazeCoordinator {
     }
     
     func start() {
-//        let generator = RecursiveDivision(updateInterval: 0.1)
-        let generator = Backtracker(updateInterval: 0.1)
+        let generator = RecursiveDivision(updateInterval: 2.5)
+//        let generator = Backtracker(updateInterval: 0.1)
+//        let generator = Kruskal(updateInterval: 0.1)
         
         generator.generateMaze(in: grid, step: { [weak self] in
             
