@@ -22,6 +22,6 @@ protocol Generator {
 
 extension Generator {
     func delay(step:  @escaping () -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.001, execute: step)
+        DispatchQueue.main.asyncAfter(deadline: .now() + Double(updateInterval), execute: step)
     }
 }

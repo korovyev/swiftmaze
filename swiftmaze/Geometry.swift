@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Cell: Equatable {
+struct Cell: Equatable, Hashable {
     var xPos : Int
     var yPos : Int
     var visited : Bool
@@ -42,6 +42,10 @@ struct Cell: Equatable {
         if yPos < gridSize.height   { directions.append(.up) }
         
         return directions
+    }
+    
+    var hashValue: Int {
+        return "\(xPos)\(yPos)".hashValue
     }
 }
 
