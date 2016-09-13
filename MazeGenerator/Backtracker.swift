@@ -11,15 +11,23 @@ import Foundation
 class Backtracker: Generator {
     var updateInterval: Float
     var state: GeneratorState
+    var stop: Bool
     var cellIndex = 0
     var visitedCells = [Cell]()
     
     init(updateInterval: Float) {
         self.updateInterval = updateInterval
-        state = .generating
+        state = .idle
+        stop = false
+    }
+    
+    func quit() {
+        state = .finished
+        stop = true
     }
     
     func generateMaze(in grid: Grid, step: @escaping () -> Void) {
+        state = .generating
         grid.buildFrame()
         grid.buildInternalGrid()
         grid.buildCells()
@@ -41,9 +49,7 @@ class Backtracker: Generator {
     func nextUnvisitedCell(to cell: Cell, inside grid: Grid, step: @escaping () -> Void) {
         
         var nextCell: Cell?
-        
         let directionsToTest = cell.directionsToTest(inside: grid.size).shuffle()
-        
         
         for direction in directionsToTest {
             
@@ -56,9 +62,12 @@ class Backtracker: Generator {
         
         step()
         
+        if stop {
+            return
+        }
+        
         if let nextCell = nextCell {
             nextCell.visited = true
-            
             
             visitedCells.append(nextCell)
             cellIndex = visitedCells.count - 1

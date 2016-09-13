@@ -77,13 +77,21 @@ class Eller: Generator {
     
     var updateInterval: Float
     var state: GeneratorState
+    var stop: Bool
     
     init(updateInterval: Float) {
         self.updateInterval = updateInterval
-        state = .generating
+        state = .idle
+        stop = false
+    }
+    
+    func quit() {
+        state = .finished
+        stop = true
     }
     
     func generateMaze(in grid: Grid, step: @escaping () -> Void) {
+        state = .generating
         grid.buildInternalGrid()
         grid.buildFrame()
         grid.buildCells()
@@ -110,6 +118,10 @@ class Eller: Generator {
             let nextState = openHorizontalDoors(in: column, into: grid.cells[columnIndex + 1], in: grid, state: state)
             
             step()
+            
+            if stop {
+                return
+            }
             
             delay(step: {
                 self.performEller(with: nextState, columnIndex: columnIndex + 1, grid: grid, step: step)

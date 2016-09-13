@@ -8,16 +8,27 @@
 
 import Foundation
 
+enum GenerationAlgorithm: String {
+    case recursiveDivision = "Recursive Division"
+    case backtracker = "Backtracker"
+    case kruskal = "Kruskal"
+    case eller = "Eller"
+    case wilson = "Wilson"
+}
+
 enum GeneratorState {
+    case idle
     case generating
     case finished
 }
 
 protocol Generator {
-    var state: GeneratorState { get set }
-    var updateInterval: Float { get set }
+    var state: GeneratorState { get }
+    var updateInterval: Float { get }
+    var stop: Bool { get }
     
     func generateMaze(in grid: Grid, step: @escaping () -> Void)
+    func quit()
 }
 
 extension Generator {

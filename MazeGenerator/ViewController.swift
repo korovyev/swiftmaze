@@ -8,19 +8,49 @@
 
 import Cocoa
 
-class ViewController: NSViewController {
+class ViewController: NSViewController, MazePickerViewControllerDelegate {
     
     @IBOutlet var mazeView: Maze!
-    var coordinator: MazeCoordinator! = nil
+    @IBOutlet var startButton: NSButton!
+    var coordinator: MazeCoordinator?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        coordinator = MazeCoordinator(maze: mazeView)
+    }
+    
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        
+        let sheet = storyboard?.instantiateController(withIdentifier: "mazePicker") as! MazePickerViewController
+        sheet.delegate = self
+        
+        presentViewControllerAsSheet(sheet)
+    }
+    
+    func mazePicker(controller: MazePickerViewController, didPickMazeSetup setup: MazeSetup) {
+        dismissViewController(controller)
+        coordinator = MazeCoordinator(maze: mazeView, setup: setup)
+        startButton.title = "Start"
     }
 
     @IBAction func start(sender: NSButton) {
-        coordinator.start()
+        
+        if let coordinator = coordinator {
+            if coordinator.generator.state != .idle {
+                
+                self.coordinator?.dropMaze()
+                self.coordinator = nil
+                
+                let sheet = storyboard?.instantiateController(withIdentifier: "mazePicker") as! MazePickerViewController
+                sheet.delegate = self
+                
+                presentViewControllerAsSheet(sheet)
+            }
+            else {
+                sender.title = "New"
+                coordinator.start()
+            }
+        }
     }
 }
 

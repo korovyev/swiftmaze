@@ -11,15 +11,23 @@ import Foundation
 class Kruskal: Generator {
     var updateInterval: Float
     var state: GeneratorState
+    var stop: Bool
     var trees = [[Tree<Cell>]]()
     var edges = [Line]()
     
     init(updateInterval: Float) {
         self.updateInterval = updateInterval
-        state = .generating
+        state = .idle
+        stop = false
+    }
+    
+    func quit() {
+        state = .finished
+        stop = true
     }
     
     func generateMaze(in grid: Grid, step: @escaping () -> Void) {
+        state = .generating
         grid.buildInternalGrid()
         
         edges.append(contentsOf: grid.verticalLines)
@@ -68,6 +76,10 @@ class Kruskal: Generator {
                 grid.removeLineBetween(cell1, and: cell2)
                 
                 step()
+            }
+            
+            if stop {
+                return
             }
             
             delay(step: {

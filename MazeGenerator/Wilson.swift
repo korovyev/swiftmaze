@@ -23,15 +23,22 @@ class Walk {
 class Wilson: Generator {
     var updateInterval: Float
     var state: GeneratorState
-//    var remainingCells = [Cell]()
+    var stop: Bool
     var remainingCellsSet = Set<Cell>()
     
     init(updateInterval: Float) {
         self.updateInterval = updateInterval
-        state = .generating
+        state = .idle
+        stop = false
+    }
+    
+    func quit() {
+        state = .finished
+        stop = true
     }
     
     func generateMaze(in grid: Grid, step: @escaping () -> Void) {
+        state = .generating
         grid.buildFrame()
         grid.buildInternalGrid()
         grid.buildCells()
@@ -43,6 +50,7 @@ class Wilson: Generator {
         if let mazeStart = remainingCellsSet.shuffle().first {
             grid.target = mazeStart
             mazeStart.visited = true
+            remainingCellsSet.remove(mazeStart)
             
             startNewWalk(in: grid, step: step)
         }
@@ -52,7 +60,6 @@ class Wilson: Generator {
         let directions = walk.currentCell.directionsToTest(inside: grid.size).filter({ $0 != walk.previousDirection.opposite() }).shuffle()
         
         guard let direction = directions.first else {
-            print("no direction")
             return
         }
         
@@ -114,6 +121,10 @@ class Wilson: Generator {
         grid.highlightCell = nil
         grid.highlightCells = nil
         grid.target = nil
+        
+        if stop {
+            return
+        }
         
         if remainingCellsSet.count > 0 {
             startNewWalk(in: grid, step: step)

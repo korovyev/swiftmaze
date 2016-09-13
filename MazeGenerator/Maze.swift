@@ -15,7 +15,7 @@ class Maze: NSView {
     var lineColour = NSColor.red
     var lineWidth: CGFloat = 1
     
-    func update(_ grid: Grid) {
+    func update(_ grid: Grid?) {
         self.grid = grid
         
         setNeedsDisplay(frame)

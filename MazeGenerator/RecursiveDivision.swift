@@ -11,14 +11,22 @@ import Foundation
 class RecursiveDivision: Generator {
     var updateInterval: Float
     var state: GeneratorState
+    var stop: Bool
     var rectangles = [Rectangle]()
     
     init(updateInterval: Float) {
         self.updateInterval = updateInterval
-        state = .generating
+        state = .idle
+        stop = false
+    }
+    
+    func quit() {
+        state = .finished
+        stop = true
     }
     
     func generateMaze(in grid: Grid, step: @escaping () -> Void) {
+        state = .generating
         grid.buildFrame()
         
         step()
@@ -77,7 +85,9 @@ class RecursiveDivision: Generator {
         
         step()
         
-        rectangles.shuffled()
+        if stop {
+            return
+        }
         
         if let nextRectangle = rectangles.popLast() {
             delay(step: {
