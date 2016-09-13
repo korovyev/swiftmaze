@@ -11,9 +11,12 @@ import Foundation
 class Grid {
     var verticalLines = [Line]()
     var horizontalLines = [Line]()
-    var cells: [[Cell]]?
+    var cells = [[Cell]]()
     var size: Size
     let directions: [Direction] = [.left, .up, .right, .down]
+    var highlightCells: [Cell]?
+    var highlightCell: Cell?
+    var target: Cell?
     
     init(size: Size) {
         self.size = size
@@ -96,9 +99,19 @@ class Grid {
             }
             
             if verticalCellArray.count > 0 {
-                cells!.append(verticalCellArray)
+                cells.append(verticalCellArray)
             }
         }
+    }
+    
+    func cellAt(_ x: Int, _ y: Int) -> Cell? {
+        if (x >= 0 && x < cells.count) {
+            if y >= 0 && y < cells[x].count {
+                return cells[x][y]
+            }
+        }
+        
+        return nil
     }
     
     func removeLineBetween(_ cell: Cell, and otherCell: Cell) {
@@ -136,26 +149,26 @@ class Grid {
     }
     
     func neighbourCell(of cell: Cell, in direction: Direction) -> Cell? {
-        guard let _ = cells else {
-            return nil
-        }
         
         switch direction {
         case .left:     return cellToTheLeft(of: cell)
         case .right:    return cellToTheRight(of: cell)
         case .up:       return cellAbove(cell)
         case .down:     return cellBelow(cell)
+        case .none:     return nil
         }
     }
     
     func cellToTheLeft(of cell : Cell) -> Cell? {
-        if cell.xPos == 0 || (cells?.count)! < cell.xPos - 1 {
+        if cell.xPos < 1 || cells.count < cell.xPos - 1 {
             return nil
         }
         
         let row = cell.yPos
         let col = cell.xPos
-        if let cellColumn = cells?[col - 1] {
+        let cellColumn = cells[col - 1]
+        
+        if row < cellColumn.count {
             return cellColumn[row]
         }
         
@@ -163,13 +176,15 @@ class Grid {
     }
     
     func cellToTheRight(of cell : Cell) -> Cell? {
-        if cell.xPos == size.width || cell.xPos + 1 >= (cells?.count)! {
+        if cell.xPos == size.width || cell.xPos + 1 >= cells.count {
             return nil
         }
         let row = cell.yPos
         let col = cell.xPos
         
-        if let cellColumn = cells?[col + 1] {
+        let cellColumn = cells[col + 1]
+        
+        if row < cellColumn.count {
             return cellColumn[row]
         }
         
@@ -177,11 +192,13 @@ class Grid {
     }
     
     func cellAbove(_ cell : Cell) -> Cell? {
-        if cell.yPos == size.height {
+        if cell.yPos == size.height || cell.xPos >= cells.count {
             return nil
         }
         
-        if let cellColumn = cells?[cell.xPos], cellColumn.count > cell.yPos + 1 {
+        let cellColumn = cells[cell.xPos]
+        
+        if cellColumn.count > cell.yPos + 1 {
             return cellColumn[cell.yPos + 1]
         }
         
@@ -189,11 +206,13 @@ class Grid {
     }
     
     func cellBelow(_ cell : Cell) -> Cell? {
-        if cell.yPos == 0 {
+        if cell.yPos < 1 || cell.xPos >= cells.count {
             return nil
         }
         
-        if let cellColumn = cells?[cell.xPos], cell.yPos > 0 {
+        let cellColumn = cells[cell.xPos]
+        
+        if cell.yPos < cellColumn.count {
             return cellColumn[cell.yPos - 1]
         }
         
@@ -202,10 +221,6 @@ class Grid {
     
     func cellsEitherSide(of line: Line) -> (Cell?, Cell?) {
         
-        guard let cells = cells else {
-            return (nil, nil)
-        }
-        
         if line.vertical() {
             
             var leftCell: Cell?
@@ -213,10 +228,10 @@ class Grid {
             let yVal = line.end.y > line.start.y ? line.start.y : line.end.y
             
             if line.start.x > 0 {
-                leftCell = cells[line.start.x - 1][yVal]
+                leftCell = cellAt(line.start.x - 1, yVal)
             }
             if line.start.x < cells.count {
-                rightCell = cells[line.start.x][yVal]
+                rightCell = cellAt(line.start.x, yVal)
             }
             
             return (leftCell, rightCell)
@@ -228,10 +243,10 @@ class Grid {
             let xVal = line.end.x > line.start.x ? line.start.x : line.end.x
             
             if line.start.y > 0 {
-                bottomCell = cells[xVal][line.start.y - 1]
+                bottomCell = cellAt(xVal, line.start.y - 1)
             }
             if line.start.y < cells[xVal].count  {
-                topCell = cells[xVal][line.start.y]
+                topCell = cellAt(xVal, line.start.y)
             }
             
             return (bottomCell, topCell)

@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Cell: Equatable, Hashable {
+class Cell: Equatable, Hashable {
     var xPos : Int
     var yPos : Int
     var visited : Bool
@@ -16,7 +16,7 @@ struct Cell: Equatable, Hashable {
     var parentX : Int
     var parentY : Int
     var tremauxVisited : Bool
-    
+    var direction: Direction = .none
     var fScore : Int
     
     init(x: Int, y: Int) {
@@ -36,10 +36,10 @@ struct Cell: Equatable, Hashable {
         
         var directions = [Direction]()
         
-        if xPos > 0                 { directions.append(.left) }
-        if xPos < gridSize.width    { directions.append(.right) }
-        if yPos > 0                 { directions.append(.down) }
-        if yPos < gridSize.height   { directions.append(.up) }
+        if xPos > 0                     { directions.append(.left) }
+        if xPos < gridSize.width - 1    { directions.append(.right) }
+        if yPos > 0                     { directions.append(.down) }
+        if yPos < gridSize.height - 1   { directions.append(.up) }
         
         return directions
     }
@@ -54,6 +54,17 @@ enum Direction {
     case up
     case right
     case down
+    case none
+    
+    func opposite() -> Direction {
+        switch self {
+        case .up: return .down
+        case .down: return .up
+        case .left: return .right
+        case .right: return .left
+        case .none: return .none
+        }
+    }
 }
 
 struct Point {
@@ -93,6 +104,33 @@ struct Line {
 struct Rectangle {
     var origin : Point
     var size : Size
+}
+
+class Tree<T: Equatable> {
+    var parent: Tree?
+    var element: T
+    
+    init(element: T, parent: Tree? = nil) {
+        self.element = element
+        self.parent = parent
+    }
+    
+    func root() -> Tree {
+        if let parent = parent {
+            return parent.root()
+        }
+        else {
+            return self
+        }
+    }
+    
+    func connect(to tree: Tree) {
+        tree.root().parent = self
+    }
+    
+    func connected(to tree: Tree) -> Bool {
+        return root().element == tree.root().element
+    }
 }
 
 func == (lhs: Point, rhs: Point) -> Bool {

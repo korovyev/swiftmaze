@@ -8,33 +8,6 @@
 
 import Foundation
 
-class Tree<T: Equatable> {
-    var parent: Tree?
-    var element: T
-    
-    init(element: T, parent: Tree? = nil) {
-        self.element = element
-        self.parent = parent
-    }
-    
-    func root() -> Tree {
-        if let parent = parent {
-            return parent.root()
-        }
-        else {
-            return self
-        }
-    }
-    
-    func connect(to tree: Tree) {
-        tree.root().parent = self
-    }
-    
-    func connected(to tree: Tree) -> Bool {
-        return root().element == tree.root().element
-    }
-}
-
 class Kruskal: Generator {
     var updateInterval: Float
     var state: GeneratorState
@@ -57,11 +30,7 @@ class Kruskal: Generator {
         
         step()
         
-        guard let cells = grid.cells else {
-            return
-        }
-        
-        for cellArray in cells {
+        for cellArray in grid.cells {
             
             var cellTrees = [Tree<Cell>]()
             

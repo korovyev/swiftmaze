@@ -24,12 +24,12 @@ class Backtracker: Generator {
         grid.buildInternalGrid()
         grid.buildCells()
         
-        guard let first = grid.cells?[0][0] else {
+        guard let first = grid.cellAt(0, 0) else {
             return
         }
         
-        grid.cells?[0][0].visited = true
-        visitedCells.append((grid.cells?[0][0])!)
+        first.visited = true
+        visitedCells.append(first)
         
         step()
         
@@ -57,7 +57,7 @@ class Backtracker: Generator {
         step()
         
         if let nextCell = nextCell {
-            grid.cells?[nextCell.xPos][nextCell.yPos].visited = true
+            nextCell.visited = true
             
             
             visitedCells.append(nextCell)

@@ -90,27 +90,24 @@ class Eller: Generator {
         
         step()
         
-        guard let firstColumn = grid.cells?[0] else {
-            return
+        if grid.cells.count > 0 {
+            let firstColumn = grid.cells[0]
+            
+            let startState = EllerState()
+            startState.addColumnCellsToSets(column: firstColumn)
+            
+            performEller(with: startState, columnIndex: 0, grid: grid, step: step)
         }
-        
-        let startState = EllerState()
-        startState.addColumnCellsToSets(column: firstColumn)
-        
-        performEller(with: startState, columnIndex: 0, grid: grid, step: step)
     }
     
     func performEller(with state: EllerState, columnIndex: Int, grid: Grid, step: @escaping () -> Void) {
-        guard let cells = grid.cells else {
-            return
-        }
         
-        if columnIndex + 1 < cells.count {
+        if columnIndex + 1 < grid.cells.count {
             
-            let column = cells[columnIndex]
+            let column = grid.cells[columnIndex]
             
             openVerticalDoors(in: column, grid: grid, state: state)
-            let nextState = openHorizontalDoors(in: column, into: cells[columnIndex + 1], in: grid, state: state)
+            let nextState = openHorizontalDoors(in: column, into: grid.cells[columnIndex + 1], in: grid, state: state)
             
             step()
             
@@ -118,13 +115,13 @@ class Eller: Generator {
                 self.performEller(with: nextState, columnIndex: columnIndex + 1, grid: grid, step: step)
             })
         }
-        else if columnIndex + 1 == cells.count {
+        else if columnIndex + 1 == grid.cells.count {
             
-            let column = cells[columnIndex]
+            let column = grid.cells[columnIndex]
             
             state.addColumnCellsToSets(column: column)
             
-            openVerticalDoors(in: cells[columnIndex], grid: grid, state: state, finish: true)
+            openVerticalDoors(in: grid.cells[columnIndex], grid: grid, state: state, finish: true)
             
             self.state = .finished
             step()

@@ -11,7 +11,7 @@ import Foundation
 class MazeCoordinator {
     weak var maze: Maze?
     var grid: Grid
-    var cellSize: CGFloat = 4
+    var cellSize: CGFloat = 10
     
     init(maze: Maze) {
         self.maze = maze
@@ -23,7 +23,8 @@ class MazeCoordinator {
 //        let generator = RecursiveDivision(updateInterval: 0.01)
 //        let generator = Backtracker(updateInterval: 0.01)
 //        let generator = Kruskal(updateInterval: 0.1)
-        let generator = Eller(updateInterval: 0.1)
+//        let generator = Eller(updateInterval: 0.1)
+        let generator = Wilson(updateInterval: 0.05)
         
         generator.generateMaze(in: grid, step: { [weak self] in
             
