@@ -42,20 +42,28 @@ class Maze: NSView {
             for cell in highlightCells {
                 context.setFillColor(NSColor.yellow.cgColor)
                 
-                context.fill(CGRect(x: CGFloat(cell.xPos) * cellSize.width, y: CGFloat(cell.yPos) * cellSize.height, width: cellSize.width, height: cellSize.height));
+                context.fill(CGRect(x: CGFloat(cell.xPos) * cellSize.width, y: CGFloat(cell.yPos) * cellSize.height, width: cellSize.width, height: cellSize.height))
             }
         }
         
         if let highlightCell = grid.highlightCell {
             context.setFillColor(NSColor.blue.cgColor)
             
-            context.fill(CGRect(x: CGFloat(highlightCell.xPos) * cellSize.width, y: CGFloat(highlightCell.yPos) * cellSize.height, width: cellSize.width, height: cellSize.height));
+            context.fill(CGRect(x: CGFloat(highlightCell.xPos) * cellSize.width, y: CGFloat(highlightCell.yPos) * cellSize.height, width: cellSize.width, height: cellSize.height))
         }
         
         if let target = grid.target {
             context.setFillColor(NSColor.orange.withAlphaComponent(0.2).cgColor)
             
-            context.fill(CGRect(x: CGFloat(target.xPos) * cellSize.width, y: CGFloat(target.yPos) * cellSize.height, width: cellSize.width, height: cellSize.height));
+            context.fill(CGRect(x: CGFloat(target.xPos) * cellSize.width, y: CGFloat(target.yPos) * cellSize.height, width: cellSize.width, height: cellSize.height))
+        }
+        
+        if let activeSolveCells = grid.activeSolveCells {
+            for cell in activeSolveCells {
+                context.setFillColor(NSColor.blue.cgColor)
+                
+                context.fill(CGRect(x: CGFloat(cell.xPos) * cellSize.width, y: CGFloat(cell.yPos) * cellSize.height, width: cellSize.width, height: cellSize.height))
+            }
         }
         
         for line in grid.verticalLines {

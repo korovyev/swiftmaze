@@ -17,6 +17,7 @@ class Grid {
     var highlightCells: [Cell]?
     var highlightCell: Cell?
     var target: Cell?
+    var activeSolveCells: [Cell]?
     
     init(size: Size) {
         self.size = size
@@ -295,6 +296,33 @@ class Grid {
             }
             
             return (bottomCell, topCell)
+        }
+    }
+    
+    func addLineBetweenCells(_ cell: Cell, and otherCell : Cell) {
+        let vertical = cell.yPos == otherCell.yPos
+        
+        if vertical {
+            let yPos = cell.yPos
+            
+            let xPos = cell.xPos > otherCell.xPos ? cell.xPos : otherCell.xPos
+            
+            let start = Point(xPos, yPos)
+            let end = Point(xPos, yPos + 1)
+            var ghostLine = Line(start :start, end: end)
+            ghostLine.ghost = true
+            verticalLines.append(ghostLine)
+        }
+        else {
+            let xPos = cell.xPos
+            
+            let yPos = cell.yPos > otherCell.yPos ? cell.yPos : otherCell.yPos
+            
+            let start = Point(xPos, yPos)
+            let end = Point(xPos + 1, yPos)
+            var ghostLine = Line(start :start, end: end)
+            ghostLine.ghost = true
+            horizontalLines.append(ghostLine)
         }
     }
 }

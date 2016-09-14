@@ -13,18 +13,15 @@ class Cell: Equatable, Hashable {
     var yPos : Int
     var visited : Bool
     var filled : Bool
-    var parentX : Int
-    var parentY : Int
-    var tremauxVisited : Bool
+    var parent : Cell?
+    var solverVisited : Bool
     var direction: Direction = .none
     var fScore : Int
     
     init(x: Int, y: Int) {
         visited = false
         filled = false
-        tremauxVisited = false
-        parentX = 0
-        parentY = 0
+        solverVisited = false
         
         fScore = 0
         

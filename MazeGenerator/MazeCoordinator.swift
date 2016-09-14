@@ -44,14 +44,16 @@ class MazeCoordinator {
                 weakSelf.maze?.update(weakSelf.grid)
                 
                 if weakSelf.generator.state == .finished {
-                    weakSelf.solve()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                        weakSelf.solve()
+                    })
                 }
             }
         })
     }
     
     func solve() {
-        let solver = Tremaux(updateInterval: 0.1)
+        let solver = DeadEndFiller(updateInterval: 0.1)
         if grid.cells.isEmpty {
             grid.buildCells()
         }

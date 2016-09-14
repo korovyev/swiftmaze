@@ -41,7 +41,7 @@ class Tremaux: Solver {
         }
         
         let cellToProceedFrom = activeCells[activeCells.count - 1]
-        cellToProceedFrom.tremauxVisited = true
+        cellToProceedFrom.solverVisited = true
         var nextCells = unvisitedTremauxCells(neighbouring: cellToProceedFrom, in: grid)
         
         if !nextCells.contains(endCell) {
@@ -93,6 +93,6 @@ class Tremaux: Solver {
     func unvisitedTremauxCells(neighbouring cell: Cell, in grid: Grid) -> [Cell] {
         let nextCells = grid.openCells(neighbouring: cell)
         
-        return nextCells.filter({ return !$0.tremauxVisited })
+        return nextCells.filter({ return !$0.solverVisited })
     }
 }

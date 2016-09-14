@@ -38,6 +38,8 @@
 		32B7C52F1BC9966200AD7DCE /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B7C52E1BC9966200AD7DCE /* Grid.swift */; };
 		32B7C5311BC9A82A00AD7DCE /* Maze.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B7C5301BC9A82A00AD7DCE /* Maze.swift */; };
 		32BC8F351D89AB910000FC04 /* Tremaux.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BC8F341D89AB910000FC04 /* Tremaux.swift */; };
+		32BC8F381D89AF730000FC04 /* AStar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BC8F371D89AF730000FC04 /* AStar.swift */; };
+		32BC8F3A1D89B7820000FC04 /* DeadEndFiller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BC8F391D89B7820000FC04 /* DeadEndFiller.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +97,8 @@
 		32B7C52E1BC9966200AD7DCE /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		32B7C5301BC9A82A00AD7DCE /* Maze.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Maze.swift; sourceTree = "<group>"; };
 		32BC8F341D89AB910000FC04 /* Tremaux.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tremaux.swift; sourceTree = "<group>"; };
+		32BC8F371D89AF730000FC04 /* AStar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AStar.swift; sourceTree = "<group>"; };
+		32BC8F391D89B7820000FC04 /* DeadEndFiller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeadEndFiller.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -224,6 +228,8 @@
 			children = (
 				3260FAD51D8995E400FEFEDA /* Solver.swift */,
 				32BC8F341D89AB910000FC04 /* Tremaux.swift */,
+				32BC8F371D89AF730000FC04 /* AStar.swift */,
+				32BC8F391D89B7820000FC04 /* DeadEndFiller.swift */,
 			);
 			name = Solvers;
 			sourceTree = "<group>";
@@ -396,6 +402,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				32851F6B1D81899700201612 /* ViewController.swift in Sources */,
+				32BC8F381D89AF730000FC04 /* AStar.swift in Sources */,
 				32851F771D818B2400201612 /* Geometry.swift in Sources */,
 				32851F691D81899700201612 /* AppDelegate.swift in Sources */,
 				32851F7B1D81A0FC00201612 /* MazeCoordinator.swift in Sources */,
@@ -403,6 +410,7 @@
 				3260FAD61D8995E400FEFEDA /* Solver.swift in Sources */,
 				32851F7D1D81AAE300201612 /* Generator.swift in Sources */,
 				3250D1361D8863FD003DFC2E /* MazePickerViewController.swift in Sources */,
+				32BC8F3A1D89B7820000FC04 /* DeadEndFiller.swift in Sources */,
 				3250D1321D85D702003DFC2E /* Eller.swift in Sources */,
 				3250D12E1D849A54003DFC2E /* Extensions.swift in Sources */,
 				32851F791D81994400201612 /* Grid.swift in Sources */,
