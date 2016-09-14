@@ -38,7 +38,7 @@ class DeadEndFiller: Solver {
     
     func closeDeadEnds(columnIndex: Int, deadEndFound: Bool, direction: Direction, grid: Grid, step: @escaping () -> Void) {
         
-        if columnIndex >= grid.cells.count && !deadEndFound {
+        if columnIndex >= grid.cells.count && !deadEndFound || stop {
             grid.highlightCells = nil
             state = .finished
         }

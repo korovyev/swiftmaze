@@ -8,6 +8,12 @@
 
 import Foundation
 
+enum SolvingAlgorithm: String {
+    case tremaux = "Tremaux"
+    case aStar = "A *"
+    case deadEndFilling = "Dead End Filling"
+}
+
 enum SolverState {
     case idle
     case solving

@@ -36,7 +36,7 @@ class Tremaux: Solver {
     
     func solve(grid: Grid, step: @escaping () -> Void) {
         
-        guard let endCell = endCell, activeCells.count > 0  else {
+        guard let endCell = endCell, activeCells.count > 0 || stop else {
             return
         }
         

@@ -10,6 +10,7 @@ import Foundation
 
 struct MazeSetup {
     var algorithm: GenerationAlgorithm
+    var solver: SolvingAlgorithm
     var size: Size
 }
 
@@ -17,9 +18,12 @@ class MazeCoordinator {
     weak var maze: Maze?
     var grid: Grid
     var generator: Generator
+    var solver: Solver
+    var setup: MazeSetup
     
     init(maze: Maze, setup: MazeSetup) {
         self.maze = maze
+        self.setup = setup
         
         grid = Grid(size: setup.size)
         
@@ -34,6 +38,15 @@ class MazeCoordinator {
             generator = Eller(updateInterval: 0.01)
         case .wilson:
             generator = Wilson(updateInterval: 0.01)
+        }
+        
+        switch setup.solver {
+        case .tremaux:
+            solver = Tremaux(updateInterval: 0.01)
+        case .aStar:
+            solver = AStar(updateInterval: 0.01)
+        case .deadEndFilling:
+            solver = DeadEndFiller(updateInterval: 0.01)
         }
     }
     
@@ -53,7 +66,7 @@ class MazeCoordinator {
     }
     
     func solve() {
-        let solver = DeadEndFiller(updateInterval: 0.1)
+        
         if grid.cells.isEmpty {
             grid.buildCells()
         }
@@ -67,6 +80,7 @@ class MazeCoordinator {
     
     func dropMaze() {
         generator.quit()
+        solver.quit()
         maze?.update(nil)
     }
 }

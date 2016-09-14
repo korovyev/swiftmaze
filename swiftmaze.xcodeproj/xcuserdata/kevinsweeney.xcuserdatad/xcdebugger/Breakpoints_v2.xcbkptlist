@@ -97,22 +97,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MazeGenerator/Grid.swift"
-            timestampString = "495563914.60379"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "154"
-            endingLineNumber = "154"
-            landmarkName = "Grid"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "MazeGenerator/RecursiveDivision.swift"
             timestampString = "495497865.855425"
             startingColumnNumber = "9223372036854775807"
@@ -210,11 +194,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MazeGenerator/MazeCoordinator.swift"
-            timestampString = "495494913.380881"
+            timestampString = "495581400.738338"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "22"
-            endingLineNumber = "22"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
             landmarkName = "init(maze:setup:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -226,11 +210,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MazeGenerator/AStar.swift"
-            timestampString = "495564428.014734"
+            timestampString = "495581400.738338"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
             landmarkName = "findShortestPathBackwards(from:grid:step:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -242,11 +226,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MazeGenerator/AStar.swift"
-            timestampString = "495564428.014734"
+            timestampString = "495581400.738338"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "97"
-            endingLineNumber = "97"
+            startingLineNumber = "101"
+            endingLineNumber = "101"
             landmarkName = "findShortestPathBackwards(from:grid:step:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -258,11 +242,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MazeGenerator/DeadEndFiller.swift"
-            timestampString = "495580480.411971"
+            timestampString = "495581400.738338"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
+            startingLineNumber = "46"
+            endingLineNumber = "46"
             landmarkName = "closeDeadEnds(columnIndex:deadEndFound:direction:grid:step:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -274,11 +258,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MazeGenerator/DeadEndFiller.swift"
-            timestampString = "495580719.642985"
+            timestampString = "495581400.738338"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "93"
-            endingLineNumber = "93"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
             landmarkName = "closeDeadEnds(columnIndex:deadEndFound:direction:grid:step:)"
             landmarkType = "7">
          </BreakpointContent>

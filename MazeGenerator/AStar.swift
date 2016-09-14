@@ -41,6 +41,10 @@ class AStar: Solver {
             return
         }
         
+        if stop {
+            return
+        }
+        
         let nextCells = grid.openCells(neighbouring: cellToProceedFrom)
         
         if !nextCells.contains(endCell) {

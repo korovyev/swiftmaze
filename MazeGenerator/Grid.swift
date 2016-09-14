@@ -150,21 +150,6 @@ class Grid {
         return nil
     }
     
-//    func lineBetween(_ cell: Cell, and otherCell: Cell) -> Line? {
-//        let vertical = cell.yPos == otherCell.yPos
-//        
-//        if let index = indexOfLineBetween(cell, and: otherCell) {
-//            if vertical {
-//                return verticalLines[index]
-//            }
-//            else {
-//                return horizontalLines[index]
-//            }
-//        }
-//        
-//        return nil
-//    }
-    
     func removeLineBetween(_ cell: Cell, and otherCell: Cell) {
         
         let vertical = cell.yPos == otherCell.yPos

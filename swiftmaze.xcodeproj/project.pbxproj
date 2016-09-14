@@ -34,7 +34,6 @@
 		32B7C5091BC995D700AD7DCE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32B7C5071BC995D700AD7DCE /* LaunchScreen.storyboard */; };
 		32B7C5141BC995D700AD7DCE /* swiftmazeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B7C5131BC995D700AD7DCE /* swiftmazeTests.swift */; };
 		32B7C51F1BC995D700AD7DCE /* swiftmazeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B7C51E1BC995D700AD7DCE /* swiftmazeUITests.swift */; };
-		32B7C52D1BC995EE00AD7DCE /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B7C52C1BC995EE00AD7DCE /* Geometry.swift */; };
 		32B7C52F1BC9966200AD7DCE /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B7C52E1BC9966200AD7DCE /* Grid.swift */; };
 		32B7C5311BC9A82A00AD7DCE /* Maze.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B7C5301BC9A82A00AD7DCE /* Maze.swift */; };
 		32BC8F351D89AB910000FC04 /* Tremaux.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BC8F341D89AB910000FC04 /* Tremaux.swift */; };
@@ -93,7 +92,7 @@
 		32B7C51A1BC995D700AD7DCE /* swiftmazeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swiftmazeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		32B7C51E1BC995D700AD7DCE /* swiftmazeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftmazeUITests.swift; sourceTree = "<group>"; };
 		32B7C5201BC995D700AD7DCE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		32B7C52C1BC995EE00AD7DCE /* Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
+		32B7C52C1BC995EE00AD7DCE /* Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Geometry.swift; path = ../swiftmaze/Geometry.swift; sourceTree = "<group>"; };
 		32B7C52E1BC9966200AD7DCE /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		32B7C5301BC9A82A00AD7DCE /* Maze.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Maze.swift; sourceTree = "<group>"; };
 		32BC8F341D89AB910000FC04 /* Tremaux.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tremaux.swift; sourceTree = "<group>"; };
@@ -144,6 +143,7 @@
 				32851F711D81899700201612 /* Info.plist */,
 				32851F751D818A6400201612 /* Maze.swift */,
 				32851F781D81994400201612 /* Grid.swift */,
+				32B7C52C1BC995EE00AD7DCE /* Geometry.swift */,
 				32851F7A1D81A0FC00201612 /* MazeCoordinator.swift */,
 				32851F801D8213CE00201612 /* Generators */,
 				32BC8F361D89ABAC0000FC04 /* Solvers */,
@@ -196,7 +196,6 @@
 				32B7C5051BC995D700AD7DCE /* Assets.xcassets */,
 				32B7C5071BC995D700AD7DCE /* LaunchScreen.storyboard */,
 				32B7C50A1BC995D700AD7DCE /* Info.plist */,
-				32B7C52C1BC995EE00AD7DCE /* Geometry.swift */,
 				32B7C52E1BC9966200AD7DCE /* Grid.swift */,
 				32B7C5301BC9A82A00AD7DCE /* Maze.swift */,
 				328BDBC01BDD7E6800151E01 /* Extensions.swift */,
@@ -428,7 +427,6 @@
 			files = (
 				32B7C5011BC995D700AD7DCE /* ConfigViewController.swift in Sources */,
 				328BDBC11BDD7E6800151E01 /* Extensions.swift in Sources */,
-				32B7C52D1BC995EE00AD7DCE /* Geometry.swift in Sources */,
 				32B7C4FF1BC995D700AD7DCE /* AppDelegate.swift in Sources */,
 				32B7C52F1BC9966200AD7DCE /* Grid.swift in Sources */,
 				32B7C5311BC9A82A00AD7DCE /* Maze.swift in Sources */,
