@@ -114,7 +114,7 @@ class Grid {
         return nil
     }
     
-    func removeLineBetween(_ cell: Cell, and otherCell: Cell) {
+    func indexOfLineBetween(_ cell: Cell, and otherCell: Cell) -> Int? {
         let vertical = cell.yPos == otherCell.yPos
         
         if vertical {
@@ -128,7 +128,7 @@ class Grid {
             
             if let indexOfLineToFind = verticalLines.index(where: { $0 == lineToFind }) {
                 
-                verticalLines.remove(at: indexOfLineToFind)
+                return indexOfLineToFind
             }
         }
         else {
@@ -142,10 +142,55 @@ class Grid {
             
             if let indexOfLineToFind = horizontalLines.index(where: { $0 == lineToFind }) {
                 
-                horizontalLines.remove(at: indexOfLineToFind)
+                return indexOfLineToFind
             }
         }
-
+        
+        return nil
+    }
+    
+//    func lineBetween(_ cell: Cell, and otherCell: Cell) -> Line? {
+//        let vertical = cell.yPos == otherCell.yPos
+//        
+//        if let index = indexOfLineBetween(cell, and: otherCell) {
+//            if vertical {
+//                return verticalLines[index]
+//            }
+//            else {
+//                return horizontalLines[index]
+//            }
+//        }
+//        
+//        return nil
+//    }
+    
+    func removeLineBetween(_ cell: Cell, and otherCell: Cell) {
+        
+        let vertical = cell.yPos == otherCell.yPos
+        
+        if let index = indexOfLineBetween(cell, and: otherCell) {
+            if vertical {
+                verticalLines.remove(at: index)
+            }
+            else {
+                horizontalLines.remove(at: index)
+            }
+        }
+    }
+    
+    func openCells(neighbouring cell: Cell) -> [Cell] {
+        var neighbours = [Cell]()
+        
+        for direction in cell.directionsToTest(inside: size) {
+            if let neighbour = neighbourCell(of: cell, in: direction) {
+                
+                if indexOfLineBetween(cell, and: neighbour) == nil {
+                    neighbours.append(neighbour)
+                }
+            }
+        }
+        
+        return neighbours
     }
     
     func neighbourCell(of cell: Cell, in direction: Direction) -> Cell? {

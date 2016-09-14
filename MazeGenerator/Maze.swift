@@ -40,7 +40,7 @@ class Maze: NSView {
         if let highlightCells = grid.highlightCells {
             
             for cell in highlightCells {
-                context.setFillColor(NSColor.gray.cgColor)
+                context.setFillColor(NSColor.yellow.cgColor)
                 
                 context.fill(CGRect(x: CGFloat(cell.xPos) * cellSize.width, y: CGFloat(cell.yPos) * cellSize.height, width: cellSize.width, height: cellSize.height));
             }

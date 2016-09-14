@@ -42,6 +42,23 @@ class MazeCoordinator {
             
             if let weakSelf = self {
                 weakSelf.maze?.update(weakSelf.grid)
+                
+                if weakSelf.generator.state == .finished {
+                    weakSelf.solve()
+                }
+            }
+        })
+    }
+    
+    func solve() {
+        let solver = Tremaux(updateInterval: 0.1)
+        if grid.cells.isEmpty {
+            grid.buildCells()
+        }
+        solver.solveMaze(in: grid, step: { [weak self] in
+            
+            if let weakSelf = self {
+                weakSelf.maze?.update(weakSelf.grid)
             }
         })
     }

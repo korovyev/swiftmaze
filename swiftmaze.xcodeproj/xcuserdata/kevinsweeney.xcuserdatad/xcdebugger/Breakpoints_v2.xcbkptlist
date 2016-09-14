@@ -71,7 +71,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "121"
             endingLineNumber = "121"
-            landmarkName = "removeLineBetween(_:and:)"
+            landmarkName = "indexOfLineBetween(_:and:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -87,7 +87,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "137"
             endingLineNumber = "137"
-            landmarkName = "removeLineBetween(_:and:)"
+            landmarkName = "indexOfLineBetween(_:and:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -103,8 +103,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "153"
             endingLineNumber = "153"
-            landmarkName = "neighbourCell(of:in:)"
-            landmarkType = "7">
+            landmarkName = "Grid"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
