@@ -12,6 +12,7 @@ enum SolvingAlgorithm: String {
     case tremaux = "Tremaux"
     case aStar = "A *"
     case deadEndFilling = "Dead End Filling"
+    case none = "None"
 }
 
 enum SolverState {

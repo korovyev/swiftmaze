@@ -53,7 +53,7 @@ class Maze: NSView {
         }
         
         if let target = grid.target {
-            context.setFillColor(NSColor.orange.withAlphaComponent(0.2).cgColor)
+            context.setFillColor(NSColor.orange.withAlphaComponent(0.5).cgColor)
             
             context.fill(CGRect(x: CGFloat(target.xPos) * cellSize.width, y: CGFloat(target.yPos) * cellSize.height, width: cellSize.width, height: cellSize.height))
         }

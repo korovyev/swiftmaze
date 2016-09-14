@@ -18,7 +18,7 @@ class MazeCoordinator {
     weak var maze: Maze?
     var grid: Grid
     var generator: Generator
-    var solver: Solver
+    var solver: Solver?
     var setup: MazeSetup
     
     init(maze: Maze, setup: MazeSetup) {
@@ -47,6 +47,8 @@ class MazeCoordinator {
             solver = AStar(updateInterval: 0.01)
         case .deadEndFilling:
             solver = DeadEndFiller(updateInterval: 0.01)
+        case .none:
+            solver = nil
         }
     }
     
@@ -67,6 +69,10 @@ class MazeCoordinator {
     
     func solve() {
         
+        guard let solver = solver else {
+            return
+        }
+        
         if grid.cells.isEmpty {
             grid.buildCells()
         }
@@ -80,7 +86,7 @@ class MazeCoordinator {
     
     func dropMaze() {
         generator.quit()
-        solver.quit()
+        solver?.quit()
         maze?.update(nil)
     }
 }
