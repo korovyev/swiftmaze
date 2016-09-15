@@ -82,7 +82,6 @@ struct Size {
 struct Line {
     var start : Point
     var end : Point
-    var ghost : Bool = false
     
     init(start: Point, end: Point) {
         self.start = start

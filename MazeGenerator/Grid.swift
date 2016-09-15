@@ -289,25 +289,19 @@ class Grid {
         
         if vertical {
             let yPos = cell.yPos
-            
             let xPos = cell.xPos > otherCell.xPos ? cell.xPos : otherCell.xPos
-            
             let start = Point(xPos, yPos)
             let end = Point(xPos, yPos + 1)
-            var ghostLine = Line(start :start, end: end)
-            ghostLine.ghost = true
-            verticalLines.append(ghostLine)
+            
+            verticalLines.append(Line(start :start, end: end))
         }
         else {
             let xPos = cell.xPos
-            
             let yPos = cell.yPos > otherCell.yPos ? cell.yPos : otherCell.yPos
-            
             let start = Point(xPos, yPos)
             let end = Point(xPos + 1, yPos)
-            var ghostLine = Line(start :start, end: end)
-            ghostLine.ghost = true
-            horizontalLines.append(ghostLine)
+            
+            horizontalLines.append(Line(start :start, end: end))
         }
     }
 }

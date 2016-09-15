@@ -27,6 +27,7 @@
 		32BC8F351D89AB910000FC04 /* Tremaux.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BC8F341D89AB910000FC04 /* Tremaux.swift */; };
 		32BC8F381D89AF730000FC04 /* AStar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BC8F371D89AF730000FC04 /* AStar.swift */; };
 		32BC8F3A1D89B7820000FC04 /* DeadEndFiller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BC8F391D89B7820000FC04 /* DeadEndFiller.swift */; };
+		32DE80711D8AC5970088D564 /* FloodFill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DE80701D8AC5970088D564 /* FloodFill.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		32BC8F341D89AB910000FC04 /* Tremaux.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tremaux.swift; sourceTree = "<group>"; };
 		32BC8F371D89AF730000FC04 /* AStar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AStar.swift; sourceTree = "<group>"; };
 		32BC8F391D89B7820000FC04 /* DeadEndFiller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeadEndFiller.swift; sourceTree = "<group>"; };
+		32DE80701D8AC5970088D564 /* FloodFill.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloodFill.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 				32BC8F341D89AB910000FC04 /* Tremaux.swift */,
 				32BC8F371D89AF730000FC04 /* AStar.swift */,
 				32BC8F391D89B7820000FC04 /* DeadEndFiller.swift */,
+				32DE80701D8AC5970088D564 /* FloodFill.swift */,
 			);
 			name = Solvers;
 			sourceTree = "<group>";
@@ -212,6 +215,7 @@
 				32851F791D81994400201612 /* Grid.swift in Sources */,
 				3250D1341D87036E003DFC2E /* Wilson.swift in Sources */,
 				32851F821D8301AE00201612 /* Backtracker.swift in Sources */,
+				32DE80711D8AC5970088D564 /* FloodFill.swift in Sources */,
 				32851F761D818A6400201612 /* Maze.swift in Sources */,
 				32BC8F351D89AB910000FC04 /* Tremaux.swift in Sources */,
 				32851F7F1D82138E00201612 /* RecursiveDivision.swift in Sources */,

@@ -21,7 +21,7 @@ class MazePickerViewController: NSViewController, NSTextFieldDelegate {
     weak var delegate: MazePickerViewControllerDelegate?
     
     var generators: [GenerationAlgorithm] = [.recursiveDivision, .backtracker, .kruskal, .eller, .wilson]
-    var solvers: [SolvingAlgorithm] = [.tremaux, .aStar, .deadEndFilling, .none]
+    var solvers: [SolvingAlgorithm] = [.tremaux, .aStar, .deadEndFilling, .floodFill, .none]
     
     override func viewDidLoad() {
         super.viewDidLoad()

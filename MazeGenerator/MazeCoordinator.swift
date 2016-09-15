@@ -47,6 +47,8 @@ class MazeCoordinator {
             solver = AStar(updateInterval: 0.01)
         case .deadEndFilling:
             solver = DeadEndFiller(updateInterval: 0.01)
+        case .floodFill:
+            solver = FloodFill(updateInterval: 0.01)
         case .none:
             solver = nil
         }
