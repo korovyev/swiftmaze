@@ -65,8 +65,8 @@ class AStar: Solver {
             }
             closedList.append(highestScoreOpenCell)
             
-            grid.activeSolveCells = closedList
-            grid.highlightCells = openList
+            grid.secondaryHighlightCells = openList
+            grid.highlightCells = closedList
             
             step()
             
@@ -79,7 +79,7 @@ class AStar: Solver {
             endCell.parent = cellToProceedFrom
             closedList.append(endCell)
             
-            grid.activeSolveCells = nil
+            grid.secondaryHighlightCells = nil
             
             step()
             

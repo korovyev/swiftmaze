@@ -10,10 +10,14 @@ import Cocoa
 
 class Maze: NSView {
     
-    var desiredCellSize:CGFloat = 16
     var grid: Grid?
-    var lineColour = NSColor.red
     var lineWidth: CGFloat = 1
+    var setup: MazeSetup? {
+        didSet {
+            layer?.backgroundColor = setup?.backgroundColour.cgColor
+            lineWidth = CGFloat(setup?.lineWidth ?? 1)
+        }
+    }
     
     func update(_ grid: Grid?) {
         self.grid = grid
@@ -25,7 +29,8 @@ class Maze: NSView {
         
         guard
             let grid = grid,
-            let context = NSGraphicsContext.current()?.cgContext
+            let context = NSGraphicsContext.current()?.cgContext,
+            let setup = setup
         else {
             return
         }
@@ -40,27 +45,21 @@ class Maze: NSView {
         if let highlightCells = grid.highlightCells {
             
             for cell in highlightCells {
-                context.setFillColor(NSColor.yellow.cgColor)
+                context.setFillColor(setup.highlightColour.cgColor)
                 
                 context.fill(CGRect(x: CGFloat(cell.xPos) * cellSize.width, y: CGFloat(cell.yPos) * cellSize.height, width: cellSize.width, height: cellSize.height))
             }
         }
         
-        if let highlightCell = grid.highlightCell {
-            context.setFillColor(NSColor.blue.cgColor)
-            
-            context.fill(CGRect(x: CGFloat(highlightCell.xPos) * cellSize.width, y: CGFloat(highlightCell.yPos) * cellSize.height, width: cellSize.width, height: cellSize.height))
-        }
-        
         if let target = grid.target {
-            context.setFillColor(NSColor.orange.withAlphaComponent(0.5).cgColor)
+            context.setFillColor(setup.targetColour.cgColor)
             
             context.fill(CGRect(x: CGFloat(target.xPos) * cellSize.width, y: CGFloat(target.yPos) * cellSize.height, width: cellSize.width, height: cellSize.height))
         }
         
-        if let activeSolveCells = grid.activeSolveCells {
-            for cell in activeSolveCells {
-                context.setFillColor(NSColor.blue.cgColor)
+        if let secondaryHighlightCells = grid.secondaryHighlightCells {
+            for cell in secondaryHighlightCells {
+                context.setFillColor(setup.secondaryHighlightColour.cgColor)
                 
                 context.fill(CGRect(x: CGFloat(cell.xPos) * cellSize.width, y: CGFloat(cell.yPos) * cellSize.height, width: cellSize.width, height: cellSize.height))
             }
@@ -68,7 +67,7 @@ class Maze: NSView {
         
         for line in grid.verticalLines {
             
-            context.setStrokeColor(lineColour.cgColor)
+            context.setStrokeColor(setup.wallColour.cgColor)
             context.setLineDash(phase: 0, lengths: dashes)
             
             context.setLineWidth(lineWidth)
@@ -81,7 +80,7 @@ class Maze: NSView {
 
         for line in grid.horizontalLines {
             
-            context.setStrokeColor(lineColour.cgColor)
+            context.setStrokeColor(setup.wallColour.cgColor)
             context.setLineDash(phase: 1, lengths: dashes)
             
             context.setLineWidth(lineWidth)

@@ -68,7 +68,7 @@ class Wilson: Generator {
             walk.cells.append(walk.currentCell)
             
             grid.highlightCells = walk.cells
-            grid.highlightCell = neighbour
+            grid.secondaryHighlightCells = [neighbour]
             
             if neighbour.visited {
                 
@@ -118,8 +118,8 @@ class Wilson: Generator {
             }
         }
         
-        grid.highlightCell = nil
         grid.highlightCells = nil
+        grid.secondaryHighlightCells = nil
         grid.target = nil
         
         if stop {

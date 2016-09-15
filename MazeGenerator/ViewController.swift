@@ -23,6 +23,7 @@ class ViewController: NSViewController, MazePickerViewControllerDelegate {
         
         let sheet = storyboard?.instantiateController(withIdentifier: "mazePicker") as! MazePickerViewController
         sheet.delegate = self
+        sheet.create(with: MazeSetup.load())
         
         presentViewControllerAsSheet(sheet)
     }
@@ -31,6 +32,8 @@ class ViewController: NSViewController, MazePickerViewControllerDelegate {
         dismissViewController(controller)
         coordinator = MazeCoordinator(maze: mazeView, setup: setup)
         startButton.title = "Start"
+        
+        setup.save()
     }
 
     @IBAction func start(sender: NSButton) {
@@ -43,6 +46,7 @@ class ViewController: NSViewController, MazePickerViewControllerDelegate {
                 
                 let sheet = storyboard?.instantiateController(withIdentifier: "mazePicker") as! MazePickerViewController
                 sheet.delegate = self
+                sheet.create(with: MazeSetup.load())
                 
                 presentViewControllerAsSheet(sheet)
             }

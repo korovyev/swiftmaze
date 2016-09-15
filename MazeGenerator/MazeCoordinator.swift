@@ -8,12 +8,6 @@
 
 import Foundation
 
-struct MazeSetup {
-    var algorithm: GenerationAlgorithm
-    var solver: SolvingAlgorithm
-    var size: Size
-}
-
 class MazeCoordinator {
     weak var maze: Maze?
     var grid: Grid
@@ -22,12 +16,13 @@ class MazeCoordinator {
     var setup: MazeSetup
     
     init(maze: Maze, setup: MazeSetup) {
+        maze.setup = setup
         self.maze = maze
         self.setup = setup
         
         grid = Grid(size: setup.size)
         
-        switch setup.algorithm {
+        switch setup.generator {
         case.recursiveDivision:
             generator = RecursiveDivision(updateInterval: 0.01)
         case .backtracker:

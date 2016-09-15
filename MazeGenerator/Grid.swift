@@ -15,9 +15,8 @@ class Grid {
     var size: Size
     let directions: [Direction] = [.left, .up, .right, .down]
     var highlightCells: [Cell]?
-    var highlightCell: Cell?
+    var secondaryHighlightCells: [Cell]?
     var target: Cell?
-    var activeSolveCells: [Cell]?
     
     init(size: Size) {
         self.size = size

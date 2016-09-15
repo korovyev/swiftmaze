@@ -8,7 +8,7 @@
 
 // shuffle taken from : http://stackoverflow.com/questions/24026510/how-do-i-shuffle-an-array-in-swift
 
-import Foundation
+import Cocoa
 
 extension Collection {
     /// Return a copy of `self` with its elements shuffled
@@ -31,4 +31,26 @@ extension MutableCollection where Index == Int {
             swap(&self[i], &self[j])
         }
     }
+}
+
+// taken from http://stackoverflow.com/questions/1275662/saving-uicolor-to-and-loading-from-nsuserdefaults
+
+extension UserDefaults {
+    
+    func color(forKey key: String) -> NSColor? {
+        var color: NSColor?
+        if let colorData = data(forKey: key) {
+            color = NSKeyedUnarchiver.unarchiveObject(with: colorData) as? NSColor
+        }
+        return color
+    }
+    
+    func set(color: NSColor?, forKey key: String) {
+        var colorData: NSData?
+        if let color = color {
+            colorData = NSKeyedArchiver.archivedData(withRootObject: color) as NSData?
+        }
+        set(colorData, forKey: key)
+    }
+    
 }
