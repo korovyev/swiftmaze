@@ -163,19 +163,21 @@ class Grid {
         }
     }
     
-    func openCells(neighbouring cell: Cell) -> [Cell] {
+    func neighbours(of cell: Cell) -> [Cell] {
         var neighbours = [Cell]()
         
         for direction in cell.directionsToTest(inside: size) {
             if let neighbour = neighbourCell(of: cell, in: direction) {
-                
-                if indexOfLineBetween(cell, and: neighbour) == nil {
-                    neighbours.append(neighbour)
-                }
+                neighbours.append(neighbour)
             }
         }
         
         return neighbours
+    }
+    
+    func openCells(neighbouring cell: Cell) -> [Cell] {
+        
+        return neighbours(of: cell).filter({ indexOfLineBetween(cell, and: $0) == nil })
     }
     
     func neighbourCell(of cell: Cell, in direction: Direction) -> Cell? {

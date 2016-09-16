@@ -33,6 +33,8 @@ class MazeCoordinator {
             generator = Eller(updateInterval: 0.01)
         case .wilson:
             generator = Wilson(updateInterval: 0.01)
+        case .prim:
+            generator = Prim(updateInterval: 0.01)
         }
         
         switch setup.solver {

@@ -14,6 +14,7 @@ enum GenerationAlgorithm: String {
     case kruskal = "Kruskal"
     case eller = "Eller"
     case wilson = "Wilson"
+    case prim = "Prim"
 }
 
 enum GeneratorState {
