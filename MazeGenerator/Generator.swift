@@ -15,25 +15,15 @@ enum GenerationAlgorithm: String {
     case eller = "Eller"
     case wilson = "Wilson"
     case prim = "Prim"
-}
-
-enum GeneratorState {
-    case idle
-    case generating
-    case finished
-}
-
-protocol Generator {
-    var state: GeneratorState { get }
-    var updateInterval: Float { get }
-    var stop: Bool { get }
     
-    func generateMaze(in grid: Grid, step: @escaping () -> Void)
-    func quit()
-}
-
-extension Generator {
-    func delay(step:  @escaping () -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + Double(updateInterval), execute: step)
+    var generator: Algorithm {
+        switch self {
+        case .recursiveDivision:    return RecursiveDivision()
+        case .backtracker:          return Backtracker()
+        case .kruskal:              return Kruskal()
+        case .eller:                return Eller()
+        case .wilson:               return Wilson()
+        case .prim:                 return Prim()
+        }
     }
 }

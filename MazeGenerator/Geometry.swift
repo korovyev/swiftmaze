@@ -68,6 +68,10 @@ struct Point {
     var x : Int
     var y : Int
     
+    static var zero: Point {
+        return Point(0, 0)
+    }
+    
     init(_ x: Int, _ y: Int) {
         self.x = x
         self.y = y

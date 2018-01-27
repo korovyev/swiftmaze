@@ -8,45 +8,36 @@
 
 import Foundation
 
-class Backtracker: Generator {
-    var updateInterval: Float
-    var state: GeneratorState
-    var stop: Bool
-    var cellIndex = 0
-    var visitedCells = [Cell]()
+class Backtracker: Algorithm {
     
-    init(updateInterval: Float) {
-        self.updateInterval = updateInterval
-        state = .idle
-        stop = false
+    private struct State: AlgorithmState {
+        var cell: Cell
     }
     
-    func quit() {
-        state = .finished
-        stop = true
-    }
-    
-    func generateMaze(in grid: Grid, step: @escaping () -> Void) {
-        state = .generating
+    func begin(in grid: Grid) -> [AlgorithmState] {
         grid.buildFrame()
         grid.buildInternalGrid()
         grid.buildCells()
         
         guard let first = grid.cellAt(0, 0) else {
-            return
+            return []
         }
-        
         first.visited = true
-        visitedCells.append(first)
         
-        step()
-        
-        delay(step: {
-            self.nextUnvisitedCell(to: first, inside: grid, step: step)
-        })
+        return [State(cell: first)]
     }
     
-    func nextUnvisitedCell(to cell: Cell, inside grid: Grid, step: @escaping () -> Void) {
+    func step(state: AlgorithmState, in grid: Grid) -> [AlgorithmState] {
+        guard let state = state as? Backtracker.State, let nextCell = nextUnvisitedCell(to: state.cell, in: grid) else {
+            return []
+        }
+        
+        return [state, State(cell: nextCell)]
+    }
+    
+    private func nextUnvisitedCell(to cell: Cell, in grid: Grid) -> Cell? {
+        
+        grid.target = cell
         
         var nextCell: Cell?
         let directionsToTest = cell.directionsToTest(inside: grid.size).shuffle()
@@ -56,37 +47,11 @@ class Backtracker: Generator {
             if let neighbour = grid.neighbourCell(of: cell, in: direction), !neighbour.visited {
                 grid.removeLineBetween(cell, and: neighbour)
                 nextCell = neighbour
+                nextCell?.visited = true
                 break
             }
         }
         
-        step()
-        
-        if stop {
-            return
-        }
-        
-        if let nextCell = nextCell {
-            nextCell.visited = true
-            
-            visitedCells.append(nextCell)
-            cellIndex = visitedCells.count - 1
-            
-            delay(step: {
-                self.nextUnvisitedCell(to: nextCell, inside: grid, step: step)
-            })
-        }
-        else {
-            visitedCells.removeLast()
-            
-            cellIndex -= 1
-            if cellIndex >= 0 {
-                nextUnvisitedCell(to: visitedCells[cellIndex], inside: grid, step: step)
-            }
-            else {
-                state = .finished
-                step()
-            }
-        }
+        return nextCell
     }
 }

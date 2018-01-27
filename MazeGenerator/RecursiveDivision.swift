@@ -8,37 +8,29 @@
 
 import Foundation
 
-class RecursiveDivision: Generator {
-    var updateInterval: Float
-    var state: GeneratorState
-    var stop: Bool
-    var rectangles = [Rectangle]()
+class RecursiveDivision: Algorithm {
     
-    init(updateInterval: Float) {
-        self.updateInterval = updateInterval
-        state = .idle
-        stop = false
+    private struct State: AlgorithmState {
+        let rectangle: Rectangle
     }
     
-    func quit() {
-        state = .finished
-        stop = true
-    }
-    
-    func generateMaze(in grid: Grid, step: @escaping () -> Void) {
-        state = .generating
+    func begin(in grid: Grid) -> [AlgorithmState] {
         grid.buildFrame()
-        
-        step()
-        
-        let rectangle = Rectangle(origin: Point(0, 0), size: grid.size)
-        
-        addLine(to: grid, in: rectangle, step: step)
+        return [State(rectangle: Rectangle(origin: .zero, size: grid.size))]
     }
     
-    func addLine(to grid: Grid, in rectangle: Rectangle, step: @escaping () -> Void) {
+    func step(state: AlgorithmState, in grid: Grid) -> [AlgorithmState] {
+        guard let state = state as? RecursiveDivision.State else {
+            return []
+        }
+        return addLine(to: state.rectangle, in: grid)
+    }
+    
+    private func addLine(to rectangle: Rectangle, in grid: Grid) -> [AlgorithmState] {
         var begin: Point?
         var end: Point?
+        
+        var newState = [State]()
         
         if rectangle.size.width < rectangle.size.height {
             // split rectangle into two horizontally
@@ -52,11 +44,11 @@ class RecursiveDivision: Generator {
             let bottomRect = Rectangle(origin: Point(rectangle.origin.x, rectangle.origin.y + yVal), size: Size(width: rectangle.size.width, height: rectangle.size.height - yVal))
             
             if topRect.size.height > 1 {
-                rectangles.append(topRect)
+                newState.append(State(rectangle: topRect))
             }
             
             if bottomRect.size.height > 1 {
-                rectangles.append(bottomRect)
+                newState.append(State(rectangle: bottomRect))
             }
         }
         else if rectangle.size.width > 1 {
@@ -71,11 +63,11 @@ class RecursiveDivision: Generator {
             let rightRect = Rectangle(origin: Point(rectangle.origin.x + xVal, rectangle.origin.y), size: Size(width: rectangle.size.width - xVal, height: rectangle.size.height))
             
             if leftRect.size.width > 1 {
-                rectangles.append(leftRect)
+                newState.append(State(rectangle: leftRect))
             }
             
             if rightRect.size.width > 1 {
-                rectangles.append(rightRect)
+                newState.append(State(rectangle: rightRect))
             }
         }
         
@@ -83,20 +75,6 @@ class RecursiveDivision: Generator {
             grid.drawGridLineWithDoor(line: Line(start: begin, end: end))
         }
         
-        step()
-        
-        if stop {
-            return
-        }
-        
-        if let nextRectangle = rectangles.popLast() {
-            delay(step: {
-                self.addLine(to: grid, in: nextRectangle, step: step)
-            })
-        }
-        else {
-            state = .finished
-            step()
-        }
+        return newState
     }
 }

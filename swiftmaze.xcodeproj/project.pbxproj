@@ -30,6 +30,8 @@
 		32BC8F3A1D89B7820000FC04 /* DeadEndFiller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BC8F391D89B7820000FC04 /* DeadEndFiller.swift */; };
 		32DE80711D8AC5970088D564 /* FloodFill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DE80701D8AC5970088D564 /* FloodFill.swift */; };
 		32DE80731D8ADEB10088D564 /* MazeSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DE80721D8ADEB10088D564 /* MazeSetup.swift */; };
+		897CF2212013B3AF0088B50F /* RepeatingTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897CF2202013B3AF0088B50F /* RepeatingTimer.swift */; };
+		89A6309F201CBC1200B6BAFE /* Algorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89A6309E201CBC1200B6BAFE /* Algorithm.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +60,8 @@
 		32BC8F391D89B7820000FC04 /* DeadEndFiller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeadEndFiller.swift; sourceTree = "<group>"; };
 		32DE80701D8AC5970088D564 /* FloodFill.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloodFill.swift; sourceTree = "<group>"; };
 		32DE80721D8ADEB10088D564 /* MazeSetup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MazeSetup.swift; sourceTree = "<group>"; };
+		897CF2202013B3AF0088B50F /* RepeatingTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatingTimer.swift; sourceTree = "<group>"; };
+		89A6309E201CBC1200B6BAFE /* Algorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Algorithm.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +92,8 @@
 				32DE80721D8ADEB10088D564 /* MazeSetup.swift */,
 				32851F801D8213CE00201612 /* Generators */,
 				32BC8F361D89ABAC0000FC04 /* Solvers */,
+				897CF2202013B3AF0088B50F /* RepeatingTimer.swift */,
+				89A6309E201CBC1200B6BAFE /* Algorithm.swift */,
 			);
 			path = MazeGenerator;
 			sourceTree = "<group>";
@@ -161,12 +167,13 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0800;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "Kevin Sweeney";
 				TargetAttributes = {
 					32851F651D81899700201612 = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = PTBPN72C39;
+						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -215,6 +222,7 @@
 				3260FAD61D8995E400FEFEDA /* Solver.swift in Sources */,
 				32919B8E1D89FE1500DDC406 /* Geometry.swift in Sources */,
 				32DE80731D8ADEB10088D564 /* MazeSetup.swift in Sources */,
+				897CF2212013B3AF0088B50F /* RepeatingTimer.swift in Sources */,
 				32A521401D8C557300DD7EBC /* Prim.swift in Sources */,
 				32851F7D1D81AAE300201612 /* Generator.swift in Sources */,
 				3250D1361D8863FD003DFC2E /* MazePickerViewController.swift in Sources */,
@@ -223,6 +231,7 @@
 				32851F791D81994400201612 /* Grid.swift in Sources */,
 				3250D1341D87036E003DFC2E /* Wilson.swift in Sources */,
 				32851F821D8301AE00201612 /* Backtracker.swift in Sources */,
+				89A6309F201CBC1200B6BAFE /* Algorithm.swift in Sources */,
 				32DE80711D8AC5970088D564 /* FloodFill.swift in Sources */,
 				32851F761D818A6400201612 /* Maze.swift in Sources */,
 				32BC8F351D89AB910000FC04 /* Tremaux.swift in Sources */,
@@ -261,7 +270,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -281,7 +291,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = me.ksween.MazeGenerator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -293,14 +304,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -340,14 +357,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

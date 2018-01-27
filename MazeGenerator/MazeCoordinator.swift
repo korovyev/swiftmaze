@@ -8,84 +8,92 @@
 
 import Foundation
 
+enum MazeGenerationStatus {
+    case idle
+    case generating
+    case solving
+    case finished
+}
+
 class MazeCoordinator {
     weak var maze: Maze?
     var grid: Grid
-    var generator: Generator
-    var solver: Solver?
+    let generator: Algorithm
+    let solver: Algorithm?
+    var activeAlgorithm: Algorithm?
     var setup: MazeSetup
+    var timer: RepeatingTimer?
+    var stack: [AlgorithmState]
+    var status: MazeGenerationStatus
     
     init(maze: Maze, setup: MazeSetup) {
         maze.setup = setup
         self.maze = maze
         self.setup = setup
+        stack = []
+        status = .idle
         
         grid = Grid(size: setup.size)
         
-        switch setup.generator {
-        case.recursiveDivision:
-            generator = RecursiveDivision(updateInterval: 0.01)
-        case .backtracker:
-            generator = Backtracker(updateInterval: 0.01)
-        case .kruskal:
-            generator = Kruskal(updateInterval: 0.01)
-        case .eller:
-            generator = Eller(updateInterval: 0.01)
-        case .wilson:
-            generator = Wilson(updateInterval: 0.01)
-        case .prim:
-            generator = Prim(updateInterval: 0.01)
-        }
-        
-        switch setup.solver {
-        case .tremaux:
-            solver = Tremaux(updateInterval: 0.01)
-        case .aStar:
-            solver = AStar(updateInterval: 0.01)
-        case .deadEndFilling:
-            solver = DeadEndFiller(updateInterval: 0.01)
-        case .floodFill:
-            solver = FloodFill(updateInterval: 0.01)
-        case .none:
-            solver = nil
-        }
+        generator = setup.generator.generator
+        solver = setup.solver.solver
+        activeAlgorithm = generator
     }
     
     func start() {
-        generator.generateMaze(in: grid, step: { [weak self] in
-            
-            if let weakSelf = self {
-                weakSelf.maze?.update(weakSelf.grid)
-                
-                if weakSelf.generator.state == .finished {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                        weakSelf.solve()
-                    })
-                }
-            }
-        })
+        
+        status = .generating
+        stack.append(contentsOf: generator.begin(in: grid))
+        maze?.update(grid)
+        
+        timer = RepeatingTimer(interval: .milliseconds(5))
+        timer?.eventHandler = { [weak self] in
+            self?.step()
+        }
+        timer?.resume()
     }
     
-    func solve() {
-        
-        guard let solver = solver else {
+    func step() {
+        guard let algorithm = activeAlgorithm else {
             return
         }
-        
-        if grid.cells.isEmpty {
-            grid.buildCells()
+        if let state = stack.popLast() {
+            stack.append(contentsOf: algorithm.step(state: state, in: grid))
         }
-        solver.solveMaze(in: grid, step: { [weak self] in
-            
-            if let weakSelf = self {
-                weakSelf.maze?.update(weakSelf.grid)
+        else if let solver = solver, status == .generating {
+            status = .solving
+            activeAlgorithm = solver
+            stack.append(contentsOf: solver.begin(in: grid))
+            grid.target = nil
+        }
+        else {
+            status = .finished
+            timer?.suspend()
+        }
+        
+        DispatchQueue.main.async {
+            self.maze?.update(self.grid)
+        }
+    }
+    
+    func pause() {
+        guard let timer = timer else {
+            return
+        }
+        switch timer.state {
+        case .suspended:
+            if !stack.isEmpty {
+                timer.resume()
             }
-        })
+        case .resumed: timer.suspend()
+        }
     }
     
     func dropMaze() {
-        generator.quit()
-        solver?.quit()
+        timer?.suspend()
+        timer = nil
+        stack = []
         maze?.update(nil)
+        maze = nil
     }
 }

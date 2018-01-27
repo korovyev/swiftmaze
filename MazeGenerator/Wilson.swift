@@ -8,59 +8,69 @@
 
 import Foundation
 
-class Walk {
-    var originalCell: Cell
-    var currentCell: Cell
-    var cells = [Cell]()
-    var previousDirection = Direction.none
+class Wilson: Algorithm {
     
-    init(cell: Cell) {
-        originalCell = cell
-        currentCell = cell
-    }
-}
-
-class Wilson: Generator {
-    var updateInterval: Float
-    var state: GeneratorState
-    var stop: Bool
-    var remainingCellsSet = Set<Cell>()
-    
-    init(updateInterval: Float) {
-        self.updateInterval = updateInterval
-        state = .idle
-        stop = false
+    private class Walk {
+        var originalCell: Cell
+        var currentCell: Cell
+        var cells = [Cell]()
+        var previousDirection = Direction.none
+        
+        init(cell: Cell) {
+            originalCell = cell
+            currentCell = cell
+        }
     }
     
-    func quit() {
-        state = .finished
-        stop = true
+    private struct State: AlgorithmState {
+        enum Mode {
+            case walking(Walk)
+            case finishingWalk(Walk, Cell)
+            case finishedWalk
+        }
+        let remainingCells: Set<Cell>
+        let mode: Mode
     }
     
-    func generateMaze(in grid: Grid, step: @escaping () -> Void) {
-        state = .generating
+    func begin(in grid: Grid) -> [AlgorithmState] {
         grid.buildFrame()
         grid.buildInternalGrid()
         grid.buildCells()
         
-        for array in grid.cells {
-            remainingCellsSet.formUnion(array)
+        var cellsSet = Set<Cell>()
+        grid.cells.forEach {
+            cellsSet.formUnion($0)
         }
         
-        if let mazeStart = remainingCellsSet.shuffle().first {
-            grid.target = mazeStart
-            mazeStart.visited = true
-            remainingCellsSet.remove(mazeStart)
-            
-            startNewWalk(in: grid, step: step)
+        guard let initialTarget = cellsSet.shuffle().first else {
+            return []
+        }
+        
+        grid.target = initialTarget
+        initialTarget.visited = true
+        cellsSet.remove(initialTarget)
+        
+        return [State(remainingCells: cellsSet, mode: .finishedWalk)]
+    }
+    
+    func step(state: AlgorithmState, in grid: Grid) -> [AlgorithmState] {
+        guard let state = state as? State else {
+            return []
+        }
+        
+        switch state.mode {
+        case .walking(let walk):                        return randomStep(in: grid, walk: walk, state: state)
+        case .finishingWalk(let walk, let walkStep):    return finish(walk: walk, step: walkStep, in: grid, state: state)
+        case .finishedWalk:                             return startNewWalk(in: grid, state: state)
         }
     }
     
-    func randomStep(walk: Walk, in grid: Grid, step: @escaping () -> Void) {
+    private func randomStep(in grid: Grid, walk: Walk, state: State) -> [State] {
+        
         let directions = walk.currentCell.directionsToTest(inside: grid.size).filter({ $0 != walk.previousDirection.opposite() }).shuffle()
         
         guard let direction = directions.first else {
-            return
+            return []
         }
         
         if let neighbour = grid.neighbourCell(of: walk.currentCell, in: direction) {
@@ -74,79 +84,56 @@ class Wilson: Generator {
                 
                 walk.cells.append(neighbour)
                 
-                delay(step: {
-                    self.finish(walk: walk, in: grid, step: step)
-                })
-                
+                return [State(remainingCells: state.remainingCells, mode: .finishingWalk(walk, walk.originalCell))]
             }
             else {
                 walk.currentCell = neighbour
                 walk.previousDirection = direction
                 
-                delay(step: {
-                    self.randomStep(walk: walk, in: grid, step: step)
-                })
+                return [State(remainingCells: state.remainingCells, mode: .walking(walk))]
             }
         }
         
-        step()
+        return []
     }
     
-    func finish(walk: Walk, in grid: Grid, step: @escaping () -> Void) {
-        var finishedWalk = false
-        let firstCell = walk.originalCell
-        firstCell.visited = true
+    private func finish(walk: Walk, step: Cell, in grid: Grid, state: State) -> [State] {
         
+        step.visited = true
         
-        var currentCell = firstCell
-        
-        while !finishedWalk {
-            
-            guard let nextCell = grid.neighbourCell(of: currentCell, in: currentCell.direction) else {
-                break
-            }
-            
-            grid.removeLineBetween(currentCell, and: nextCell)
-            
-            if nextCell.visited {
-                finishedWalk = true
-            }
-            else {
-                nextCell.visited = true
-                remainingCellsSet.remove(nextCell)
-                currentCell = nextCell
-            }
+        guard let nextStep = grid.neighbourCell(of: step, in: step.direction) else {
+            return []
         }
         
-        grid.highlightCells = nil
-        grid.secondaryHighlightCells = nil
-        grid.target = nil
+        grid.removeLineBetween(step, and: nextStep)
         
-        if stop {
-            return
-        }
-        
-        if remainingCellsSet.count > 0 {
-            startNewWalk(in: grid, step: step)
+        if nextStep.visited {
+            grid.highlightCells = nil
+            grid.secondaryHighlightCells = nil
+            grid.target = nil
+            
+            return [State(remainingCells: state.remainingCells, mode: .finishedWalk)]
         }
         else {
-            state = .finished
-            step()
+            nextStep.visited = true
+            var remainingCells = state.remainingCells
+            remainingCells.remove(nextStep)
+            return [State(remainingCells: remainingCells, mode: .finishingWalk(walk, nextStep))]
         }
     }
     
-    func startNewWalk(in grid: Grid, step: @escaping () -> Void) {
+    private func startNewWalk(in grid: Grid, state: State) -> [State] {
         
-        let shuffledRemainingCells = remainingCellsSet.shuffle()
+        var remainingCells = state.remainingCells
         
-        guard let originalCell = shuffledRemainingCells.first else {
-            return
+        guard let originalCell = remainingCells.shuffle().first else {
+            return []
         }
         
-        remainingCellsSet.remove(originalCell)
+        remainingCells.remove(originalCell)
         
         let walk = Walk(cell: originalCell)
         
-        randomStep(walk: walk, in: grid, step: step)
+        return [State(remainingCells: remainingCells, mode: .walking(walk))]
     }
 }

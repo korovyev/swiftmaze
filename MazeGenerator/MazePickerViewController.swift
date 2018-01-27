@@ -116,7 +116,7 @@ class MazePickerViewController: NSViewController, NSTextFieldDelegate {
     }
     
     @IBAction func colourDiscloseTapped(sender: NSButton) {
-        if sender.state == 1 {
+        if sender.state.rawValue == 1 {
             
             preferredContentSize = NSSize(width: 450, height: 360)
             hiddenViews.forEach({ $0.isHidden = false })

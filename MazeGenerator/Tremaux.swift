@@ -8,43 +8,47 @@
 
 import Foundation
 
-class Tremaux: Solver {
-    var state: SolverState
-    var updateInterval: Float
-    var stop: Bool
-    var activeCells = [Cell]()
-    var activeJunctions = [Cell]()
-    var endCell: Cell?
+class Tremaux: Algorithm {
     
-    init(updateInterval: Float) {
-        self.updateInterval = updateInterval
-        state = .idle
-        stop = false
+    private struct State: AlgorithmState {
+        let activeCells: [Cell]
+        let endCell: Cell
+        let activeJunctions: [Cell]
     }
     
-    func quit() {
-        stop = true
-        state = .finished
+    func begin(in grid: Grid) -> [AlgorithmState] {
+        if grid.cells.isEmpty {
+            grid.buildCells()
+        }
+        guard let firstCell = grid.cells.first?.first, let endCell = grid.cells.last?.last else {
+            return []
+        }
+        let beginState = State(activeCells: [firstCell], endCell: endCell, activeJunctions: [])
+        return [beginState]
     }
     
-    func solveMaze(in grid: Grid, step: @escaping () -> Void) {
-        activeCells.append(grid.cells[0][0])
-        endCell = grid.cells[grid.cells.count - 1][grid.cells[0].count - 1]
+    func step(state: AlgorithmState, in grid: Grid) -> [AlgorithmState] {
+        guard let state = state as? State else {
+            return []
+        }
+        return solve(grid: grid, state: state)
+    }
+    
+    
+    
+    private func solve(grid: Grid, state: State) -> [State] {
         
-        solve(grid: grid, step: step)
-    }
-    
-    func solve(grid: Grid, step: @escaping () -> Void) {
-        
-        guard let endCell = endCell, activeCells.count > 0 || stop else {
-            return
+        guard state.activeCells.count > 0, let cellToProceedFrom = state.activeCells.last else {
+            return []
         }
         
-        let cellToProceedFrom = activeCells[activeCells.count - 1]
+        var activeJunctions = state.activeJunctions
+        var activeCells = state.activeCells
+        
         cellToProceedFrom.solverVisited = true
         var nextCells = unvisitedTremauxCells(neighbouring: cellToProceedFrom, in: grid)
         
-        if !nextCells.contains(endCell) {
+        if !nextCells.contains(state.endCell) {
             
             if nextCells.count > 1 {
                 activeJunctions.append(cellToProceedFrom)
@@ -67,7 +71,7 @@ class Tremaux: Solver {
             if nextCells.count > 0 {
                 
                 for cell in nextCells {
-                    score(cell, to: endCell)
+                    cell.score(to: state.endCell)
                 }
                 
                 nextCells.sort(by: { $0.fScore > $1.fScore })
@@ -76,17 +80,13 @@ class Tremaux: Solver {
             
             grid.highlightCells = activeCells
             
-            step()
-            
-            delay(step: {
-                self.solve(grid: grid, step: step)
-            })
+            return [State(activeCells: activeCells, endCell: state.endCell, activeJunctions: activeJunctions)]
         }
         else {
-            activeCells.append(endCell)
+            activeCells.append(state.endCell)
             grid.highlightCells = activeCells
-            state = .finished
-            step()
+            
+            return []
         }
     }
     

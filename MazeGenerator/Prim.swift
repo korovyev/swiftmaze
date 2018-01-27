@@ -8,25 +8,13 @@
 
 import Foundation
 
-class Prim: Generator {
-    var updateInterval: Float
-    var state: GeneratorState
-    var stop: Bool
-    var activeCells = [Cell]()
+class Prim: Algorithm {
     
-    init(updateInterval: Float) {
-        self.updateInterval = updateInterval
-        state = .idle
-        stop = false
+    private struct State: AlgorithmState {
+        let cells: [Cell]
     }
     
-    func quit() {
-        state = .finished
-        stop = true
-    }
-    
-    func generateMaze(in grid: Grid, step: @escaping () -> Void) {
-        state = .generating
+    func begin(in grid: Grid) -> [AlgorithmState] {
         grid.buildFrame()
         grid.buildInternalGrid()
         grid.buildCells()
@@ -37,21 +25,23 @@ class Prim: Generator {
         let initialCell = grid.cells[initialX][initialY]
         initialCell.visited = true
         
-        activeCells.append(contentsOf: grid.neighbours(of: initialCell))
-        
-        step()
-        
-        performPrim(in: grid, step: step)
+        return [State(cells: grid.neighbours(of: initialCell))]
     }
     
-    func performPrim(in grid: Grid, step: @escaping () -> Void) {
+    func step(state: AlgorithmState, in grid: Grid) -> [AlgorithmState] {
+        guard let state = state as? State else {
+            return []
+        }
         
-        activeCells.shuffled()
+        return performPrim(in: grid, state: state)
+    }
+    
+    private func performPrim(in grid: Grid, state: State) -> [State] {
+        
+        var activeCells = state.cells.shuffle()
         
         guard let cell = activeCells.popLast() else {
-            state = .finished
-            step()
-            return
+            return []
         }
         
         let neighbours = grid.neighbours(of: cell).shuffle()
@@ -67,14 +57,6 @@ class Prim: Generator {
         
         grid.highlightCells = activeCells
         
-        step()
-        
-        if stop {
-            return
-        }
-        
-        delay(step: {
-            self.performPrim(in: grid, step: step)
-        })
+        return [State(cells: activeCells)]
     }
 }

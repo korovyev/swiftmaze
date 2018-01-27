@@ -29,7 +29,7 @@ class Maze: NSView {
         
         guard
             let grid = grid,
-            let context = NSGraphicsContext.current()?.cgContext,
+            let context = NSGraphicsContext.current?.cgContext,
             let setup = setup
         else {
             return

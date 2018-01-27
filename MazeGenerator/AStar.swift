@@ -8,51 +8,59 @@
 
 import Foundation
 
-class AStar: Solver {
-    var state: SolverState
-    var updateInterval: Float
-    var stop: Bool
-    var closedList = [Cell]()
-    var openList = [Cell]()
-    var endCell: Cell?
-    var shortestPath = [Cell]()
+class AStar: Algorithm {
     
-    init(updateInterval: Float) {
-        self.updateInterval = updateInterval
-        state = .idle
-        stop = false
+    private struct State: AlgorithmState {
+        enum Mode {
+            case searching
+            case solving
+        }
+        let closedList: [Cell]
+        let openList: [Cell]
+        let endCell: Cell
+        let activeSolveCell: Cell?
+        let mode: Mode
     }
     
-    func quit() {
-        stop = true
-        state = .finished
+    func begin(in grid: Grid) -> [AlgorithmState] {
+        if grid.cells.isEmpty {
+            grid.buildCells()
+        }
+        guard let firstCell = grid.cells.first?.first, let endCell = grid.cells.last?.last else {
+            return []
+        }
+        return [State(closedList: [firstCell], openList: [], endCell: endCell, activeSolveCell: nil, mode: .searching)]
     }
     
-    func solveMaze(in grid: Grid, step: @escaping () -> Void) {
-        closedList.append(grid.cells[0][0])
-        endCell = grid.cells[grid.cells.count - 1][grid.cells[0].count - 1]
-        
-        solve(grid: grid, step: step)
-    }
-    
-    func solve(grid: Grid, step: @escaping () -> Void) {
-        
-        guard let cellToProceedFrom = closedList.last, let endCell = endCell else {
-            return
+    func step(state: AlgorithmState, in grid: Grid) -> [AlgorithmState] {
+        guard let state = state as? State else {
+            return []
         }
         
-        if stop {
-            return
+        switch state.mode {
+        case .searching: return search(grid: grid, state: state)
+        case .solving:  return solve(grid: grid, state: state)
         }
+    }
+    
+    private func search(grid: Grid, state: State) -> [State] {
+        
+        guard let cellToProceedFrom = state.closedList.last else {
+            return []
+        }
+        
+        var openList = state.openList
+        var closedList = state.closedList
+        let mode: State.Mode
         
         let nextCells = grid.openCells(neighbouring: cellToProceedFrom)
         
-        if !nextCells.contains(endCell) {
+        if !nextCells.contains(state.endCell) {
             
             for cell in nextCells {
                 
                 if !closedList.contains(cell) {
-                    score(cell, to: endCell)
+                    cell.score(to: state.endCell)
                     cell.parent = cellToProceedFrom
                     openList.append(cell)
                 }
@@ -61,53 +69,46 @@ class AStar: Solver {
             openList.sort(by: { $0.fScore > $1.fScore })
             
             guard let highestScoreOpenCell = openList.popLast() else {
-                return
+                return []
             }
             closedList.append(highestScoreOpenCell)
             
             grid.secondaryHighlightCells = openList
             grid.highlightCells = closedList
             
-            step()
-            
-            delay(step: {
-                self.solve(grid: grid, step: step)
-            })
+            mode = .searching
         }
         else {
+            mode = .solving
             
-            endCell.parent = cellToProceedFrom
-            closedList.append(endCell)
+            state.endCell.parent = cellToProceedFrom
+            closedList.append(state.endCell)
             
             grid.secondaryHighlightCells = nil
-            
-            step()
-            
-            delay(step: {
-                self.findShortestPathBackwards(from: endCell, grid: grid, step: step)
-            })
+            grid.highlightCells = []
         }
+        
+        return [State(closedList: closedList, openList: openList, endCell: state.endCell, activeSolveCell: state.endCell, mode: mode)]
     }
     
-    func findShortestPathBackwards(from cell : Cell, grid: Grid, step: @escaping () -> Void) {
+    private func solve(grid: Grid, state: State) -> [State] {
         
-        shortestPath.append(cell)
-        
-        if let index = closedList.index(where: { $0 == cell.parent }) {
-            
-            let nextCell = closedList[index]
-            
-            if nextCell.xPos == 0 && nextCell.yPos == 0 {
-                shortestPath.append(nextCell)
-                
-                state = .finished
-                step()
-            }
-            else {
-                findShortestPathBackwards(from: nextCell, grid: grid, step: step)
-            }
+        guard let activeSolveCell = state.activeSolveCell else {
+            return []
         }
-        grid.highlightCells = shortestPath
+        grid.highlightCells?.append(activeSolveCell)
+        
+        guard let parent = activeSolveCell.parent else {
+            return []
+        }
+        
+        if parent.xPos == 0 && parent.yPos == 0 {
+            grid.highlightCells?.append(parent)
+            return []
+        }
+        else {
+            return [State(closedList: state.closedList, openList: state.openList, endCell: state.endCell, activeSolveCell: parent, mode: .solving)]
+        }
         
     }
 }

@@ -12,16 +12,19 @@ class ViewController: NSViewController, MazePickerViewControllerDelegate {
     
     @IBOutlet var mazeView: Maze!
     @IBOutlet var startButton: NSButton!
-    var coordinator: MazeCoordinator?
+    private var coordinator: MazeCoordinator?
+    private var monitor: Any?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        monitor = NSEvent.addLocalMonitorForEvents(matching: NSEvent.EventTypeMask.keyDown, handler: handleKeyDown)
     }
     
     override func viewDidAppear() {
         super.viewDidAppear()
         
-        let sheet = storyboard?.instantiateController(withIdentifier: "mazePicker") as! MazePickerViewController
+        let sheet = storyboard?.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "mazePicker")) as! MazePickerViewController
         sheet.delegate = self
         sheet.create(with: MazeSetup.load())
         
@@ -35,25 +38,41 @@ class ViewController: NSViewController, MazePickerViewControllerDelegate {
         
         setup.save()
     }
+    
+    func handleKeyDown(with event: NSEvent) -> NSEvent {
+        guard let coordinator = coordinator else {
+            return event
+        }
+        
+        if event.keyCode == 49 { // spacebar
+            coordinator.pause()
+        }
+        else {
+            coordinator.step()
+        }
+        
+        return event
+    }
 
     @IBAction func start(sender: NSButton) {
         
-        if let coordinator = coordinator {
-            if coordinator.generator.state != .idle {
-                
-                self.coordinator?.dropMaze()
-                self.coordinator = nil
-                
-                let sheet = storyboard?.instantiateController(withIdentifier: "mazePicker") as! MazePickerViewController
-                sheet.delegate = self
-                sheet.create(with: MazeSetup.load())
-                
-                presentViewControllerAsSheet(sheet)
-            }
-            else {
-                sender.title = "New"
-                coordinator.start()
-            }
+        guard let coordinator = coordinator else {
+            return
+        }
+        
+        if coordinator.status != .idle {
+            
+            self.coordinator?.dropMaze()
+            
+            let sheet = storyboard?.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "mazePicker")) as! MazePickerViewController
+            sheet.delegate = self
+            sheet.create(with: MazeSetup.load())
+            
+            presentViewControllerAsSheet(sheet)
+        }
+        else {
+            sender.title = "New"
+            coordinator.start()
         }
     }
 }

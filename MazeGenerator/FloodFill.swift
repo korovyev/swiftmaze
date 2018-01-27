@@ -8,57 +8,46 @@
 
 import Foundation
 
-class FloodFill: Solver {
-    var state: SolverState
-    var updateInterval: Float
-    var stop: Bool
-    var activeCells = [Cell]()
-    var filledCells = [Cell]()
+class FloodFill: Algorithm {
     
-    init(updateInterval: Float) {
-        self.updateInterval = updateInterval
-        state = .idle
-        stop = false
+    private struct State: AlgorithmState {
+        let fillCells: [Cell]
     }
     
-    func quit() {
-        stop = true
-        state = .finished
+    func begin(in grid: Grid) -> [AlgorithmState] {
+        
+        if grid.cells.isEmpty {
+            grid.buildCells()
+        }
+        
+        guard let firstCell = grid.cells.first?.first else {
+            return []
+        }
+        grid.highlightCells = [firstCell]
+        return [State(fillCells: [firstCell])]
     }
     
-    func solveMaze(in grid: Grid, step: @escaping () -> Void) {
-        activeCells.append(grid.cells[0][0])
+    func step(state: AlgorithmState, in grid: Grid) -> [AlgorithmState] {
+        guard let state = state as? State, !state.fillCells.isEmpty else {
+            return []
+        }
         
-        fill(grid: grid, step: step)
+        let nextCells = fill(grid: grid, fillCells: state.fillCells)
+        
+        return [State(fillCells: nextCells)]
     }
     
-    func fill(grid: Grid, step: @escaping () -> Void) {
+    private func fill(grid: Grid, fillCells: [Cell]) -> [Cell] {
         
-        if stop {
-            return
-        }
+        var nextCells = [Cell]()
         
-        if activeCells.count > 0 {
-            
-            var nextCells = [Cell]()
-            
-            for cell in activeCells {
-                cell.solverVisited = true
-                filledCells.append(cell)
-                nextCells.append(contentsOf: grid.openCells(neighbouring: cell).filter({ !$0.solverVisited }))
-            }
-            
-            activeCells = nextCells
-            
-            delay(step: {
-                self.fill(grid: grid, step: step)
-            })
-        }
-        else {
-            state = .finished
-        }
+        fillCells.forEach({
+            $0.solverVisited = true
+            nextCells.append(contentsOf: grid.openCells(neighbouring: $0).filter({ !$0.solverVisited }))
+        })
         
-        grid.highlightCells = filledCells
-        step()
+        grid.highlightCells?.append(contentsOf: nextCells)
+        
+        return nextCells
     }
 }

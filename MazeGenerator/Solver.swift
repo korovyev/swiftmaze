@@ -14,39 +14,31 @@ enum SolvingAlgorithm: String {
     case deadEndFilling = "Dead End Filling"
     case floodFill = "Flood Fill"
     case none = "None"
-}
-
-enum SolverState {
-    case idle
-    case solving
-    case finished
-}
-
-protocol Solver {
-    var state: SolverState { get }
-    var updateInterval: Float { get }
-    var stop: Bool { get }
     
-    func solveMaze(in grid: Grid, step: @escaping () -> Void)
-    func quit()
-}
-
-extension Solver {
-    func delay(step:  @escaping () -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + Double(updateInterval), execute: step)
+    var solver: Algorithm? {
+        switch self {
+        case .tremaux:      return Tremaux()
+        case .aStar:        return AStar()
+        case .deadEndFilling:   return DeadEndFiller()
+        case .floodFill:        return FloodFill()
+        case .none:             return nil
+        }
     }
+}
+
+extension Cell {
     
-    func score(_ cell : Cell, to endCell: Cell) {
+    func score(to endCell: Cell) {
         
         let maxX = endCell.xPos
         let maxY = endCell.yPos
         
-        let xDistance = cell.xPos > maxX ? cell.xPos - maxX : maxX - cell.xPos
-        let yDistance = cell.yPos > maxY ? cell.yPos - maxY : maxY - cell.yPos
+        let xDistance = xPos > maxX ? xPos - maxX : maxX - xPos
+        let yDistance = yPos > maxY ? yPos - maxY : maxY - yPos
         
         let gScore = 1
         let hScore = xDistance + yDistance
         
-        cell.fScore = gScore + hScore
+        fScore = gScore + hScore
     }
 }

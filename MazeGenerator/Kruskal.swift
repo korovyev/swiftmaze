@@ -8,58 +8,53 @@
 
 import Foundation
 
-class Kruskal: Generator {
-    var updateInterval: Float
-    var state: GeneratorState
-    var stop: Bool
-    var trees = [[Tree<Cell>]]()
-    var edges = [Line]()
+class Kruskal: Algorithm {
     
-    init(updateInterval: Float) {
-        self.updateInterval = updateInterval
-        state = .idle
-        stop = false
+    private struct State: AlgorithmState {
+        let edges: [Line]
+        let trees: [[Tree<Cell>]]
     }
-    
-    func quit() {
-        state = .finished
-        stop = true
-    }
-    
-    func generateMaze(in grid: Grid, step: @escaping () -> Void) {
-        state = .generating
+
+    func begin(in grid: Grid) -> [AlgorithmState] {
         grid.buildInternalGrid()
+        grid.buildCells()
+        
+        var edges = [Line]()
         
         edges.append(contentsOf: grid.verticalLines)
         edges.append(contentsOf: grid.horizontalLines)
-        
-        grid.buildFrame()
-        grid.buildCells()
-        
-        step()
-        
-        for cellArray in grid.cells {
-            
-            var cellTrees = [Tree<Cell>]()
-            
-            for cell in cellArray {
-                let tree = Tree(element: cell)
-                cellTrees.append(tree)
-            }
-            trees.append(cellTrees)
-        }
-        
         edges.shuffled()
         
-        removeEdge(in: grid, step: step)
+        var trees = [[Tree<Cell>]]()
+        
+        grid.cells.forEach({
+            
+            var columnTrees = [Tree<Cell>]()
+            
+            $0.forEach({
+                columnTrees.append(Tree(element: $0))
+            })
+            
+            trees.append(columnTrees)
+        })
+        
+        return [State(edges: edges, trees: trees)]
     }
     
-    func removeEdge(in grid: Grid, step: @escaping () -> Void) {
-        guard let edge = edges.popLast() else {
-            state = .finished
-            step()
-            return
+    func step(state: AlgorithmState, in grid: Grid) -> [AlgorithmState] {
+        guard let state = state as? State else {
+            return []
         }
+        var edges = state.edges
+        guard let edge = edges.popLast() else {
+            return []
+        }
+        
+        let newTrees = remove(edge: edge, in: grid, trees: state.trees)
+        return [State(edges: edges, trees: newTrees)]
+    }
+    
+    func remove(edge: Line, in grid: Grid, trees: [[Tree<Cell>]]) -> [[Tree<Cell>]] {
         
         let cells = grid.cellsEitherSide(of: edge)
         
@@ -74,17 +69,9 @@ class Kruskal: Generator {
                 cell1Tree.connect(to: cell2Tree)
                 
                 grid.removeLineBetween(cell1, and: cell2)
-                
-                step()
             }
-            
-            if stop {
-                return
-            }
-            
-            delay(step: {
-                self.removeEdge(in: grid, step: step)
-            })
         }
+        
+        return trees
     }
 }
